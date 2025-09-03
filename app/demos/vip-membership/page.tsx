@@ -54,10 +54,6 @@ export default function VIPMembershipDemo() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 opacity-60">
             {/* Silver Tier */}
             <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/40 backdrop-blur-sm border border-gray-400/30 rounded-lg overflow-hidden hover:border-gray-400/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(156,163,175,0.3)]">
-              <div className="relative h-48 overflow-hidden">
-                <Image src="/images/club-interior-vip.jpeg" alt="VIP Lounge Experience" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-              </div>
               <div className="bg-gradient-to-r from-gray-600 to-gray-700 p-6 text-center relative">
                 <div className="absolute top-2 right-2 bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold">
                   DEMO
@@ -103,10 +99,6 @@ export default function VIPMembershipDemo() {
 
             {/* Gold Tier */}
             <div className="bg-gradient-to-br from-yellow-800/80 to-yellow-900/40 backdrop-blur-sm border border-yellow-400/50 rounded-lg overflow-hidden hover:border-yellow-400/70 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(251,191,36,0.4)] relative">
-              <div className="relative h-48 overflow-hidden">
-                <Image src="/images/vip-blonde-martini.jpeg" alt="Premium VIP Service" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-yellow-900 to-transparent"></div>
-              </div>
               <div className="absolute top-4 right-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold">
                 DEMO
               </div>
@@ -156,15 +148,6 @@ export default function VIPMembershipDemo() {
 
             {/* Platinum Tier */}
             <div className="bg-gradient-to-br from-purple-800/80 to-purple-900/40 backdrop-blur-sm border border-purple-400/50 rounded-lg overflow-hidden hover:border-purple-400/70 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/vip-brunette-bar.jpeg"
-                  alt="Exclusive Platinum Experience"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900 to-transparent"></div>
-              </div>
               <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6 text-center relative">
                 <div className="absolute top-2 right-2 bg-yellow-600 text-black px-2 py-1 rounded text-xs font-bold">
                   DEMO

@@ -6,7 +6,6 @@ import { Users, Phone, Mail, Instagram, Facebook, Twitter, Share2, ExternalLink 
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
-import HelpChatbot from "@/components/help-chatbot"
 
 export default function SkinCabaretSite() {
   const [scrolled, setScrolled] = useState(false)
@@ -55,17 +54,17 @@ export default function SkinCabaretSite() {
   }
 
   const bachelorImages = [
-    "/images/bachelor-party-celebration.jpeg",
-    "/images/bachelor-party-table-entertainment.jpeg",
     "/images/bachelor-party-group-formal.jpeg",
+    "/images/bachelor-party-floor-experience.jpeg",
     "/images/bachelor-party-experience.jpeg",
-    "/images/bachelor-party-performance.jpeg",
+    "/images/bachelor-party-business-text.jpeg",
+    "/images/strip-club-neon-floor.jpeg",
   ]
 
   const vipImages = [
-    "/images/heritage-intimate-artistry.jpeg",
+    "/images/luxury-black-leather-interior.jpeg",
     "/images/vip-blonde-martini.jpeg",
-    "/images/heritage-pole-performance.jpeg",
+    "/images/curly-hair-red-lingerie.jpeg",
     "/images/vip-brunette-bar.jpeg",
     "/images/vip-neon-sign-broadway.jpeg",
     "/images/skin-choker.jpeg",
@@ -390,574 +389,384 @@ export default function SkinCabaretSite() {
             src="/images/hero-bdsm-red-lighting.jpeg"
             alt="Skin Cabaret Hero"
             fill
-            className="object-contain md:object-cover object-center"
+            className="object-cover md:object-cover object-contain"
             priority
           />
-          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
 
-        <div className="relative z-10 text-center px-4 mt-16 animate-on-scroll animate-delay-200">
-          <div className="animate-pulse-background rounded-lg px-8 py-4 border border-red-500/30">
-            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+        <div className="relative z-10 text-center px-4 mt-16 animate-on-scroll animate-delay-200 max-w-4xl mx-auto">
+          <div className="animate-pulse-background rounded-lg px-8 py-6 border border-red-500/30 mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] mb-4">
               Where Sophistication Meets Seduction
             </h1>
-          </div>
-        </div>
-      </section>
-
-      {/* Buttons Section - Below Hero */}
-      <div className="relative z-20 py-8 flex justify-center gap-6 animate-on-scroll animate-delay-300">
-        <button
-          onClick={() => setShowReservationPopup(true)}
-          className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
-        >
-          SCHEDULE FREE RIDE
-        </button>
-        <button
-          onClick={() => setAgeVerificationOpen(true)}
-          className="bg-black/80 hover:bg-black text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 border border-red-500/50"
-        >
-          21+ ONLY • NO ID NO ENTRY
-        </button>
-      </div>
-
-      {/* Special Events Section */}
-      <section id="events" className="py-20 px-4 animate-on-scroll">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-center mb-6 text-white drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-on-scroll">
-              SPECIAL EVENTS
-            </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Experience exclusive events and entertainment at Scottsdale's premier adult destination
+            <p className="text-lg sm:text-xl text-white/90 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] max-w-2xl mx-auto">
+              Experience Scottsdale's most exclusive adult entertainment venue featuring world-class performers, luxury
+              VIP experiences, and sophisticated atmosphere.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/silver-champagne-bucket.jpeg"
-                  alt="Premium Champagne Service"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/reserved-table-sign.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Premium Champagne
-                      <br />
-                      Service
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Exclusive champagne service with our most sophisticated entertainers, featuring personalized attention
-                and premium service in our private VIP areas.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/waste-management-phoenix-open.jpeg"
-                  alt="Waste Management Phoenix Open"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Waste Management
-                      <br />
-                      Phoenix Open
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Special events and entertainment during golf tournament week featuring exclusive Saturday night
-                entertainment with our most alluring entertainers.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/nbc-sunday-night-football.jpeg"
-                  alt="NBC Sunday Night Football"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Sunday Night
-                      <br />
-                      Football
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Watch the game with premium entertainment and drink specials featuring personalized attention and
-                premium service in our private VIP areas.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-performance.jpeg"
-                  alt="Premium Champagne Service"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Complete Bachelor
-                      <br />
-                      Party Packages
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Complete bachelor party packages available 7 days a week featuring exclusive entertainment and VIP
-                treatment for the groom and his crew.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="vip" className="py-16 sm:py-24 bg-gradient-to-b from-background to-card/30 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-5xl font-black text-center mb-12 sm:mb-16 text-secondary animate-glow hover:scale-105 transition-transform duration-300 animate-on-scroll">
-            VIP EXPERIENCES
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-100">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/vip-blonde-martini.jpeg"
-                  alt="VIP Martini Service"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">VIP MARTINI SERVICE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Indulge in our signature martini service featuring premium spirits and personalized attention from our
-                  sophisticated hostesses. Each drink is crafted to perfection while you enjoy intimate conversation and
-                  exclusive entertainment in our private VIP areas.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/entertainer-flowing-hair.jpeg"
-                  alt="Artistic Silhouette"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">VIP BAR EXPERIENCE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Experience our exclusive bar service where skilled bartenders create custom cocktails while you enjoy
-                  the company of our most alluring entertainers. Our VIP bar offers an intimate setting with premium
-                  liquors and personalized service that exceeds expectations.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/red-carpet-velvet-ropes.jpeg"
-                  alt="VIP Entrance"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">VIP ENTRANCE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Step through our exclusive VIP entrance and into a world of luxury and sophistication. The red carpet
-                  treatment begins the moment you arrive, with dedicated staff ensuring your evening starts with the
-                  prestige and attention you deserve.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-400">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/entertainer-pole-dance-blue.jpeg"
-                  alt="Artistic Silhouette"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">ARTISTIC SILHOUETTE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  The power of artistic silhouette in our heritage performances creates dramatic visual narratives that
-                  transcend traditional entertainment boundaries. Our performers use light, shadow, and form to tell
-                  stories that captivate the imagination and stir the soul. This artistic approach represents our
-                  commitment to elevating adult entertainment to the level of fine art.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-500">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/red-leather.jpeg"
-                  alt="Elegant Artistry"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">ELEGANT ARTISTRY</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Elegant artistry defines every aspect of our heritage entertainment philosophy, from the graceful
-                  movements of our performers to the sophisticated atmosphere we maintain. Our commitment to elegance
-                  ensures that every guest experiences the refined luxury and artistic performance that has become
-                  synonymous with the Skin Cabaret name throughout the Scottsdale entertainment community.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-600">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/luxury-cabaret-interior.png"
-                  alt="Luxury Interior Heritage"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">LUXURY INTERIOR</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Experience the luxurious interior design that defines Skin Cabaret's sophisticated atmosphere. Our
-                  meticulously crafted spaces feature premium red leather seating, elegant lighting, and refined décor
-                  that creates an intimate yet upscale environment. Every detail of our interior design reflects our
-                  commitment to providing guests with a truly premium adult entertainment experience in Scottsdale's
-                  most sophisticated venue.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="bachelor" className="py-16 sm:py-24 bg-gradient-to-b from-card/30 to-background relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-5xl font-black text-center mb-12 sm:mb-16 text-secondary animate-glow hover:scale-105 transition-transform duration-300 animate-on-scroll">
-            BACHELOR PARTY HEADQUARTERS
-          </h2>
-
-          <div className="text-center mb-16 animate-on-scroll">
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              We specialize in creating unforgettable bachelor party experiences that the groom and his crew will talk
-              about for years. Our DJ works with your group to create custom entertainment that puts the bachelor in the
-              spotlight.
-            </p>
-            <p className="text-lg text-red-400 mt-6 font-semibold">
-              One of only 2 licensed strip clubs in Scottsdale (Skin Cabaret & sister club Bones Cabaret)
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-celebration.jpeg"
-                  alt="Premium Champagne Service"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Premium Champagne
-                      <br />
-                      Service
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Premium champagne service with exclusive Saturday night entertainment featuring personalized attention
-                and luxury bottle service.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-table-entertainment.jpeg"
-                  alt="Special Events Entertainment"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Special Events &
-                      <br />
-                      Entertainment
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Special events and entertainment during golf tournament week featuring custom performances and VIP
-                treatment.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-group-formal.jpeg"
-                  alt="Premium Entertainment"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Premium Game
-                      <br />
-                      Entertainment
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Watch the game with premium entertainment and drink specials featuring personalized attention and
-                premium service in our private VIP areas.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-experience.jpeg"
-                  alt="Bachelor Party Packages"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Complete Bachelor
-                      <br />
-                      Party Packages
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2">
-                Complete bachelor party packages available 7 days a week featuring exclusive entertainment and VIP
-                treatment for the groom and his crew.
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center animate-on-scroll">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
             <button
               onClick={() => setShowReservationPopup(true)}
-              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 hover:scale-105 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
+              className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
+            >
+              SCHEDULE FREE RIDE
+            </button>
+            <button
+              onClick={() => setAgeVerificationOpen(true)}
+              className="bg-black/80 hover:bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 border border-red-500/50"
+            >
+              21+ ONLY • NO ID NO ENTRY
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Special Events Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
+            SPECIAL EVENTS
+          </h2>
+          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
+            Exclusive events and premium entertainment experiences
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8 max-w-6xl mx-auto">
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-100 w-full sm:w-auto">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/reserved-table-sign.jpeg"
+                  alt="Premium Table Service"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Premium Table
+                      <br />
+                      Service
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Exclusive table service with our most sophisticated entertainers, featuring personalized attention and
+                premium service in our private VIP areas.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-200 w-full sm:w-auto">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/men-vip-table-entertainment.jpeg"
+                  alt="VIP Table Entertainment"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      VIP Table
+                      <br />
+                      Entertainment
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Exclusive VIP table entertainment with premium bottle service and personalized attention from our most
+                captivating performers.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-300 w-full sm:w-auto">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/bdsm-red-lighting-scene.jpeg"
+                  alt="Exclusive Private Experiences"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Private
+                      <br />
+                      Experiences
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Exclusive private experiences with sophisticated entertainment in our most intimate and luxurious
+                settings.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-400 w-full sm:w-auto">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/intimate-blonde-experience.jpeg"
+                  alt="Intimate VIP Experiences"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Intimate VIP
+                      <br />
+                      Experiences
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Ultimate intimate VIP experiences featuring exclusive entertainment and personalized attention in our
+                most private areas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bachelor Party Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
+            BACHELOR PARTY HEADQUARTERS
+          </h2>
+          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
+            Scottsdale's premier destination for unforgettable bachelor party experiences
+          </p>
+
+          <div className="mb-16 animate-on-scroll animate-delay-100">
+            <div className="relative max-w-4xl mx-auto rounded-lg overflow-hidden shadow-[0_0_30px_rgba(239,68,68,0.3)]">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-64 sm:h-80 object-cover"
+                poster="/images/bachelor-party-group-formal.jpeg"
+              >
+                <source src="/videos/join-us-recruitment.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="absolute bottom-4 right-4 bg-black/60 rounded px-2 py-1 backdrop-blur-sm">
+                <Image
+                  src="/images/skin-logo-red-silhouette.png"
+                  alt="Skin Cabaret"
+                  width={30}
+                  height={30}
+                  className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-6 left-6 text-white">
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">Experience the Ultimate Bachelor Party</h3>
+                <p className="text-sm sm:text-base text-white/90">Exclusive entertainment and VIP treatment</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center max-w-7xl mx-auto">
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200 w-full max-w-sm">
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src="/images/men-vip-table-entertainment.jpeg"
+                  alt="VIP Table Entertainment"
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-110"
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-white mb-3">VIP TABLE EXPERIENCE</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Sophisticated group experiences designed for the groom and his crew. Premium bottle service, exclusive
+                  seating, and personalized entertainment create the perfect celebration atmosphere.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300 w-full max-w-sm">
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src="/images/bachelor-party-floor-experience.jpeg"
+                  alt="Intimate Entertainment Experience"
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-110"
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-white mb-3">INTIMATE ENTERTAINMENT</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Exclusive intimate entertainment experiences featuring our most talented performers providing
+                  personalized attention and unforgettable moments for the bachelor.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-400 w-full max-w-sm">
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src="/images/bachelor-party-experience.jpeg"
+                  alt="Premium Bachelor Experience"
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-110"
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-white mb-3">PREMIUM EXPERIENCE</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Mind-blowing experiences with luxury amenities, top-shelf spirits, and exclusive access to our most
+                  sophisticated entertainment offerings.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-500 w-full max-w-sm">
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src="/images/bachelor-party-business-text.jpeg"
+                  alt="Professional Party Planning"
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-110"
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-white mb-3">PROFESSIONAL PLANNING</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Dedicated event coordinators ensure every detail is perfect. From arrival to departure, we handle all
+                  arrangements for an unforgettable bachelor party celebration.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 animate-on-scroll animate-delay-600">
+            <button
+              onClick={() => setShowReservationPopup(true)}
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
             >
               BOOK YOUR BACHELOR PARTY
             </button>
@@ -965,155 +774,95 @@ export default function SkinCabaretSite() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-24 bg-gradient-to-b from-card/30 to-background relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-5xl font-black text-center mb-12 sm:mb-16 text-secondary animate-glow hover:scale-105 transition-transform duration-300 animate-on-scroll">
-            HERITAGE & ARTISTRY
+      {/* VIP & Heritage Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
+            VIP & HERITAGE
           </h2>
+          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
+            Experience the ultimate in luxury and sophistication
+          </p>
 
-          <div className="text-center mb-12 animate-on-scroll">
-            <p className="text-xl text-white/90 max-w-4xl mx-auto leading-relaxed">
-              Celebrating over 15 years of sophisticated entertainment excellence in Scottsdale. Our heritage represents
-              a commitment to artistic performance, professional standards, and the timeless art of adult entertainment.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-100">
-              <div className="relative h-64 overflow-hidden">
+          {/* Added VIP section cards with proper responsive grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200">
+              <div className="relative h-48 overflow-hidden">
                 <Image
-                  src="/images/heritage-pole-performance.jpeg"
-                  alt="Heritage Performance Art"
+                  src="/images/pole-dancer-floor-red-lighting.jpeg"
+                  alt="VIP Sensual Experience"
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">HERITAGE PERFORMANCE ART</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Witness the artistry and skill of our heritage performers, showcasing the sophisticated entertainment
-                  that has made Skin Cabaret legendary for over 15 years. Our performers combine athletic prowess with
-                  artistic expression, creating mesmerizing displays of grace, strength, and sensuality. Each
-                  performance is a celebration of the human form and the power of dance to captivate and inspire.
+                <h3 className="text-lg font-bold text-white mb-3">VIP SENSUAL EXPERIENCE</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Exclusive intimate experiences with our most sophisticated entertainers, featuring personalized
+                  attention and premium service in our private VIP areas.
                 </p>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/heritage-intimate-artistry.jpeg"
-                  alt="Intimate Artistry"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">INTIMATE ARTISTRY</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Experience the intimate artistry that defines our heritage approach to adult entertainment. Our
-                  performers master the delicate balance between sensuality and sophistication, creating deeply personal
-                  connections through their craft. This intimate artistry represents the core of what has made Skin
-                  Cabaret a destination for discerning guests seeking authentic, meaningful entertainment experiences.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/skin-choker.jpeg"
-                  alt="Heritage Sophistication"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">HERITAGE SOPHISTICATION</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Classic sophistication meets modern allure in our heritage entertainment experiences, representing the
-                  timeless elegance that has defined Skin Cabaret since our founding. Our heritage performers embody the
-                  perfect balance of classic beauty and contemporary sensuality, delivering performances that honor our
-                  rich tradition while embracing modern artistic expression.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-400">
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src="/images/vip-brunette-bar.jpeg"
-                  alt="Artistic Silhouette"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">ARTISTIC SILHOUETTE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  The power of artistic silhouette in our heritage performances creates dramatic visual narratives that
-                  transcend traditional entertainment boundaries. Our performers use light, shadow, and form to tell
-                  stories that captivate the imagination and stir the soul. This artistic approach represents our
-                  commitment to elevating adult entertainment to the level of fine art.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-500">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300">
+              <div className="relative h-48 overflow-hidden">
                 <Image
                   src="/images/vip-blonde-martini.jpeg"
-                  alt="Elegant Artistry"
+                  alt="VIP Martini Service"
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">ELEGANT ARTISTRY</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Elegant artistry defines every aspect of our heritage entertainment philosophy, from the graceful
-                  movements of our performers to the sophisticated atmosphere we maintain. Our commitment to elegance
-                  ensures that every guest experiences the refined luxury and artistic performance that has become
-                  synonymous with the Skin Cabaret name throughout the Scottsdale entertainment community.
+                <h3 className="text-lg font-bold text-white mb-3">VIP MARTINI SERVICE</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Sophisticated martini service with our most elegant entertainers in an atmosphere of refined luxury
+                  and complete discretion.
                 </p>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm border border-red-500/30 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-600">
-              <div className="relative h-64 overflow-hidden">
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-600">
+              <div className="relative h-48 overflow-hidden">
                 <Image
-                  src="/images/luxury-cabaret-interior.png"
-                  alt="Luxury Interior Heritage"
+                  src="/images/luxury-black-leather-seating.jpeg"
+                  alt="VIP Luxury Seating"
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 opacity-60">
-                  <Image src="/images/skin-logo-red-silhouette.png" alt="Skin Cabaret" width={24} height={24} />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3">LUXURY INTERIOR</h3>
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                  Experience the luxurious interior design that defines Skin Cabaret's sophisticated atmosphere. Our
-                  meticulously crafted spaces feature premium red leather seating, elegant lighting, and refined décor
-                  that creates an intimate yet upscale environment. Every detail of our interior design reflects our
-                  commitment to providing guests with a truly premium adult entertainment experience in Scottsdale's
-                  most sophisticated venue.
+                <h3 className="text-lg font-bold text-white mb-3">VIP LUXURY SEATING</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Experience ultimate comfort in our luxury leather seating areas with premium bottle service and
+                  exclusive entertainment.
                 </p>
               </div>
             </div>
@@ -1399,6 +1148,22 @@ export default function SkinCabaretSite() {
         </div>
       </section>
 
+      <div className="mb-16 animate-on-scroll animate-delay-150">
+        <div className="text-center">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full max-w-4xl mx-auto rounded-lg shadow-[0_0_30px_rgba(239,68,68,0.3)]"
+            poster="/images/recruitment-poster.jpeg"
+          >
+            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-rNIZvRIi8EsuVWIjfHu1stPEMTFy6F.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
       <section id="hiring" className="py-20 bg-gradient-to-b from-black to-red-900/20 relative">
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="text-center mb-16 animate-on-scroll">
@@ -1411,8 +1176,8 @@ export default function SkinCabaretSite() {
             </p>
           </div>
 
-          {/* Entertainer Positions */}
-          <div className="mb-16 animate-on-scroll animate-delay-100">
+          {/* Staff Positions */}
+          <div className="mb-16 animate-on-scroll animate-delay-200">
             <h3 className="text-3xl font-bold text-white mb-8 text-center drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]">
               ENTERTAINER POSITIONS
             </h3>
@@ -1974,15 +1739,7 @@ export default function SkinCabaretSite() {
             <div className="flex flex-col md:flex-row justify-between items-center text-white/60 text-sm">
               <div className="mb-2 md:mb-0">© 2025-2026 Skin Cabaret. All rights reserved.</div>
               <div className="text-white/40">
-                Website design by{" "}
-                <a
-                  href="https://glyphlock.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-red-400 transition-colors"
-                >
-                  Glyphlock LLC
-                </a>
+                Website design by <span className="text-white/60">Glyphlock LLC</span>
               </div>
             </div>
           </div>
@@ -2269,7 +2026,6 @@ export default function SkinCabaretSite() {
           ↑
         </button>
       )}
-      <HelpChatbot />
     </div>
   )
 }
