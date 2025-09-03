@@ -1,8 +1,10 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Users, Phone, Mail, Instagram, Facebook, Twitter, Share2, ExternalLink } from "lucide-react"
+import { Phone, Mail, Instagram, Facebook, Twitter } from "lucide-react"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
@@ -12,7 +14,7 @@ export default function SkinCabaretSite() {
   const [activeTab, setActiveTab] = useState("home")
   const [reservationPopup, setReservationPopup] = useState<{
     isOpen: boolean
-    type: "bachelor" | "vip" | "table" | "champagne" | "wm" | "football"
+    type: "bachelor" | "vip" | "table" | "champagne"
   }>({
     isOpen: false,
     type: "bachelor",
@@ -31,6 +33,12 @@ export default function SkinCabaretSite() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [galleryImages, setGalleryImages] = useState<string[]>([])
   const [showBackToTop, setShowBackToTop] = useState(false)
+
+  const [chatbotOpen, setChatbotOpen] = useState(false)
+  const [chatMessages, setChatMessages] = useState([
+    { type: "bot", message: "Welcome to Skin Cabaret! How can I help you today?" },
+  ])
+  const [currentMessage, setCurrentMessage] = useState("")
 
   const openImageGallery = (images: string[], startIndex = 0) => {
     setGalleryImages(images)
@@ -122,7 +130,7 @@ export default function SkinCabaretSite() {
     return () => observer.disconnect()
   }, [])
 
-  const openReservation = (type: "bachelor" | "vip" | "table" | "champagne" | "wm" | "football") => {
+  const openReservation = (type: "bachelor" | "vip" | "table" | "champagne") => {
     setReservationPopup({ isOpen: true, type })
   }
 
@@ -228,6 +236,48 @@ export default function SkinCabaretSite() {
     }
 
     window.open(shareUrl, "_blank", "width=600,height=400")
+  }
+
+  const handleChatSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!currentMessage.trim()) return
+
+    setChatMessages((prev) => [...prev, { type: "user", message: currentMessage }])
+
+    // Simple bot responses based on keywords
+    setTimeout(() => {
+      let botResponse = "I'd be happy to help! For specific inquiries, please call us at (480) 425-7546."
+
+      if (currentMessage.toLowerCase().includes("bachelor")) {
+        botResponse =
+          "Our bachelor party packages include VIP arrival, single file lap dances, interactive entertainment, and DJ services. Would you like to make a reservation?"
+      } else if (currentMessage.toLowerCase().includes("vip")) {
+        botResponse =
+          "We offer exclusive VIP experiences with luxury seating, premium bottle service, and private entertainment. Shall I help you book a VIP table?"
+      } else if (currentMessage.toLowerCase().includes("price") || currentMessage.toLowerCase().includes("cost")) {
+        botResponse =
+          "Pricing varies by package and group size. Please call (480) 425-7546 for current rates and availability."
+      } else if (currentMessage.toLowerCase().includes("hours") || currentMessage.toLowerCase().includes("open")) {
+        botResponse = "We're open Tuesday-Saturday from 7 PM to 2 AM. Closed Sunday and Monday."
+      } else if (
+        currentMessage.toLowerCase().includes("location") ||
+        currentMessage.toLowerCase().includes("address")
+      ) {
+        botResponse =
+          "We're located in Scottsdale, Arizona. Call (480) 425-7546 for exact directions and parking information."
+      }
+
+      setChatMessages((prev) => [...prev, { type: "bot", message: botResponse }])
+    }, 1000)
+
+    setCurrentMessage("")
+  }
+
+  const quickResponses = ["Bachelor Party Info", "VIP Reservations", "Hours & Location", "Pricing Information"]
+
+  const handleQuickResponse = (response: string) => {
+    setCurrentMessage(response)
+    handleChatSubmit({ preventDefault: () => {} } as React.FormEvent)
   }
 
   return (
@@ -424,7 +474,7 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Special Events Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
+      <section id="events" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
             SPECIAL EVENTS
@@ -433,8 +483,8 @@ export default function SkinCabaretSite() {
             Exclusive events and premium entertainment experiences
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-8 max-w-6xl mx-auto">
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-100 w-full sm:w-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
               <div className="relative mb-4 flex justify-center">
                 <Image
                   src="/images/reserved-table-sign.jpeg"
@@ -478,11 +528,11 @@ export default function SkinCabaretSite() {
               </p>
             </div>
 
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-200 w-full sm:w-auto">
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
               <div className="relative mb-4 flex justify-center">
                 <Image
-                  src="/images/men-vip-table-entertainment.jpeg"
-                  alt="VIP Table Entertainment"
+                  src="/images/red-carpet-entrance.jpeg"
+                  alt="VIP Treatment"
                   width={280}
                   height={180}
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
@@ -509,24 +559,68 @@ export default function SkinCabaretSite() {
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
                   <div className="absolute inset-0 flex items-center justify-center px-6">
                     <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      VIP Table
+                      VIP
                       <br />
-                      Entertainment
+                      Treatment
                     </h3>
                   </div>
                 </div>
               </div>
               <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Exclusive VIP table entertainment with premium bottle service and personalized attention from our most
-                captivating performers.
+                Experience the ultimate VIP treatment with red carpet service, exclusive access, and personalized
+                attention from arrival to departure.
               </p>
             </div>
 
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-300 w-full sm:w-auto">
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
               <div className="relative mb-4 flex justify-center">
                 <Image
-                  src="/images/bdsm-red-lighting-scene.jpeg"
-                  alt="Exclusive Private Experiences"
+                  src="/images/silver-champagne-bucket.jpeg"
+                  alt="Champagne Saturdays"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Champagne
+                      <br />
+                      Saturdays
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Celebrate Saturday nights with premium champagne service, featuring top-shelf bottles and elegant
+                presentation in our luxury atmosphere.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/heritage-intimate-artistry.jpeg"
+                  alt="Private Experiences"
                   width={280}
                   height={180}
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
@@ -562,15 +656,29 @@ export default function SkinCabaretSite() {
               </div>
               <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
                 Exclusive private experiences with sophisticated entertainment in our most intimate and luxurious
-                settings.
+                settings with personalized attention.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-400 w-full sm:w-auto">
+      <section id="bachelor" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/30 to-black">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
+            BACHELOR PARTY EXPERIENCE
+          </h2>
+          <p className="text-gray-300 text-lg mb-12 max-w-4xl mx-auto animate-on-scroll animate-delay-100">
+            The ultimate bachelor party destination featuring exclusive entertainment, custom DJ experiences, and
+            unforgettable group activities
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
               <div className="relative mb-4 flex justify-center">
                 <Image
-                  src="/images/intimate-blonde-experience.jpeg"
-                  alt="Intimate VIP Experiences"
+                  src="/images/bachelor-party-business-text.jpeg"
+                  alt="VIP Transportation Experience"
                   width={280}
                   height={180}
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
@@ -596,196 +704,382 @@ export default function SkinCabaretSite() {
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
                   <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-base font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Intimate VIP
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      VIP Arrival
                       <br />
-                      Experiences
+                      Experience
                     </h3>
                   </div>
                 </div>
               </div>
               <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Ultimate intimate VIP experiences featuring exclusive entertainment and personalized attention in our
-                most private areas.
+                Premium transportation and VIP arrival experience with red carpet treatment and exclusive entrance to
+                set the tone for an unforgettable night.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/bachelor-party-experience.jpeg"
+                  alt="Single File Lap Dance Experience"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Single File
+                      <br />
+                      Experience
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Exclusive single file lap dance experience where the groom and party enjoy personalized entertainment
+                from our most captivating performers in sequence.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/bachelor-party-floor-experience.jpeg"
+                  alt="Interactive Group Activities"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Interactive
+                      <br />
+                      Activities
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Hilarious interactive group activities including playful challenges and entertainment games that create
+                unforgettable memories for the entire party.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/men-vip-table-entertainment.jpeg"
+                  alt="DJ Entertainment & Groom Spotlight"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      DJ & Groom
+                      <br />
+                      Spotlight
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Custom DJ entertainment with hilarious commentary and jokes, plus the groom's special spotlight moment
+                with fully clothed dancing and celebration.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 rounded-lg p-8 max-w-4xl mx-auto animate-on-scroll animate-delay-500">
+            <h3 className="text-2xl font-bold text-white mb-6">Complete Bachelor Party Package</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+              <div>
+                <h4 className="text-lg font-bold text-red-400 mb-3">What's Included:</h4>
+                <ul className="text-gray-300 space-y-2">
+                  <li>• VIP arrival and red carpet treatment</li>
+                  <li>• Premium bottle service and reserved seating</li>
+                  <li>• Single file lap dance experience</li>
+                  <li>• Interactive group entertainment activities</li>
+                  <li>• Custom DJ with personalized music and comedy</li>
+                  <li>• Groom's special spotlight celebration</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-red-400 mb-3">The Experience:</h4>
+                <p className="text-gray-300 leading-relaxed">
+                  From the moment you arrive with VIP transportation to the final toast, our bachelor party experience
+                  is designed to create legendary memories. Our professional entertainers and DJ work together to ensure
+                  every moment is filled with laughter, excitement, and unforgettable entertainment that the groom and
+                  entire party will remember forever.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sports Events Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
+            SPORTS EVENTS
+          </h2>
+          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
+            Watch the biggest games with premium entertainment, VIP service, and exclusive viewing experiences
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/nbc-sunday-night-football.jpeg"
+                  alt="Sunday Night Football"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Sunday Night
+                      <br />
+                      Football
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Experience Sunday Night Football with premium seating, VIP service, and exclusive entertainment during
+                every game.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/waste-management-phoenix-open.jpeg"
+                  alt="Waste Management Phoenix Open"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Phoenix Open
+                      <br />
+                      Weekend
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Join us for the legendary Waste Management Phoenix Open weekend with special events and exclusive
+                parties.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/nba-playoffs.png"
+                  alt="NBA Playoffs"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      NBA
+                      <br />
+                      Playoffs
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Experience the intensity of NBA Playoffs with premium viewing, VIP table service, and exclusive
+                entertainment.
+              </p>
+            </div>
+
+            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
+              <div className="relative mb-4 flex justify-center">
+                <Image
+                  src="/images/hbo-boxing-ppv.jpeg"
+                  alt="HBO Boxing Pay-Per-View"
+                  width={280}
+                  height={180}
+                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                  quality={95}
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={25}
+                    height={25}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
+                <div className="relative w-72 h-44 overflow-hidden mx-auto">
+                  <Image
+                    src="/images/ornate-red-gold-frame.jpeg"
+                    alt="Elegant Frame"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center px-6">
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
+                      Boxing
+                      <br />
+                      Pay-Per-View
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
+                Watch the biggest boxing matches and UFC events with premium seating, VIP service, and exclusive
+                entertainment.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Bachelor Party Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
-            BACHELOR PARTY HEADQUARTERS
-          </h2>
-          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
-            Scottsdale's premier destination for unforgettable bachelor party experiences
-          </p>
-
-          <div className="mb-16 animate-on-scroll animate-delay-100">
-            <div className="relative max-w-4xl mx-auto rounded-lg overflow-hidden shadow-[0_0_30px_rgba(239,68,68,0.3)]">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-64 sm:h-80 object-cover"
-                poster="/images/bachelor-party-group-formal.jpeg"
-              >
-                <source src="/videos/join-us-recruitment.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div className="absolute bottom-4 right-4 bg-black/60 rounded px-2 py-1 backdrop-blur-sm">
-                <Image
-                  src="/images/skin-logo-red-silhouette.png"
-                  alt="Skin Cabaret"
-                  width={30}
-                  height={30}
-                  className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-xl sm:text-2xl font-bold mb-2">Experience the Ultimate Bachelor Party</h3>
-                <p className="text-sm sm:text-base text-white/90">Exclusive entertainment and VIP treatment</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center max-w-7xl mx-auto">
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200 w-full max-w-sm">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/men-vip-table-entertainment.jpeg"
-                  alt="VIP Table Entertainment"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">VIP TABLE EXPERIENCE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Sophisticated group experiences designed for the groom and his crew. Premium bottle service, exclusive
-                  seating, and personalized entertainment create the perfect celebration atmosphere.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300 w-full max-w-sm">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/bachelor-party-floor-experience.jpeg"
-                  alt="Intimate Entertainment Experience"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">INTIMATE ENTERTAINMENT</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Exclusive intimate entertainment experiences featuring our most talented performers providing
-                  personalized attention and unforgettable moments for the bachelor.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-400 w-full max-w-sm">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/bachelor-party-experience.jpeg"
-                  alt="Premium Bachelor Experience"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">PREMIUM EXPERIENCE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Mind-blowing experiences with luxury amenities, top-shelf spirits, and exclusive access to our most
-                  sophisticated entertainment offerings.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-500 w-full max-w-sm">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/bachelor-party-business-text.jpeg"
-                  alt="Professional Party Planning"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">PROFESSIONAL PLANNING</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Dedicated event coordinators ensure every detail is perfect. From arrival to departure, we handle all
-                  arrangements for an unforgettable bachelor party celebration.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 animate-on-scroll animate-delay-600">
-            <button
-              onClick={() => setShowReservationPopup(true)}
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
-            >
-              BOOK YOUR BACHELOR PARTY
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* VIP & Heritage Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
+      <section id="vip" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
             VIP & HERITAGE
           </h2>
           <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
-            Experience the ultimate in luxury and sophistication
+            Experience the ultimate in luxury and sophisticated entertainment
           </p>
 
-          {/* Added VIP section cards with proper responsive grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto">
             <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200">
               <div className="relative h-48 overflow-hidden">
                 <Image
@@ -807,8 +1101,7 @@ export default function SkinCabaretSite() {
               <div className="p-6">
                 <h3 className="text-lg font-bold text-white mb-3">VIP SENSUAL EXPERIENCE</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Exclusive intimate experiences with our most sophisticated entertainers, featuring personalized
-                  attention and premium service in our private VIP areas.
+                  Exclusive intimate experiences with our most sophisticated entertainers in luxurious private settings.
                 </p>
               </div>
             </div>
@@ -816,8 +1109,8 @@ export default function SkinCabaretSite() {
             <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300">
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src="/images/vip-blonde-martini.jpeg"
-                  alt="VIP Martini Service"
+                  src="/images/heritage-refined-aesthetic.jpeg"
+                  alt="Heritage Refined Aesthetic"
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
@@ -832,15 +1125,41 @@ export default function SkinCabaretSite() {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">VIP MARTINI SERVICE</h3>
+                <h3 className="text-lg font-bold text-white mb-3">HERITAGE REFINED AESTHETIC</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Sophisticated martini service with our most elegant entertainers in an atmosphere of refined luxury
-                  and complete discretion.
+                  Sophisticated aesthetic experiences showcasing the refined artistry that defines our heritage of
+                  excellence.
                 </p>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-600">
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-400">
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src="/images/entertainer-flowing-hair.jpeg"
+                  alt="Artistic Performance"
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-110"
+                />
+                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  <Image
+                    src="/images/skin-logo-red-silhouette.png"
+                    alt="Skin Cabaret"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-white mb-3">ARTISTIC PERFORMANCE</h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Witness breathtaking artistic performances featuring flowing movement and dramatic lighting effects.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-500">
               <div className="relative h-48 overflow-hidden">
                 <Image
                   src="/images/luxury-black-leather-seating.jpeg"
@@ -879,9 +1198,16 @@ export default function SkinCabaretSite() {
 
           <div className="text-center mb-8 animate-on-scroll animate-delay-100">
             <div className="flex justify-center items-center gap-2 mb-4">
+              <Image
+                src="/images/skin-logo-red-silhouette.png"
+                alt="Skin Cabaret"
+                width={30}
+                height={30}
+                className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+              />
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-white text-2xl">
+                  <span key={i} className="text-red-400 text-2xl">
                     ★
                   </span>
                 ))}
@@ -895,16 +1221,18 @@ export default function SkinCabaretSite() {
             <div className="flex animate-scroll-reviews gap-8 mb-8">
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face"
-                    alt="Michael R."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
                     <h4 className="text-white font-bold">Michael R. - Phoenix</h4>
-                    <div className="flex text-white text-sm">★★★★★ • Google Review</div>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
@@ -915,182 +1243,200 @@ export default function SkinCabaretSite() {
 
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1494790108755-2616c6106db4?w=60&h=60&fit=crop&crop=face"
-                    alt="Sarah T."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
-                  <div>
-                    <h4 className="text-white font-bold">Sarah T. - Denver</h4>
-                    <div className="flex text-white text-sm">★★★★★ • skincabaret.com</div>
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
                   </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Brought my husband here for his birthday and we both had an amazing time! The performers were
-                  incredibly talented and the VIP service was exceptional."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Anonymous"
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4 bg-red-600 p-2"
-                  />
-                  <div>
-                    <h4 className="text-white font-bold">Marcus J. - Los Angeles</h4>
-                    <div className="flex text-white text-sm">★★★★★ • skincabaret.com</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Flew in from LA for a business trip and this was the highlight! Sophisticated atmosphere, beautiful
-                  performers, and world-class service. Will definitely be back."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=60&h=60&fit=crop&crop=face"
-                    alt="James K."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
                   <div>
                     <h4 className="text-white font-bold">James K. - Chicago</h4>
-                    <div className="flex text-white text-sm">★★★★★ • Yelp Review</div>
+                    <div className="flex text-red-400 text-sm">★★★★☆ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
-                  "Classy establishment with beautiful performers. Great for business entertainment or special
-                  celebrations. The VIP packages are definitely worth it."
+                  "Solid establishment with beautiful performers. Parking was a bit challenging but the valet service
+                  helped. The VIP packages are worth it if you're celebrating something special."
                 </p>
               </div>
 
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&h=60&fit=crop&crop=face"
-                    alt="Robert M."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
                     <h4 className="text-white font-bold">Robert M. - Atlanta</h4>
-                    <div className="flex text-white text-sm">★★★★★ • Google Review</div>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
-                  "Outstanding venue! Professional atmosphere, talented entertainers, and excellent service. Perfect for
-                  bachelor parties and corporate events."
+                  "Business trip to Phoenix and colleagues recommended this place. Outstanding venue! Professional
+                  atmosphere, talented entertainers, and excellent service. Perfect for corporate entertainment."
                 </p>
               </div>
 
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Anonymous"
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4 bg-red-600 p-2"
-                  />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
-                    <h4 className="text-white font-bold">Antonio R. - Miami</h4>
-                    <div className="flex text-white text-sm">★★★★★ • skincabaret.com</div>
+                    <h4 className="text-white font-bold">Tyler B. - Flagstaff</h4>
+                    <div className="flex text-red-400 text-sm">★★★★☆ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
-                  "Been to clubs all over Miami and this place sets the standard! The heritage and class they bring to
-                  adult entertainment is unmatched. Truly bringing that old skin back!"
+                  "Drove down from Flagstaff for my 30th birthday. Great experience overall! The DJ was hilarious and
+                  kept the energy up all night. Only complaint is the drinks are a bit pricey, but expected for the
+                  quality."
                 </p>
               </div>
 
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=60&h=60&fit=crop&crop=face"
-                    alt="Carlos M."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
                     <h4 className="text-white font-bold">Carlos M. - Las Vegas</h4>
-                    <div className="flex text-white text-sm">★★★★★ • Yelp Review</div>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
-                  "Traveled from Vegas for a friend's bachelor party. This place exceeded all expectations! The VIP
-                  experience was incredible and the performers were absolutely stunning."
+                  "I've been to clubs all over Vegas and this place holds its own! The bachelor party package was
+                  incredible and the performers were absolutely stunning. Worth the trip from Nevada!"
                 </p>
               </div>
 
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face"
-                    alt="David L."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
                     <h4 className="text-white font-bold">David L. - San Diego</h4>
-                    <div className="flex text-white text-sm">★★★★★ • Google Review</div>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
                   "VIP treatment from start to finish. Clean facility, professional dancers, and excellent customer
-                  service. Worth every penny for a special night out."
-                </p>
-              </div>
-
-              {/* Duplicate set for seamless scrolling */}
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face"
-                    alt="Michael R."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
-                  <div>
-                    <h4 className="text-white font-bold">Michael R. - Phoenix</h4>
-                    <div className="flex text-white text-sm">★★★★★ • Google Review</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Best bachelor party venue in Scottsdale! Professional staff, amazing atmosphere, and the
-                  entertainment was top-notch. Highly recommend for special occasions."
+                  service. The champagne service was a nice touch. Worth every penny for a special night out."
                 </p>
               </div>
 
               <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
                 <div className="flex items-center mb-4">
-                  <Image
-                    src="https://images.unsplash.com/photo-1494790108755-2616c6106db4?w=60&h=60&fit=crop&crop=face"
-                    alt="Sarah T."
-                    width={50}
-                    height={50}
-                    className="rounded-full mr-4"
-                  />
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
-                    <h4 className="text-white font-bold">Sarah T. - Denver</h4>
-                    <div className="flex text-white text-sm">★★★★★ • skincabaret.com</div>
+                    <h4 className="text-white font-bold">Alex P. - Mesa</h4>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
                   </div>
                 </div>
                 <p className="text-white/90 text-sm">
-                  "Brought my husband here for his birthday and we both had an amazing time! The performers were
-                  incredibly talented and the VIP service was exceptional."
+                  "Local here and this is my go-to spot for special occasions. The staff knows how to treat regulars
+                  right. Always clean, always professional, always a good time. Highly recommend the table service!"
+                </p>
+              </div>
+
+              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold">Marcus T. - Tempe</h4>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
+                  </div>
+                </div>
+                <p className="text-white/90 text-sm">
+                  "Brought my business partners here for a client dinner. Impressed everyone! The service was impeccable
+                  and the atmosphere was exactly what we needed for a successful evening."
+                </p>
+              </div>
+
+              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold">Kevin R. - Glendale</h4>
+                    <div className="flex text-red-400 text-sm">★★★★☆ • Skin Website</div>
+                  </div>
+                </div>
+                <p className="text-white/90 text-sm">
+                  "Great spot for a guys night out. The entertainment is top-notch and the staff is very professional.
+                  Security makes you feel safe and the drinks are strong. Will definitely be back!"
+                </p>
+              </div>
+
+              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
+                    <Image
+                      src="/images/skin-logo-red-silhouette.png"
+                      alt="Skin"
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold">Brandon M. - Chandler</h4>
+                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
+                  </div>
+                </div>
+                <p className="text-white/90 text-sm">
+                  "Celebrated my promotion here with coworkers. The VIP experience was incredible and the performers
+                  were absolutely stunning. Professional atmosphere with world-class entertainment. Highly recommend!"
                 </p>
               </div>
             </div>
@@ -1164,7 +1510,8 @@ export default function SkinCabaretSite() {
         </div>
       </div>
 
-      <section id="hiring" className="py-20 bg-gradient-to-b from-black to-red-900/20 relative">
+      {/* Hiring Section */}
+      <section id="hiring" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="text-center mb-16 animate-on-scroll">
             <h2 className="text-5xl font-black text-white mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
@@ -1473,7 +1820,7 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-b from-black via-red-900/10 to-black">
+      <section id="contact" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-900/10 to-black">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-black mb-12 text-white drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-on-scroll">
             CONTACT & LOCATION
@@ -1594,51 +1941,6 @@ export default function SkinCabaretSite() {
                 <p className="text-white/70 text-sm mt-4">Share your VIP experience and tag us for exclusive perks</p>
               </div>
             </div>
-
-            {/* Instagram Feed Placeholder */}
-            <div className="mt-8 pt-8 border-t border-red-600/30">
-              <h4 className="text-lg font-semibold text-white mb-4 flex items-center justify-center gap-2">
-                <Instagram className="w-5 h-5 text-pink-400" />
-                Latest from Instagram
-              </h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="aspect-square bg-gradient-to-br from-red-900/30 to-black border border-red-500/30 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-white/60">
-                    <Instagram className="w-8 h-8 mx-auto mb-2" />
-                    <p className="text-xs">Follow us for exclusive content</p>
-                  </div>
-                </div>
-                <div className="aspect-square bg-gradient-to-br from-red-900/30 to-black border border-red-500/30 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-white/60">
-                    <Share2 className="w-8 h-8 mx-auto mb-2" />
-                    <p className="text-xs">Behind the scenes</p>
-                  </div>
-                </div>
-                <div className="aspect-square bg-gradient-to-br from-red-900/30 to-black border border-red-500/30 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-white/60">
-                    <Users className="w-8 h-8 mx-auto mb-2" />
-                    <p className="text-xs">VIP experiences</p>
-                  </div>
-                </div>
-                <div className="aspect-square bg-gradient-to-br from-red-900/30 to-black border border-red-500/30 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-white/60">
-                    <ExternalLink className="w-8 h-8 mx-auto mb-2" />
-                    <p className="text-xs">Special events</p>
-                  </div>
-                </div>
-              </div>
-              <div className="text-center mt-4">
-                <a
-                  href="https://instagram.com/skincabaret"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
-                >
-                  <Instagram className="w-5 h-5" />
-                  View All Posts
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1707,7 +2009,7 @@ export default function SkinCabaretSite() {
               <div className="text-white/70 text-sm space-y-2">
                 <p>1137 N Scottsdale Rd.</p>
                 <p>Scottsdale, AZ 85257</p>
-                <p>Phone: (480) 946-7546</p>
+                <p>Phone: (480) 425-7546</p>
                 <p>Email: info@skincabaret.com</p>
               </div>
             </div>
@@ -1745,6 +2047,39 @@ export default function SkinCabaretSite() {
           </div>
         </div>
       </footer>
+
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <button
+          onClick={() => setChatbotOpen(true)}
+          className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+          title="Need Help? Chat with us!"
+        >
+          <svg
+            className="w-6 h-6 group-hover:scale-110 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Back to Top Button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 left-6 bg-red-600/80 hover:bg-red-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-40"
+        title="Back to Top"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+      </button>
 
       {ageVerificationOpen && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
@@ -1787,11 +2122,7 @@ export default function SkinCabaretSite() {
                     ? "TABLE RESERVATION"
                     : reservationPopup.type === "champagne"
                       ? "CHAMPAGNE SATURDAYS"
-                      : reservationPopup.type === "wm"
-                        ? "WM PHOENIX OPEN WEEK"
-                        : reservationPopup.type === "football"
-                          ? "SUNDAY NIGHT FOOTBALL"
-                          : "RESERVATION INQUIRY"}
+                      : "RESERVATION INQUIRY"}
             </h2>
             <form className="space-y-4">
               <div>
@@ -2021,10 +2352,85 @@ export default function SkinCabaretSite() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-red-600 hover:bg-red-700 text-white p-3 rounded-full shadow-lg transition-colors z-40"
+          className="fixed bottom-8 right-8 bg-red-600/80 hover:bg-red-600 text-white p-3 rounded-full shadow-lg transition-colors z-40"
         >
           ↑
         </button>
+      )}
+
+      {chatbotOpen && (
+        <div className="fixed bottom-24 right-6 z-50 w-80 h-96 bg-black border border-red-500/50 rounded-lg shadow-2xl flex flex-col">
+          {/* Header */}
+          <div className="bg-red-600 text-white p-4 rounded-t-lg flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <span className="text-red-600 font-bold text-sm">SKIN</span>
+              </div>
+              <span className="font-bold">Skin Cabaret Assistant</span>
+            </div>
+            <button onClick={() => setChatbotOpen(false)} className="text-white hover:text-red-200 transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-3">
+            {chatMessages.map((msg, index) => (
+              <div key={index} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
+                <div
+                  className={`max-w-xs p-3 rounded-lg ${
+                    msg.type === "user" ? "bg-red-600 text-white" : "bg-gray-800 text-white border border-red-500/30"
+                  }`}
+                >
+                  <p className="text-sm">{msg.message}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick Responses */}
+          <div className="p-2 border-t border-red-500/30">
+            <div className="grid grid-cols-2 gap-1 mb-2">
+              {quickResponses.map((response, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleQuickResponse(response)}
+                  className="text-xs bg-red-600/20 text-red-400 hover:bg-red-600/40 hover:text-white p-2 rounded transition-colors"
+                >
+                  {response}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Input */}
+          <form onSubmit={handleChatSubmit} className="p-4 border-t border-red-500/30">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                placeholder="Type your message..."
+                className="flex-1 bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+              />
+              <button
+                type="submit"
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   )
