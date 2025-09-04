@@ -40,6 +40,27 @@ export default function SkinCabaretSite() {
   ])
   const [currentMessage, setCurrentMessage] = useState("")
 
+  const [showRideForm, setShowRideForm] = useState(false)
+  const [showHiringForm, setShowHiringForm] = useState(false)
+  const [rideFormData, setRideFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    pickupAddress: "",
+    pickupTime: "",
+    groupSize: "",
+    specialRequests: "",
+  })
+  const [hiringFormData, setHiringFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    age: "",
+    experience: "",
+    availability: "",
+    references: "",
+  })
+
   const openImageGallery = (images: string[], startIndex = 0) => {
     setGalleryImages(images)
     setCurrentImageIndex(startIndex)
@@ -258,7 +279,7 @@ export default function SkinCabaretSite() {
         botResponse =
           "Pricing varies by package and group size. Please call (480) 425-7546 for current rates and availability."
       } else if (currentMessage.toLowerCase().includes("hours") || currentMessage.toLowerCase().includes("open")) {
-        botResponse = "We're open Tuesday-Saturday from 7 PM to 2 AM. Closed Sunday and Monday."
+        botResponse = "We're open 7 days a week from 8 PM to 5 AM."
       } else if (
         currentMessage.toLowerCase().includes("location") ||
         currentMessage.toLowerCase().includes("address")
@@ -457,8 +478,9 @@ export default function SkinCabaretSite() {
           </div>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+            {/* Updated schedule ride button to open form */}
             <button
-              onClick={() => setShowReservationPopup(true)}
+              onClick={() => setShowRideForm(true)}
               className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
             >
               SCHEDULE FREE RIDE
@@ -494,13 +516,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -538,13 +561,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -582,13 +606,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -626,13 +651,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -684,13 +710,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -728,13 +755,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -772,13 +800,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -816,13 +845,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -900,13 +930,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -944,13 +975,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -988,13 +1020,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -1032,13 +1065,14 @@ export default function SkinCabaretSite() {
                   className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
                   quality={95}
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
-                    width={25}
-                    height={25}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    width={20}
+                    height={20}
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -1088,13 +1122,14 @@ export default function SkinCabaretSite() {
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
                     width={20}
                     height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -1114,13 +1149,14 @@ export default function SkinCabaretSite() {
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
                     width={20}
                     height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -1141,13 +1177,14 @@ export default function SkinCabaretSite() {
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
                     width={20}
                     height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -1167,13 +1204,14 @@ export default function SkinCabaretSite() {
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-110"
                 />
-                <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                {/* Fixed watermark positioning to be inside image bounds */}
+                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                   <Image
                     src="/images/skin-logo-red-silhouette.png"
                     alt="Skin Cabaret"
                     width={20}
                     height={20}
-                    className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                   />
                 </div>
               </div>
@@ -1575,13 +1613,14 @@ export default function SkinCabaretSite() {
                     height={150}
                     className="rounded-lg object-cover w-full h-32"
                   />
-                  <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  {/* Fixed watermark positioning to be inside image bounds */}
+                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                     <Image
                       src="/images/skin-logo-red-silhouette.png"
                       alt="Skin Cabaret"
                       width={20}
                       height={20}
-                      className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                     />
                   </div>
                 </div>
@@ -1598,13 +1637,14 @@ export default function SkinCabaretSite() {
                     height={150}
                     className="rounded-lg object-cover w-full h-32"
                   />
-                  <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  {/* Fixed watermark positioning to be inside image bounds */}
+                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                     <Image
                       src="/images/skin-logo-red-silhouette.png"
                       alt="Skin Cabaret"
                       width={20}
                       height={20}
-                      className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                     />
                   </div>
                 </div>
@@ -1621,13 +1661,14 @@ export default function SkinCabaretSite() {
                     height={150}
                     className="rounded-lg object-cover w-full h-32"
                   />
-                  <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  {/* Fixed watermark positioning to be inside image bounds */}
+                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                     <Image
                       src="/images/skin-logo-red-silhouette.png"
                       alt="Skin Cabaret"
                       width={20}
                       height={20}
-                      className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                     />
                   </div>
                 </div>
@@ -1644,13 +1685,14 @@ export default function SkinCabaretSite() {
                     height={150}
                     className="rounded-lg object-cover w-full h-32"
                   />
-                  <div className="absolute bottom-2 right-2 bg-black/60 rounded px-1 py-1 backdrop-blur-sm">
+                  {/* Fixed watermark positioning to be inside image bounds */}
+                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
                     <Image
                       src="/images/skin-logo-red-silhouette.png"
                       alt="Skin Cabaret"
                       width={20}
                       height={20}
-                      className="object-contain drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
                     />
                   </div>
                 </div>
@@ -1834,7 +1876,7 @@ export default function SkinCabaretSite() {
                 <p>1137 N Scottsdale Rd.</p>
                 <p>Scottsdale, AZ 85251</p>
                 <p className="mt-4 text-red-400">Open 7 Days a Week</p>
-                <p className="text-white/80">Mon-Sun: 8:00 PM - 6:00 AM</p>
+                <p className="text-white/80">Mon-Sun: 8:00 PM - 5:00 AM</p>
               </div>
             </div>
 
@@ -2016,8 +2058,10 @@ export default function SkinCabaretSite() {
 
             <div>
               <h5 className="text-white font-semibold mb-3">Hours & Info</h5>
+              {/* Updated hours in footer */}
               <div className="text-white/70 text-sm space-y-2">
-                <p>Daily: 8:00 PM - 6:00 AM</p>
+                <p>Open 7 Days a Week: 8:00 PM - 5:00 AM</p>
+                <p>Closed Sunday & Monday</p>
                 <p className="pt-2 border-t border-white/10">
                   <a href="/privacy" className="hover:text-white transition-colors">
                     Privacy Policy
@@ -2430,6 +2474,155 @@ export default function SkinCabaretSite() {
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {showRideForm && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-black border border-red-500/50 rounded-lg p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-white">Schedule Free Ride</h3>
+              <button onClick={() => setShowRideForm(false)} className="text-white hover:text-red-400">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <form className="space-y-4">
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={rideFormData.name}
+                onChange={(e) => setRideFormData({ ...rideFormData, name: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={rideFormData.phone}
+                onChange={(e) => setRideFormData({ ...rideFormData, phone: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={rideFormData.email}
+                onChange={(e) => setRideFormData({ ...rideFormData, email: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="text"
+                placeholder="Pickup Address"
+                value={rideFormData.pickupAddress}
+                onChange={(e) => setRideFormData({ ...rideFormData, pickupAddress: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="time"
+                placeholder="Pickup Time"
+                value={rideFormData.pickupTime}
+                onChange={(e) => setRideFormData({ ...rideFormData, pickupTime: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <select
+                value={rideFormData.groupSize}
+                onChange={(e) => setRideFormData({ ...rideFormData, groupSize: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              >
+                <option value="">Group Size</option>
+                <option value="1-4">1-4 People</option>
+                <option value="5-8">5-8 People</option>
+                <option value="9-12">9-12 People</option>
+                <option value="13+">13+ People</option>
+              </select>
+              <textarea
+                placeholder="Special Requests (Optional)"
+                value={rideFormData.specialRequests}
+                onChange={(e) => setRideFormData({ ...rideFormData, specialRequests: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500 h-20 resize-none"
+              />
+              <button
+                type="submit"
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded font-semibold transition-colors"
+              >
+                SUBMIT RIDE REQUEST
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showHiringForm && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-black border border-red-500/50 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-white">Employment Application</h3>
+              <button onClick={() => setShowHiringForm(false)} className="text-white hover:text-red-400">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <form className="space-y-4">
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={hiringFormData.name}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, name: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={hiringFormData.phone}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, phone: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={hiringFormData.email}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, email: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <input
+                type="number"
+                placeholder="Age (Must be 21+)"
+                value={hiringFormData.age}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, age: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              />
+              <textarea
+                placeholder="Previous Experience"
+                value={hiringFormData.experience}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, experience: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500 h-20 resize-none"
+              />
+              <select
+                value={hiringFormData.availability}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, availability: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
+              >
+                <option value="">Availability</option>
+                <option value="weekends">Weekends Only</option>
+                <option value="weekdays">Weekdays Only</option>
+                <option value="full-time">Full Time</option>
+                <option value="part-time">Part Time</option>
+              </select>
+              <textarea
+                placeholder="References (Optional)"
+                value={hiringFormData.references}
+                onChange={(e) => setHiringFormData({ ...hiringFormData, references: e.target.value })}
+                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500 h-20 resize-none"
+              />
+              <button
+                type="submit"
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded font-semibold transition-colors"
+              >
+                SUBMIT APPLICATION
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>
