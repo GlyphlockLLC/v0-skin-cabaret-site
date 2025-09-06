@@ -961,10 +961,10 @@ export default function SkinCabaretSite() {
         <iframe
           className="absolute inset-0 w-screen h-full object-cover scale-110"
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
-          style={{ opacity: 0.15 }}
+          style={{ opacity: 0.4, filter: "brightness(1.3) contrast(1.1)" }}
           allow="autoplay; encrypted-media"
         />
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/50" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
@@ -1095,10 +1095,11 @@ export default function SkinCabaretSite() {
       <section id="careers" className="relative py-20 overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
-          className="absolute inset-0 w-screen h-full object-cover scale-110 opacity-15"
+          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          style={{ opacity: 0.35, filter: "brightness(1.2) contrast(1.1)" }}
           allow="autoplay; encrypted-media"
         />
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/55" />
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
@@ -1185,10 +1186,11 @@ export default function SkinCabaretSite() {
       <section id="contact" className="relative py-20 overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
-          className="absolute inset-0 w-screen h-full object-cover scale-110 opacity-15"
+          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          style={{ opacity: 0.3, filter: "brightness(1.2)" }}
           allow="autoplay; encrypted-media"
         />
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/60" />
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">CONTACT US</h2>
@@ -1283,10 +1285,10 @@ export default function SkinCabaretSite() {
         <iframe
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&start=30"
           className="absolute inset-0 w-screen h-full object-cover scale-110"
-          style={{ opacity: 0.25, filter: "brightness(1.1)" }}
+          style={{ opacity: 0.4, filter: "brightness(1.3) contrast(1.1)" }}
           allow="autoplay; encrypted-media"
         />
-        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-black/50" />
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">FOLLOW US</h2>
