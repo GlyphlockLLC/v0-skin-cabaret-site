@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import Link from "next/link"
 
 export default function SkinCabaretSite() {
   const [scrolled, setScrolled] = useState(false)
@@ -714,112 +713,38 @@ export default function SkinCabaretSite() {
                 height={40}
                 className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-float"
               />
-              <div className="hidden md:flex space-x-6">
+              <div className="flex space-x-4 sm:space-x-6">
                 <button
                   onClick={() => scrollToSection("home")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
                 >
                   Home
                 </button>
                 <button
                   onClick={() => scrollToSection("events")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
                 >
-                  Sports Events
+                  Sports
                 </button>
                 <button
                   onClick={() => scrollToSection("hiring")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
                 >
                   Careers
                 </button>
                 <button
                   onClick={() => scrollToSection("contact")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
                 >
                   Contact
                 </button>
               </div>
             </div>
 
-            <div className="hidden md:flex items-center space-x-4">
-              <div className="text-white/80 text-sm animate-pulse">
+            <div className="flex items-center space-x-4">
+              <div className="text-white/80 text-xs sm:text-sm animate-pulse">
                 {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </div>
-            </div>
-
-            <div className="md:hidden">
-              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white focus:outline-none">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Menu */}
-          <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <button
-                onClick={() => {
-                  scrollToSection("home")
-                  setMobileMenuOpen(false)
-                }}
-                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Home
-              </button>
-              <button
-                onClick={() => {
-                  scrollToSection("events")
-                  setMobileMenuOpen(false)
-                }}
-                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Events
-              </button>
-              <button
-                onClick={() => {
-                  scrollToSection("bachelor")
-                  setMobileMenuOpen(false)
-                }}
-                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Bachelor Parties
-              </button>
-              <button
-                onClick={() => {
-                  scrollToSection("vip")
-                  setMobileMenuOpen(false)
-                }}
-                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                VIP & Heritage
-              </button>
-              <button
-                onClick={() => {
-                  scrollToSection("hiring")
-                  setMobileMenuOpen(false)
-                }}
-                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Careers
-              </button>
-              <button
-                onClick={() => {
-                  scrollToSection("contact")
-                  setMobileMenuOpen(false)
-                }}
-                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
-              >
-                Contact
-              </button>
-              <Link
-                href="/demos"
-                className="text-yellow-400 hover:text-yellow-300 block px-3 py-2 rounded-md text-base font-medium font-semibold"
-              >
-                Demos
-              </Link>
             </div>
           </div>
         </div>
@@ -834,7 +759,8 @@ export default function SkinCabaretSite() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover scale-105 sm:scale-110 object-center"
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105 object-center"
           style={{ playbackRate: 0.7, opacity: 0.85, filter: "contrast(1.2) saturate(1.3) brightness(1.1)" }}
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-qQA5J32Xs8vmZNT2wm97AOezvBTPbB.webm" type="video/webm" />
@@ -848,9 +774,9 @@ export default function SkinCabaretSite() {
             <Image
               src="/images/skin-logo-red-silhouette.png"
               alt="Skin Cabaret Logo"
-              width={400}
-              height={400}
-              className="object-contain animate-logo-glow drop-shadow-[0_0_40px_rgba(239,68,68,0.8)] hover:scale-110 transition-all duration-500"
+              width={300}
+              height={300}
+              className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 object-contain animate-logo-glow drop-shadow-[0_0_40px_rgba(239,68,68,0.8)] hover:scale-110 transition-all duration-500"
               quality={95}
             />
           </div>
@@ -858,13 +784,15 @@ export default function SkinCabaretSite() {
 
         <div className="absolute bottom-20 left-0 right-0 z-20 text-center px-4 animate-on-scroll animate-delay-400">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white animate-pulse-glow mb-3">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white animate-pulse-glow mb-3">
               Scottsdale's Premier Adult Entertainment Experience
             </h2>
             <p className="text-sm sm:text-base text-white/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] animate-fade-in-up">
               Luxury • Sophistication • Unforgettable Nights
             </p>
-            <div className="mt-4 text-red-400 font-bold text-lg animate-pulse">21+ ONLY • VALID ID REQUIRED</div>
+            <div className="mt-4 text-red-400 font-bold text-base sm:text-lg animate-pulse">
+              21+ ONLY • VALID ID REQUIRED
+            </div>
           </div>
         </div>
 
@@ -880,27 +808,28 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Sports Events Section */}
-      <section id="sports" className="relative py-20 overflow-hidden">
+      <section id="sports" className="relative py-16 sm:py-20 overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover scale-105 sm:scale-110"
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105"
           style={{ playbackRate: 0.8, opacity: 0.5, filter: "brightness(1.2) contrast(1.1)" }}
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/stock-footage-abstract-red-particle-circle-burst-on-black-background-glowing-digital-particles-explode-outwards-uY3z82eS77iKa3Hu5lCTKAAjUIMKLU.webm" type="video/webm" />
         </video>
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
             SPORTS EVENTS
           </h2>
-          <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+          <p className="text-base sm:text-lg lg:text-xl text-white/80 mb-8 sm:mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
             Watch your favorite teams while enjoying premium entertainment and VIP service
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 stagger-animation">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 stagger-animation">
             {[
               {
                 title: "Sunday Night Football",
@@ -957,12 +886,13 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Customer Experiences Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-16 sm:py-20 overflow-hidden">
         <iframe
-          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105"
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
           style={{ opacity: 0.4, filter: "brightness(1.3) contrast(1.1)" }}
           allow="autoplay; encrypted-media"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-black/50" />
 
@@ -1092,12 +1022,13 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Hiring Section */}
-      <section id="careers" className="relative py-20 overflow-hidden">
+      <section id="careers" className="relative py-16 sm:py-20 overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
-          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105"
           style={{ opacity: 0.35, filter: "brightness(1.2) contrast(1.1)" }}
           allow="autoplay; encrypted-media"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-black/55" />
 
@@ -1183,12 +1114,13 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative py-20 overflow-hidden">
+      <section id="contact" className="relative py-16 sm:py-20 overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
-          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105"
           style={{ opacity: 0.3, filter: "brightness(1.2)" }}
           allow="autoplay; encrypted-media"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-black/60" />
 
@@ -1281,12 +1213,13 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Social Media Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-16 sm:py-20 overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&start=30"
-          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105"
           style={{ opacity: 0.4, filter: "brightness(1.3) contrast(1.1)" }}
           allow="autoplay; encrypted-media"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-black/50" />
 
@@ -1438,13 +1371,13 @@ export default function SkinCabaretSite() {
             </p>
 
             <form onSubmit={handlePickupSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <input
                   type="text"
                   placeholder="Name"
                   value={pickupForm.name}
                   onChange={(e) => setPickupForm({ ...pickupForm, name: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
                   required
                 />
                 <input
@@ -1452,16 +1385,17 @@ export default function SkinCabaretSite() {
                   placeholder="Phone"
                   value={pickupForm.phone}
                   onChange={(e) => setPickupForm({ ...pickupForm, phone: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
                   required
                 />
               </div>
+
               <input
                 type="text"
                 placeholder="Pickup Address"
                 value={pickupForm.address}
                 onChange={(e) => setPickupForm({ ...pickupForm, address: e.target.value })}
-                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
                 required
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1469,14 +1403,14 @@ export default function SkinCabaretSite() {
                   type="date"
                   value={pickupForm.date}
                   onChange={(e) => setPickupForm({ ...pickupForm, date: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
                   required
                 />
                 <input
                   type="time"
                   value={pickupForm.time}
                   onChange={(e) => setPickupForm({ ...pickupForm, time: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
                   required
                 />
               </div>
@@ -1485,7 +1419,7 @@ export default function SkinCabaretSite() {
                 placeholder="Number of Passengers"
                 value={pickupForm.passengers}
                 onChange={(e) => setPickupForm({ ...pickupForm, passengers: e.target.value })}
-                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
                 required
               />
               <textarea
@@ -1493,7 +1427,7 @@ export default function SkinCabaretSite() {
                 value={pickupForm.requests}
                 onChange={(e) => setPickupForm({ ...pickupForm, requests: e.target.value })}
                 rows={3}
-                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-base"
               ></textarea>
 
               <div className="text-center text-white/90 text-sm sm:text-base mb-4 p-3 bg-red-600/20 rounded-lg border border-red-500/30">
