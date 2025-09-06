@@ -834,14 +834,14 @@ export default function SkinCabaretSite() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-screen h-full object-cover scale-110"
-          style={{ playbackRate: 0.7, opacity: 0.6 }}
+          className="absolute inset-0 w-full h-full object-cover scale-105 sm:scale-110 object-center"
+          style={{ playbackRate: 0.7, opacity: 0.85, filter: "contrast(1.2) saturate(1.3) brightness(1.1)" }}
         >
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-qQA5J32Xs8vmZNT2wm97AOezvBTPbB.webm" type="video/webm" />
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-jqRqb6rf8i9YFjT6RFomZi1aAjNVSA.webm" type="video/webm" />
           <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%203-RTTz79kdeCoRBdybhGCX7ut3ABz3ow.webm" type="video/webm" />
         </video>
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-black/20"></div>
 
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div className="animate-float">
@@ -868,26 +868,30 @@ export default function SkinCabaretSite() {
           </div>
         </div>
 
-        {/* Updated schedule ride button to call club popup and changed age requirement to 19+ */}
         <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4 animate-on-scroll animate-delay-600">
           <button
             onClick={() => setShowCallPopup(true)}
-            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 shadow-[0_0_25px_rgba(239,68,68,0.5)] hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] hover:scale-105 hover:-translate-y-2 animate-pulse-border"
+            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 shadow-[0_0_30px_rgba(239,68,68,0.6)] hover:shadow-[0_0_40px_rgba(239,68,68,0.9)] hover:scale-110 hover:-translate-y-3 animate-pulse border-2 border-red-400 relative overflow-hidden"
           >
-            CALL THE CLUB
+            <span className="relative z-10">📞 CALL NOW: (480) 425-7546</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-red-700/20 animate-pulse"></div>
           </button>
         </div>
       </section>
 
       {/* Sports Events Section */}
       <section id="sports" className="relative py-20 overflow-hidden">
-        <iframe
-          className="absolute inset-0 w-screen h-full object-cover scale-110"
-          src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
-          style={{ opacity: 0.2 }}
-          allow="autoplay; encrypted-media"
-        />
-        <div className="absolute inset-0 bg-black/60"></div>
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover scale-105 sm:scale-110"
+          style={{ playbackRate: 0.8, opacity: 0.5, filter: "brightness(1.2) contrast(1.1)" }}
+        >
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/stock-footage-abstract-red-particle-circle-burst-on-black-background-glowing-digital-particles-explode-outwards-uY3z82eS77iKa3Hu5lCTKAAjUIMKLU.webm" type="video/webm" />
+        </video>
+        <div className="absolute inset-0 bg-black/40"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
             SPORTS EVENTS
@@ -1193,24 +1197,33 @@ export default function SkinCabaretSite() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll backdrop-blur-sm">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300">
-                <svg
-                  className="w-8 h-8 text-white drop-shadow-lg"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll animate-delay-100 backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 to-transparent animate-pulse"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300 animate-pulse">
+                  <svg
+                    className="w-8 h-8 text-white drop-shadow-lg"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21L6.16 11.37a11.045 11.045 0 005.516 5.516l1.983-4.064a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">📞 Call Now</h3>
+                <p className="text-red-400 font-bold text-lg mb-3">(480) 425-7546</p>
+                <a
+                  href="tel:+14804257546"
+                  className="inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
+                  Call Now
+                </a>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Phone</h3>
-              <p className="text-white/80">(480) 425-7546</p>
             </div>
 
             <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll animate-delay-200 backdrop-blur-sm">
@@ -1269,10 +1282,11 @@ export default function SkinCabaretSite() {
       <section className="relative py-20 overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&start=30"
-          className="absolute inset-0 w-screen h-full object-cover scale-110 opacity-12"
+          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          style={{ opacity: 0.25, filter: "brightness(1.1)" }}
           allow="autoplay; encrypted-media"
         />
-        <div className="absolute inset-0 bg-black/75" />
+        <div className="absolute inset-0 bg-black/65" />
 
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">FOLLOW US</h2>
@@ -1368,8 +1382,13 @@ export default function SkinCabaretSite() {
             </div>
 
             <div>
-              <h4 className="text-white font-bold mb-4">Contact Info</h4>
-              <p className="text-white/80 text-sm mb-2">Phone: (480) 425-7546</p>
+              <h4 className="text-white font-bold mb-4">📞 Contact Info</h4>
+              <a
+                href="tel:+14804257546"
+                className="text-red-400 font-bold text-lg mb-2 block hover:text-red-300 transition-colors"
+              >
+                📞 Call: (480) 425-7546
+              </a>
               <p className="text-white/80 text-sm mb-2">Hours: 7 Days a Week</p>
               <p className="text-white/80 text-sm">8 PM - 5 AM</p>
             </div>
@@ -1393,23 +1412,37 @@ export default function SkinCabaretSite() {
       {/* Pickup Service Popup */}
       {showPickupPopup && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 relative">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-4 sm:p-8 max-w-md w-full border border-red-500/30 relative">
+            <button
+              onClick={() => setShowPickupPopup(false)}
+              className="absolute top-2 right-2 text-white hover:text-red-400 text-3xl font-bold z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-red-600/20 transition-all duration-200 border border-red-500/30"
+            >
+              ×
+            </button>
+
             <div className="relative h-32 mb-6 rounded-lg overflow-hidden">
               <iframe
-                className="absolute inset-0 w-full h-full object-cover"
-                src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&title=0&byline=0&portrait=0&color=ffffff&autopause=0&annotations=0&branding=0"
+                className="absolute inset-0 w-full h-full object-cover scale-110"
+                src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&start=45"
                 allow="autoplay; encrypted-media"
-              />
+                title=""
+                frameBorder="0"
+              ></iframe>
             </div>
 
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 text-center">Schedule Free Pickup</h3>
+            <p className="text-white/80 mb-6 text-center text-sm sm:text-base">
+              Complimentary transportation service to Skin Cabaret
+            </p>
+
             <form onSubmit={handlePickupSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   type="text"
                   placeholder="Name"
                   value={pickupForm.name}
                   onChange={(e) => setPickupForm({ ...pickupForm, name: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
                   required
                 />
                 <input
@@ -1417,7 +1450,7 @@ export default function SkinCabaretSite() {
                   placeholder="Phone"
                   value={pickupForm.phone}
                   onChange={(e) => setPickupForm({ ...pickupForm, phone: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
                   required
                 />
               </div>
@@ -1426,22 +1459,22 @@ export default function SkinCabaretSite() {
                 placeholder="Pickup Address"
                 value={pickupForm.address}
                 onChange={(e) => setPickupForm({ ...pickupForm, address: e.target.value })}
-                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
                 required
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   type="date"
                   value={pickupForm.date}
                   onChange={(e) => setPickupForm({ ...pickupForm, date: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
                   required
                 />
                 <input
                   type="time"
                   value={pickupForm.time}
                   onChange={(e) => setPickupForm({ ...pickupForm, time: e.target.value })}
-                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
                   required
                 />
               </div>
@@ -1450,7 +1483,7 @@ export default function SkinCabaretSite() {
                 placeholder="Number of Passengers"
                 value={pickupForm.passengers}
                 onChange={(e) => setPickupForm({ ...pickupForm, passengers: e.target.value })}
-                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
                 required
               />
               <textarea
@@ -1458,28 +1491,25 @@ export default function SkinCabaretSite() {
                 value={pickupForm.requests}
                 onChange={(e) => setPickupForm({ ...pickupForm, requests: e.target.value })}
                 rows={3}
-                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base"
               ></textarea>
 
-              <div className="text-center text-white/80 text-sm mb-4">
-                Or call us after 8pm: <span className="text-red-400 font-bold">(480) 425-7546</span>
+              <div className="text-center text-white/90 text-sm sm:text-base mb-4 p-3 bg-red-600/20 rounded-lg border border-red-500/30">
+                📞 <strong>Or call us after 8pm:</strong>
+                <a
+                  href="tel:+14804257546"
+                  className="text-red-400 font-bold text-lg ml-2 hover:text-red-300 transition-colors"
+                >
+                  (480) 425-7546
+                </a>
               </div>
 
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
-                >
-                  Schedule Pickup
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowPickupPopup(false)}
-                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
-                >
-                  Maybe Later
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300 text-sm sm:text-base"
+              >
+                Schedule Free Pickup
+              </button>
             </form>
           </div>
         </div>
@@ -1488,7 +1518,13 @@ export default function SkinCabaretSite() {
       {/* Call Club Popup */}
       {showCallPopup && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 text-center">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 text-center relative">
+            <button
+              onClick={() => setShowCallPopup(false)}
+              className="absolute top-2 right-2 text-white hover:text-red-400 text-3xl font-bold z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-red-600/20 transition-all duration-200 border border-red-500/30"
+            >
+              ×
+            </button>
             <div className="relative h-32 mb-6 rounded-lg overflow-hidden">
               <Image
                 src="/images/customer-chicago.png"
@@ -1497,19 +1533,20 @@ export default function SkinCabaretSite() {
                 className="object-cover"
               />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-4">Call Skin Cabaret</h3>
+
+            <h3 className="text-2xl font-bold text-white mb-4">📞 Call Skin Cabaret</h3>
             <p className="text-white/80 mb-6">
               Ready to experience Scottsdale's premier adult entertainment? Call us now for reservations and
               information.
             </p>
-            <div className="text-3xl font-bold text-red-400 mb-6">(480) 425-7546</div>
+            <div className="text-4xl font-bold text-red-400 mb-6 animate-pulse">(480) 425-7546</div>
             <p className="text-white/60 text-sm mb-6">Open 7 days a week • 8 PM - 5 AM</p>
             <div className="flex gap-4">
               <a
                 href="tel:+14804257546"
-                className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 rounded-lg transition-all duration-300 text-lg shadow-lg hover:shadow-xl"
               >
-                Call Now
+                📞 Call Now
               </a>
               <button
                 onClick={() => setShowCallPopup(false)}
@@ -1525,7 +1562,13 @@ export default function SkinCabaretSite() {
       {/* Hiring Form Popup */}
       {showHiringForm && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 max-h-[90vh] overflow-y-auto">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 max-h-[90vh] overflow-y-auto relative">
+            <button
+              onClick={() => setShowHiringForm(false)}
+              className="absolute top-2 right-2 text-white hover:text-red-400 text-3xl font-bold z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 hover:bg-red-600/20 transition-all duration-200 border border-red-500/30"
+            >
+              ×
+            </button>
             <h3 className="text-2xl font-bold text-white mb-6 text-center">Join Our Team</h3>
             <form onSubmit={handleHiringSubmit} className="space-y-4">
               <input
