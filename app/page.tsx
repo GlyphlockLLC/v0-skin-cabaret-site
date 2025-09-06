@@ -3,22 +3,13 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Phone, Mail, Instagram, Facebook, Twitter } from "lucide-react"
 import Image from "next/image"
-import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 
 export default function SkinCabaretSite() {
   const [scrolled, setScrolled] = useState(false)
   const [activeTab, setActiveTab] = useState("home")
-  const [reservationPopup, setReservationPopup] = useState<{
-    isOpen: boolean
-    type: "bachelor" | "vip" | "table" | "champagne"
-  }>({
-    isOpen: false,
-    type: "bachelor",
-  })
+  const [reservationPopup, setReservationPopup] = useState({ isOpen: false, type: "bachelor" })
   const [currentTime, setCurrentTime] = useState(new Date())
   const [ageVerificationOpen, setAgeVerificationOpen] = useState(false)
   const [showReservationPopup, setShowReservationPopup] = useState(false)
@@ -42,6 +33,19 @@ export default function SkinCabaretSite() {
 
   const [showRideForm, setShowRideForm] = useState(false)
   const [showHiringForm, setShowHiringForm] = useState(false)
+  const [showCallPopup, setShowCallPopup] = useState(false)
+  const [showPickupPopup, setShowPickupPopup] = useState(false)
+  const [showAgeVerification, setShowAgeVerification] = useState(true)
+
+  const [pickupForm, setPickupForm] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    date: "",
+    time: "",
+    passengers: "",
+    requests: "",
+  })
   const [rideFormData, setRideFormData] = useState({
     name: "",
     phone: "",
@@ -51,15 +55,16 @@ export default function SkinCabaretSite() {
     groupSize: "",
     specialRequests: "",
   })
-  const [hiringFormData, setHiringFormData] = useState({
+  const [hiringForm, setHiringForm] = useState({
     name: "",
     phone: "",
     email: "",
     age: "",
+    position: "",
     experience: "",
-    availability: "",
-    references: "",
+    ageConfirm: false,
   })
+  const [chatInput, setChatInput] = useState("")
 
   const openImageGallery = (images: string[], startIndex = 0) => {
     setGalleryImages(images)
@@ -103,16 +108,11 @@ export default function SkinCabaretSite() {
   ]
 
   useEffect(() => {
-    const hasVerified = localStorage.getItem("ageVerified")
-    if (!hasVerified) {
-      setAgeVerificationOpen(true)
-    }
+    const timer = setTimeout(() => {
+      setShowPickupPopup(true)
+    }, 100) // Show pickup popup immediately when site loads
+    return () => clearTimeout(timer)
   }, [])
-
-  const handleAgeVerification = () => {
-    localStorage.setItem("ageVerified", "true")
-    setAgeVerificationOpen(false)
-  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -138,17 +138,33 @@ export default function SkinCabaretSite() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("animate-fade-in-up")
-          entry.target.classList.remove("animate-on-scroll")
+          entry.target.classList.add("animate-in")
         }
       })
     }, observerOptions)
 
-    // Observe all elements with animate-on-scroll class
     const animateElements = document.querySelectorAll(".animate-on-scroll")
     animateElements.forEach((el) => observer.observe(el))
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.pageYOffset
+      const parallaxElements = document.querySelectorAll(".parallax")
+
+      parallaxElements.forEach((element) => {
+        const speed = element.getAttribute("data-speed") || 0.5
+        const yPos = -(scrolled * speed)
+        element.style.transform = `translateY(${yPos}px)`
+      })
+
+      setShowBackToTop(scrolled > 300)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const openReservation = (type: "bachelor" | "vip" | "table" | "champagne") => {
@@ -301,10 +317,393 @@ export default function SkinCabaretSite() {
     handleChatSubmit({ preventDefault: () => {} } as React.FormEvent)
   }
 
+  const [reviews, setReviews] = useState([
+    {
+      name: "Marcus T.",
+      location: "Phoenix, AZ",
+      rating: 5,
+      text: "Incredible night out! The entertainment was top-notch and the VIP service exceeded expectations. Definitely coming back.",
+      date: "2024-01-15",
+      avatar: "/images/customer-chicago.png",
+    },
+    {
+      name: "Jessica L.",
+      location: "Scottsdale, AZ",
+      rating: 4,
+      text: "Great atmosphere and friendly staff. The drinks were delicious and the music was on point. Will visit again!",
+      date: "2023-12-28",
+      avatar: "/images/customer-blonde.jpeg",
+    },
+    {
+      name: "David K.",
+      location: "Tempe, AZ",
+      rating: 5,
+      text: "Best adult entertainment venue in the valley! The performers are talented and the service is impeccable.",
+      date: "2023-12-15",
+      avatar: "/images/customer-suit.jpeg",
+    },
+    {
+      name: "Ashley M.",
+      location: "Chandler, AZ",
+      rating: 4,
+      text: "Had a fun night with my friends. The VIP package was worth it for the private seating and bottle service.",
+      date: "2023-11-30",
+      avatar: "/images/customer-dress.jpeg",
+    },
+    {
+      name: "Robert B.",
+      location: "Glendale, AZ",
+      rating: 5,
+      text: "Excellent venue for a bachelor party. The staff was accommodating and the entertainment was unforgettable.",
+      date: "2023-11-15",
+      avatar: "/images/customer-beard.jpeg",
+    },
+    {
+      name: "Tiffany S.",
+      location: "Mesa, AZ",
+      rating: 4,
+      text: "Enjoyed the sophisticated atmosphere and the professional dancers. A great place for a night out.",
+      date: "2023-10-31",
+      avatar: "/images/customer-hair.jpeg",
+    },
+    {
+      name: "Michael R.",
+      location: "Phoenix, AZ",
+      rating: 5,
+      text: "Top-notch entertainment and service. The staff is friendly and the venue is clean and well-maintained.",
+      date: "2023-10-15",
+      avatar: "/images/customer-glasses.jpeg",
+    },
+    {
+      name: "Samantha J.",
+      location: "Scottsdale, AZ",
+      rating: 4,
+      text: "Had a memorable night with my girlfriends. The VIP experience was exceptional and the performers were stunning.",
+      date: "2023-09-30",
+      avatar: "/images/customer-hat.jpeg",
+    },
+    {
+      name: "Kevin L.",
+      location: "Tempe, AZ",
+      rating: 5,
+      text: "The best adult entertainment venue in Scottsdale. The staff is professional and the atmosphere is electric.",
+      date: "2023-09-15",
+      avatar: "/images/customer-jacket.jpeg",
+    },
+    {
+      name: "Brittany P.",
+      location: "Chandler, AZ",
+      rating: 4,
+      text: "A great place to celebrate a special occasion. The VIP service was outstanding and the entertainment was top-notch.",
+      date: "2023-08-31",
+      avatar: "/images/customer-lipstick.jpeg",
+    },
+  ])
+
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [newReview, setNewReview] = useState({
+    name: "",
+    location: "",
+    rating: "",
+    text: "",
+  })
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (newReview.name && newReview.location && newReview.rating && newReview.text) {
+      const review = {
+        ...newReview,
+        rating: Number.parseInt(newReview.rating),
+        date: new Date().toISOString().split("T")[0],
+        avatar: "/images/customer-chicago.png",
+      }
+      setReviews([review, ...reviews])
+      setNewReview({ name: "", location: "", rating: "", text: "" })
+      setShowReviewForm(false)
+      // Add success animation
+      const successMsg = document.createElement("div")
+      successMsg.className = "fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg z-50 animate-bounce"
+      successMsg.textContent = "Review posted successfully!"
+      document.body.appendChild(successMsg)
+      setTimeout(() => document.body.removeChild(successMsg), 3000)
+    }
+  }
+
+  const handlePickupSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle pickup submission logic here
+    console.log("Pickup form submitted:", pickupForm)
+    setShowPickupPopup(false)
+  }
+
+  const handleHiringSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle hiring submission logic here
+    console.log("Hiring form submitted:", hiringForm)
+    setShowHiringForm(false)
+  }
+
+  const allReviews = [
+    {
+      name: "Marcus T.",
+      location: "Phoenix, AZ",
+      rating: 5,
+      review:
+        "Incredible night out! The entertainment was top-notch and the VIP service exceeded expectations. Definitely coming back.",
+    },
+    {
+      name: "Jessica L.",
+      location: "Scottsdale, AZ",
+      rating: 4,
+      review:
+        "Great atmosphere and friendly staff. The drinks were delicious and the music was on point. Will visit again!",
+    },
+    {
+      name: "David K.",
+      location: "Tempe, AZ",
+      rating: 5,
+      review:
+        "Best adult entertainment venue in the valley! The performers are talented and the service is impeccable.",
+    },
+    {
+      name: "Ashley M.",
+      location: "Chandler, AZ",
+      rating: 4,
+      review:
+        "Had a fun night with my friends. The VIP package was worth it for the private seating and bottle service.",
+    },
+    {
+      name: "Robert B.",
+      location: "Glendale, AZ",
+      rating: 5,
+      review:
+        "Excellent venue for a bachelor party. The staff was accommodating and the entertainment was unforgettable.",
+    },
+    {
+      name: "Tiffany S.",
+      location: "Mesa, AZ",
+      rating: 4,
+      review: "Enjoyed the sophisticated atmosphere and the professional dancers. A great place for a night out.",
+    },
+    {
+      name: "Michael R.",
+      location: "Phoenix, AZ",
+      rating: 5,
+      review: "Top-notch entertainment and service. The staff is friendly and the venue is clean and well-maintained.",
+    },
+    {
+      name: "Samantha J.",
+      location: "Scottsdale, AZ",
+      rating: 4,
+      review:
+        "Had a memorable night with my girlfriends. The VIP experience was exceptional and the performers were stunning.",
+    },
+    {
+      name: "Kevin L.",
+      location: "Tempe, AZ",
+      rating: 5,
+      review:
+        "The best adult entertainment venue in Scottsdale. The staff is professional and the atmosphere is electric.",
+    },
+    {
+      name: "Brittany P.",
+      location: "Chandler, AZ",
+      rating: 4,
+      review:
+        "A great place to celebrate a special occasion. The VIP service was outstanding and the entertainment was top-notch.",
+    },
+  ]
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes glow {
+          0%, 100% {
+            filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+          }
+          50% {
+            filter: drop-shadow(0 0 40px rgba(239, 68, 68, 1));
+          }
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .animate-on-scroll.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .animate-delay-200 {
+          transition-delay: 0.2s;
+        }
+
+        .animate-delay-400 {
+          transition-delay: 0.4s;
+        }
+
+        .animate-delay-600 {
+          transition-delay: 0.6s;
+        }
+
+        .animate-logo-glow {
+          animation: glow 3s ease-in-out infinite;
+        }
+
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-background {
+          background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(239,68,68,0.1), rgba(0,0,0,0.8));
+          background-size: 200% 200%;
+          animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .hover-lift {
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .hover-lift:hover {
+          transform: translateY(-10px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(239, 68, 68, 0.3);
+        }
+
+        .card-glow {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .card-glow::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(45deg, #ef4444, #dc2626, #b91c1c, #ef4444);
+          background-size: 400% 400%;
+          border-radius: inherit;
+          z-index: -1;
+          animation: shimmer 4s ease-in-out infinite;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .card-glow:hover::before {
+          opacity: 1;
+        }
+
+        .text-shimmer {
+          background: linear-gradient(90deg, #ffffff, #ff6b6b, #ffffff);
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 3s ease-in-out infinite;
+          filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.6));
+        }
+
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+          0%, 100% {
+            filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.6));
+          }
+          50% {
+            filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.9));
+          }
+        }
+
+        .neon-border {
+          border: 2px solid #ef4444;
+          box-shadow: 
+            0 0 10px #ef4444,
+            inset 0 0 10px rgba(239, 68, 68, 0.1);
+          transition: all 0.3s ease;
+        }
+
+        .neon-border:hover {
+          box-shadow: 
+            0 0 20px #ef4444,
+            0 0 40px #ef4444,
+            inset 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .stagger-animation > * {
+          animation-delay: calc(var(--stagger) * 0.1s);
+        }
+      `}</style>
+
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-red-500/30">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-red-500/30 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
@@ -313,53 +712,38 @@ export default function SkinCabaretSite() {
                 alt="Skin Cabaret"
                 width={40}
                 height={40}
-                className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
+                className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-float"
               />
               <div className="hidden md:flex space-x-6">
                 <button
                   onClick={() => scrollToSection("home")}
-                  className="text-white hover:text-red-400 transition-colors"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
                   Home
                 </button>
                 <button
                   onClick={() => scrollToSection("events")}
-                  className="text-white hover:text-red-400 transition-colors"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
-                  Events
-                </button>
-                <button
-                  onClick={() => scrollToSection("bachelor")}
-                  className="text-white hover:text-red-400 transition-colors"
-                >
-                  Bachelor Parties
-                </button>
-                <button
-                  onClick={() => scrollToSection("vip")}
-                  className="text-white hover:text-red-400 transition-colors"
-                >
-                  VIP & Heritage
+                  Sports Events
                 </button>
                 <button
                   onClick={() => scrollToSection("hiring")}
-                  className="text-white hover:text-red-400 transition-colors"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
                   Careers
                 </button>
                 <button
                   onClick={() => scrollToSection("contact")}
-                  className="text-white hover:text-red-400 transition-colors"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
                   Contact
                 </button>
-                <Link href="/demos" className="text-yellow-400 hover:text-yellow-300 transition-colors font-semibold">
-                  Demos
-                </Link>
               </div>
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <div className="text-white/80 text-sm">
+              <div className="text-white/80 text-sm animate-pulse">
                 {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </div>
             </div>
@@ -442,2188 +826,891 @@ export default function SkinCabaretSite() {
       </nav>
 
       {/* Logo Section - Above Hero */}
-      <div className="relative z-20 pt-20 pb-4 flex justify-center animate-on-scroll">
-        <Image
-          src="/images/skin-logo-red-silhouette.png"
-          alt="Skin Cabaret Logo"
-          width={300}
-          height={300}
-          className="object-contain animate-logo-glow"
-          quality={95}
-        />
-      </div>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-bdsm-red-lighting.jpeg"
-            alt="Skin Cabaret Hero"
-            fill
-            className="object-cover md:object-cover object-contain"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40"></div>
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          style={{ playbackRate: 0.7, opacity: 0.6 }}
+        >
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-qQA5J32Xs8vmZNT2wm97AOezvBTPbB.webm" type="video/webm" />
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-jqRqb6rf8i9YFjT6RFomZi1aAjNVSA.webm" type="video/webm" />
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%203-RTTz79kdeCoRBdybhGCX7ut3ABz3ow.webm" type="video/webm" />
+        </video>
+        <div className="absolute inset-0 bg-black/30"></div>
+
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <div className="animate-float">
+            <Image
+              src="/images/skin-logo-red-silhouette.png"
+              alt="Skin Cabaret Logo"
+              width={400}
+              height={400}
+              className="object-contain animate-logo-glow drop-shadow-[0_0_40px_rgba(239,68,68,0.8)] hover:scale-110 transition-all duration-500"
+              quality={95}
+            />
+          </div>
         </div>
 
-        <div className="relative z-10 text-center px-4 mt-16 animate-on-scroll animate-delay-200 max-w-4xl mx-auto">
-          <div className="animate-pulse-background rounded-lg px-8 py-6 border border-red-500/30 mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] mb-4">
-              Where Sophistication Meets Seduction
-            </h1>
-            <p className="text-lg sm:text-xl text-white/90 drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] max-w-2xl mx-auto">
-              Experience Scottsdale's most exclusive adult entertainment venue featuring world-class performers, luxury
-              VIP experiences, and sophisticated atmosphere.
+        <div className="absolute bottom-20 left-0 right-0 z-20 text-center px-4 animate-on-scroll animate-delay-400">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white animate-pulse-glow mb-3">
+              Scottsdale's Premier Adult Entertainment Experience
+            </h2>
+            <p className="text-sm sm:text-base text-white/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] animate-fade-in-up">
+              Luxury • Sophistication • Unforgettable Nights
             </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
-            {/* Updated schedule ride button to open form */}
-            <button
-              onClick={() => setShowRideForm(true)}
-              className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
-            >
-              SCHEDULE FREE RIDE
-            </button>
-            <button
-              onClick={() => setAgeVerificationOpen(true)}
-              className="bg-black/80 hover:bg-black text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 border border-red-500/50"
-            >
-              21+ ONLY • NO ID NO ENTRY
-            </button>
+            <div className="mt-4 text-red-400 font-bold text-lg animate-pulse">21+ ONLY • VALID ID REQUIRED</div>
           </div>
         </div>
-      </section>
 
-      {/* Special Events Section */}
-      <section id="events" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
-            SPECIAL EVENTS
-          </h2>
-          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
-            Exclusive events and premium entertainment experiences
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/reserved-table-sign.jpeg"
-                  alt="Premium Table Service"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Premium Table
-                      <br />
-                      Service
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Exclusive table service with our most sophisticated entertainers, featuring personalized attention and
-                premium service in our private VIP areas.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/red-carpet-entrance.jpeg"
-                  alt="VIP Treatment"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      VIP
-                      <br />
-                      Treatment
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Experience the ultimate VIP treatment with red carpet service, exclusive access, and personalized
-                attention from arrival to departure.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/silver-champagne-bucket.jpeg"
-                  alt="Champagne Saturdays"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Champagne
-                      <br />
-                      Saturdays
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Celebrate Saturday nights with premium champagne service, featuring top-shelf bottles and elegant
-                presentation in our luxury atmosphere.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/heritage-intimate-artistry.jpeg"
-                  alt="Private Experiences"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Private
-                      <br />
-                      Experiences
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Exclusive private experiences with sophisticated entertainment in our most intimate and luxurious
-                settings with personalized attention.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="bachelor" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/30 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
-            BACHELOR PARTY EXPERIENCE
-          </h2>
-          <p className="text-gray-300 text-lg mb-12 max-w-4xl mx-auto animate-on-scroll animate-delay-100">
-            The ultimate bachelor party destination featuring exclusive entertainment, custom DJ experiences, and
-            unforgettable group activities
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-business-text.jpeg"
-                  alt="VIP Transportation Experience"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      VIP Arrival
-                      <br />
-                      Experience
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Premium transportation and VIP arrival experience with red carpet treatment and exclusive entrance to
-                set the tone for an unforgettable night.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-experience.jpeg"
-                  alt="Single File Lap Dance Experience"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Single File
-                      <br />
-                      Experience
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Exclusive single file lap dance experience where the groom and party enjoy personalized entertainment
-                from our most captivating performers in sequence.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/bachelor-party-floor-experience.jpeg"
-                  alt="Interactive Group Activities"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Interactive
-                      <br />
-                      Activities
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Hilarious interactive group activities including playful challenges and entertainment games that create
-                unforgettable memories for the entire party.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/men-vip-table-entertainment.jpeg"
-                  alt="DJ Entertainment & Groom Spotlight"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      DJ & Groom
-                      <br />
-                      Spotlight
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Custom DJ entertainment with hilarious commentary and jokes, plus the groom's special spotlight moment
-                with fully clothed dancing and celebration.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-12 bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 rounded-lg p-8 max-w-4xl mx-auto animate-on-scroll animate-delay-500">
-            <h3 className="text-2xl font-bold text-white mb-6">Complete Bachelor Party Package</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-              <div>
-                <h4 className="text-lg font-bold text-red-400 mb-3">What's Included:</h4>
-                <ul className="text-gray-300 space-y-2">
-                  <li>• VIP arrival and red carpet treatment</li>
-                  <li>• Premium bottle service and reserved seating</li>
-                  <li>• Single file lap dance experience</li>
-                  <li>• Interactive group entertainment activities</li>
-                  <li>• Custom DJ with personalized music and comedy</li>
-                  <li>• Groom's special spotlight celebration</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-lg font-bold text-red-400 mb-3">The Experience:</h4>
-                <p className="text-gray-300 leading-relaxed">
-                  From the moment you arrive with VIP transportation to the final toast, our bachelor party experience
-                  is designed to create legendary memories. Our professional entertainers and DJ work together to ensure
-                  every moment is filled with laughter, excitement, and unforgettable entertainment that the groom and
-                  entire party will remember forever.
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Updated schedule ride button to call club popup and changed age requirement to 19+ */}
+        <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4 animate-on-scroll animate-delay-600">
+          <button
+            onClick={() => setShowCallPopup(true)}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 shadow-[0_0_25px_rgba(239,68,68,0.5)] hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] hover:scale-105 hover:-translate-y-2 animate-pulse-border"
+          >
+            CALL THE CLUB
+          </button>
         </div>
       </section>
 
       {/* Sports Events Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
+      <section id="sports" className="relative py-20 overflow-hidden">
+        <iframe
+          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          style={{ opacity: 0.2 }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
             SPORTS EVENTS
           </h2>
-          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
-            Watch the biggest games with premium entertainment, VIP service, and exclusive viewing experiences
+          <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+            Watch your favorite teams while enjoying premium entertainment and VIP service
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-100">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/nbc-sunday-night-football.jpeg"
-                  alt="Sunday Night Football"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Sunday Night
-                      <br />
-                      Football
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Experience Sunday Night Football with premium seating, VIP service, and exclusive entertainment during
-                every game.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-200">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/waste-management-phoenix-open.jpeg"
-                  alt="Waste Management Phoenix Open"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Phoenix Open
-                      <br />
-                      Weekend
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Join us for the legendary Waste Management Phoenix Open weekend with special events and exclusive
-                parties.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-300">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/nba-playoffs.png"
-                  alt="NBA Playoffs"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      NBA
-                      <br />
-                      Playoffs
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Experience the intensity of NBA Playoffs with premium viewing, VIP table service, and exclusive
-                entertainment.
-              </p>
-            </div>
-
-            <div className="text-center space-y-4 animate-on-scroll animate-delay-400">
-              <div className="relative mb-4 flex justify-center">
-                <Image
-                  src="/images/hbo-boxing-ppv.jpeg"
-                  alt="HBO Boxing Pay-Per-View"
-                  width={280}
-                  height={180}
-                  className="rounded-lg object-cover shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-                  quality={95}
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="relative group cursor-pointer mx-auto" onClick={() => setShowReservationPopup(true)}>
-                <div className="relative w-72 h-44 overflow-hidden mx-auto">
-                  <Image
-                    src="/images/ornate-red-gold-frame.jpeg"
-                    alt="Elegant Frame"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center px-6">
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider text-center drop-shadow-[0_0_8px_rgba(0,0,0,0.8)] z-10 leading-tight">
-                      Boxing
-                      <br />
-                      Pay-Per-View
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm px-2 max-w-xs mx-auto">
-                Watch the biggest boxing matches and UFC events with premium seating, VIP service, and exclusive
-                entertainment.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* VIP & Heritage Section */}
-      <section id="vip" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 animate-on-scroll">
-            VIP & HERITAGE
-          </h2>
-          <p className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-100">
-            Experience the ultimate in luxury and sophisticated entertainment
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-7xl mx-auto">
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-200">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/pole-dancer-floor-red-lighting.jpeg"
-                  alt="VIP Sensual Experience"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">VIP SENSUAL EXPERIENCE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Exclusive intimate experiences with our most sophisticated entertainers in luxurious private settings.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-300">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/heritage-refined-aesthetic.jpeg"
-                  alt="Heritage Refined Aesthetic"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">HERITAGE REFINED AESTHETIC</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Sophisticated aesthetic experiences showcasing the refined artistry that defines our heritage of
-                  excellence.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-400">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/entertainer-flowing-hair.jpeg"
-                  alt="Artistic Performance"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">ARTISTIC PERFORMANCE</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Witness breathtaking artistic performances featuring flowing movement and dramatic lighting effects.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 rounded-lg overflow-hidden hover:border-red-500/60 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] animate-on-scroll animate-delay-500">
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src="/images/luxury-black-leather-seating.jpeg"
-                  alt="VIP Luxury Seating"
-                  fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
-                />
-                {/* Fixed watermark positioning to be inside image bounds */}
-                <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={20}
-                    height={20}
-                    className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                  />
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">VIP LUXURY SEATING</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Experience ultimate comfort in our luxury leather seating areas with premium bottle service and
-                  exclusive entertainment.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reviews Section */}
-      <section className="py-16 sm:py-24 bg-gradient-to-b from-card/30 to-background relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-black text-center mb-16 text-white drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-on-scroll">
-            GUEST REVIEWS
-          </h2>
-
-          <div className="text-center mb-8 animate-on-scroll animate-delay-100">
-            <div className="flex justify-center items-center gap-2 mb-4">
-              <Image
-                src="/images/skin-logo-red-silhouette.png"
-                alt="Skin Cabaret"
-                width={30}
-                height={30}
-                className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"
-              />
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-red-400 text-2xl">
-                    ★
-                  </span>
-                ))}
-              </div>
-              <span className="text-white text-xl font-bold">5.0 Stars</span>
-            </div>
-            <p className="text-white/80 text-lg">Phoenix New Times "Best Of" Winner • 15 Years of Excellence</p>
-          </div>
-
-          <div className="overflow-hidden relative">
-            <div className="flex animate-scroll-reviews gap-8 mb-8">
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Michael R. - Phoenix</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Best bachelor party venue in Scottsdale! Professional staff, amazing atmosphere, and the
-                  entertainment was top-notch. Highly recommend for special occasions."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">James K. - Chicago</h4>
-                    <div className="flex text-red-400 text-sm">★★★★☆ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Solid establishment with beautiful performers. Parking was a bit challenging but the valet service
-                  helped. The VIP packages are worth it if you're celebrating something special."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Robert M. - Atlanta</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Business trip to Phoenix and colleagues recommended this place. Outstanding venue! Professional
-                  atmosphere, talented entertainers, and excellent service. Perfect for corporate entertainment."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Tyler B. - Flagstaff</h4>
-                    <div className="flex text-red-400 text-sm">★★★★☆ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Drove down from Flagstaff for my 30th birthday. Great experience overall! The DJ was hilarious and
-                  kept the energy up all night. Only complaint is the drinks are a bit pricey, but expected for the
-                  quality."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Carlos M. - Las Vegas</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "I've been to clubs all over Vegas and this place holds its own! The bachelor party package was
-                  incredible and the performers were absolutely stunning. Worth the trip from Nevada!"
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">David L. - San Diego</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "VIP treatment from start to finish. Clean facility, professional dancers, and excellent customer
-                  service. The champagne service was a nice touch. Worth every penny for a special night out."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Alex P. - Mesa</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Local here and this is my go-to spot for special occasions. The staff knows how to treat regulars
-                  right. Always clean, always professional, always a good time. Highly recommend the table service!"
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Marcus T. - Tempe</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Brought my business partners here for a client dinner. Impressed everyone! The service was impeccable
-                  and the atmosphere was exactly what we needed for a successful evening."
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Kevin R. - Glendale</h4>
-                    <div className="flex text-red-400 text-sm">★★★★☆ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Great spot for a guys night out. The entertainment is top-notch and the staff is very professional.
-                  Security makes you feel safe and the drinks are strong. Will definitely be back!"
-                </p>
-              </div>
-
-              <div className="flex-shrink-0 bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-6 rounded-lg w-80">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center mr-4 border border-red-500/40">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin"
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold">Brandon M. - Chandler</h4>
-                    <div className="flex text-red-400 text-sm">★★★★★ • Skin Website</div>
-                  </div>
-                </div>
-                <p className="text-white/90 text-sm">
-                  "Celebrated my promotion here with coworkers. The VIP experience was incredible and the performers
-                  were absolutely stunning. Professional atmosphere with world-class entertainment. Highly recommend!"
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Add Review Form */}
-          <div className="mt-12 bg-gradient-to-br from-red-900/20 to-black border border-red-500/40 p-8 rounded-lg max-w-2xl mx-auto animate-on-scroll animate-delay-300">
-            <h3 className="text-2xl font-bold text-white mb-6 text-center">Share Your Experience</h3>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="bg-black/50 border border-red-500/40 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-red-400 focus:outline-none"
-                />
-                <select className="bg-black/50 border border-red-500/40 rounded-lg px-4 py-3 text-white focus:border-red-400 focus:outline-none">
-                  <option value="">Rating</option>
-                  <option value="5">★★★★★ (5 stars)</option>
-                  <option value="4">★★★★☆ (4 stars)</option>
-                  <option value="3">★★★☆☆ (3 stars)</option>
-                </select>
-              </div>
-              <textarea
-                placeholder="Tell us about your experience..."
-                rows={4}
-                className="w-full bg-black/50 border border-red-500/40 rounded-lg px-4 py-3 text-white placeholder-white/60 focus:border-red-400 focus:outline-none"
-              ></textarea>
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 stagger-animation">
+            {[
+              {
+                title: "Sunday Night Football",
+                image: "/images/nbc-sunday-night-football.jpeg",
+                description:
+                  "Premium viewing experience with exclusive entertainment during every Sunday Night Football game.",
+                delay: 0,
+              },
+              {
+                title: "Championship Boxing",
+                image: "/images/hbo-boxing-ppv.jpeg",
+                description:
+                  "Watch major boxing events on our big screens with VIP table service and live entertainment.",
+                delay: 1,
+              },
+              {
+                title: "NBA Playoffs",
+                image: "/images/nba-playoffs.png",
+                description:
+                  "Experience playoff intensity with our sophisticated entertainment and premium atmosphere.",
+                delay: 2,
+              },
+              {
+                title: "Golf Tournaments",
+                image: "/images/waste-management-phoenix-open.jpeg",
+                description: "Celebrate major golf events including the Waste Management Phoenix Open with style.",
+                delay: 3,
+              },
+            ].map((event, index) => (
+              <div
+                key={index}
+                className="group relative bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden border border-red-500/30 hover-lift card-glow animate-on-scroll"
+                style={{ "--stagger": event.delay }}
               >
-                Submit Review
-              </button>
-            </form>
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={event.image || "/placeholder.svg"}
+                    alt={event.title}
+                    fill
+                    className="object-cover transition-all duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors duration-300">
+                    {event.title}
+                  </h3>
+                  <p className="text-white/70 text-sm leading-relaxed">{event.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Awards Section - Above Footer */}
-      <section className="py-16 bg-gradient-to-b from-black to-red-900/20 animate-on-scroll">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-white mb-8">Awards & Recognition</h2>
-          <div className="flex flex-wrap justify-center gap-8">
-            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-red-500/30">
-              <div className="text-yellow-400 text-2xl mb-2">★★★★★</div>
-              <h3 className="text-white font-bold">Phoenix New Times</h3>
-              <p className="text-red-400">Best Of Winner - 5 Years Running</p>
-            </div>
-            <div className="bg-black/60 backdrop-blur-sm rounded-lg p-6 border border-red-500/30">
-              <div className="text-red-400 text-3xl mb-2">15</div>
-              <h3 className="text-white font-bold">Years</h3>
-              <p className="text-red-400">Premier Entertainment Service</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Customer Experiences Section */}
+      <section className="relative py-20 overflow-hidden">
+        <iframe
+          className="absolute inset-0 w-screen h-full object-cover scale-110"
+          src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          style={{ opacity: 0.15 }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/70" />
 
-      <div className="mb-16 animate-on-scroll animate-delay-150">
-        <div className="text-center">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full max-w-4xl mx-auto rounded-lg shadow-[0_0_30px_rgba(239,68,68,0.3)]"
-            poster="/images/recruitment-poster.jpeg"
-          >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-rNIZvRIi8EsuVWIjfHu1stPEMTFy6F.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-
-      {/* Hiring Section */}
-      <section id="hiring" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-950/20 to-black">
-        <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <div className="text-center mb-16 animate-on-scroll">
-            <h2 className="text-5xl font-black text-white mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
-              BE PART OF THE EXPERIENCE
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll text-center">
+              CUSTOMER EXPERIENCES
             </h2>
-            <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">
-              Join Scottsdale's premier adult entertainment destination. We're seeking professional, licensed
-              entertainers and experienced hospitality staff.
+            <p className="text-lg sm:text-xl text-white/80 text-center mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+              Hear what our guests have to say about their unforgettable nights at Skin Cabaret
             </p>
           </div>
 
-          {/* Staff Positions */}
-          <div className="mb-16 animate-on-scroll animate-delay-200">
-            <h3 className="text-3xl font-bold text-white mb-8 text-center drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]">
-              ENTERTAINER POSITIONS
-            </h3>
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 p-8 rounded-lg">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <h4 className="text-xl font-bold text-white mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
-                    Requirements
-                  </h4>
-                  <ul className="text-white space-y-2 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-                    <li>• Must be 21+ with valid government-issued ID</li>
-                    <li>• Arizona adult entertainment license required</li>
-                    <li>• Professional dance or performance experience preferred</li>
-                    <li>• Excellent physical fitness and flexibility</li>
-                    <li>• Reliable transportation and flexible schedule</li>
-                    <li>• Professional attitude and appearance standards</li>
-                  </ul>
+          {/* Scrolling Reviews */}
+          <div className="relative mb-12 animate-on-scroll animate-delay-400">
+            <div className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide">
+              {allReviews.map((review, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-80 bg-gradient-to-b from-gray-900 to-black rounded-lg p-6 border border-red-500/30 hover-lift card-glow"
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-black border-2 border-red-500 rounded-full flex items-center justify-center mr-4">
+                      <span className="text-white font-bold text-sm">SKIN</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white">{review.name}</h4>
+                      <p className="text-sm text-white/60">{review.location}</p>
+                      <p className="text-xs text-white/40">Skin Website</p>
+                    </div>
+                  </div>
+                  <div className="flex mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className={`w-5 h-5 ${i < review.rating ? "text-red-500" : "text-gray-600"}`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">{review.review}</p>
                 </div>
-                <div>
-                  <h4 className="text-xl font-bold text-white mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
-                    What We Offer
-                  </h4>
-                  <ul className="text-white space-y-2 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-                    <li>• Competitive compensation and tips</li>
-                    <li>• Flexible scheduling options</li>
-                    <li>• Professional, safe working environment</li>
-                    <li>• Ongoing training and development</li>
-                    <li>• Health and wellness support</li>
-                    <li>• Career advancement opportunities</li>
-                  </ul>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Staff Positions */}
-          <div className="mb-16 animate-on-scroll animate-delay-200">
-            <h3 className="text-3xl font-bold text-white mb-8 text-center drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]">
-              STAFF POSITIONS
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 p-6 rounded-lg text-center">
-                <div className="relative mb-4">
-                  <Image
-                    src="/images/vip-brunette-bar.jpeg"
-                    alt="Female Bartender Position"
-                    width={200}
-                    height={150}
-                    className="rounded-lg object-cover w-full h-32"
+          {/* Add Review Button */}
+          <div className="text-center animate-on-scroll animate-delay-600">
+            <button
+              onClick={() => setShowReviewForm(!showReviewForm)}
+              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/50"
+            >
+              {showReviewForm ? "Cancel" : "Share Your Experience"}
+            </button>
+
+            {/* Review Form */}
+            {showReviewForm && (
+              <form
+                onSubmit={handleReviewSubmit}
+                className="mt-8 max-w-2xl mx-auto bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    value={newReview.name}
+                    onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+                    className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
+                    required
                   />
-                  {/* Fixed watermark positioning to be inside image bounds */}
-                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin Cabaret"
-                      width={20}
-                      height={20}
-                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                    />
+                  <input
+                    type="text"
+                    placeholder="Your Location"
+                    value={newReview.location}
+                    onChange={(e) => setNewReview({ ...newReview, location: e.target.value })}
+                    className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all duration-300"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label className="block text-white mb-2">Rating</label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setNewReview({ ...newReview, rating: star })}
+                        className={`w-8 h-8 ${star <= newReview.rating ? "text-red-500" : "text-gray-600"} hover:text-red-400 transition-colors duration-200`}
+                      >
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <h4 className="text-lg font-bold text-white mb-2">FEMALE BARTENDERS</h4>
-                <p className="text-white/80 text-sm">Professional female bartenders for VIP service</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 p-6 rounded-lg text-center">
-                <div className="relative mb-4">
-                  <Image
-                    src="/images/staff-hostess-red.jpeg"
-                    alt="Hostess Position"
-                    width={200}
-                    height={150}
-                    className="rounded-lg object-cover w-full h-32"
-                  />
-                  {/* Fixed watermark positioning to be inside image bounds */}
-                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin Cabaret"
-                      width={20}
-                      height={20}
-                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                    />
-                  </div>
+                <textarea
+                  placeholder="Share your experience..."
+                  value={newReview.review}
+                  onChange={(e) => setNewReview({ ...newReview, review: e.target.value })}
+                  rows={4}
+                  className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 transition-all duration-300 mb-6"
+                  required
+                ></textarea>
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/50"
+                  >
+                    Submit Review
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowReviewForm(false)}
+                    className="px-6 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                  >
+                    Cancel
+                  </button>
                 </div>
-                <h4 className="text-lg font-bold text-white mb-2">HOSTESS</h4>
-                <p className="text-white/80 text-sm">VIP guest relations and premium customer service</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 p-6 rounded-lg text-center">
-                <div className="relative mb-4">
-                  <Image
-                    src="/images/staff-cocktail-server.jpeg"
-                    alt="Cocktail Server Position"
-                    width={200}
-                    height={150}
-                    className="rounded-lg object-cover w-full h-32"
-                  />
-                  {/* Fixed watermark positioning to be inside image bounds */}
-                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin Cabaret"
-                      width={20}
-                      height={20}
-                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                    />
-                  </div>
-                </div>
-                <h4 className="text-lg font-bold text-white mb-2">COCKTAIL SERVERS</h4>
-                <p className="text-white/80 text-sm">High-energy service staff for floor and VIP areas</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 p-6 rounded-lg text-center">
-                <div className="relative mb-4">
-                  <Image
-                    src="/images/staff-security-guard.jpeg"
-                    alt="Security Position"
-                    width={200}
-                    height={150}
-                    className="rounded-lg object-cover w-full h-32"
-                  />
-                  {/* Fixed watermark positioning to be inside image bounds */}
-                  <div className="absolute bottom-1 right-1 bg-black/70 rounded px-1.5 py-0.5 backdrop-blur-sm">
-                    <Image
-                      src="/images/skin-logo-red-silhouette.png"
-                      alt="Skin Cabaret"
-                      width={20}
-                      height={20}
-                      className="object-contain drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]"
-                    />
-                  </div>
-                </div>
-                <h4 className="text-lg font-bold text-white mb-2">SECURITY</h4>
-                <p className="text-white/80 text-sm">Professional security personnel with hospitality focus</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center animate-on-scroll animate-delay-300">
-            <div className="bg-gradient-to-br from-red-900/40 to-black/90 backdrop-blur-sm border border-red-500/40 p-8 rounded-lg max-w-2xl mx-auto">
-              <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
-                Ready to Join Our Team?
-              </h3>
-              <p className="text-white mb-6 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">
-                Submit your application today and become part of Scottsdale's premier adult entertainment experience.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-8 py-3">
-                  <a href="mailto:careers@skincabaret.com" className="text-white">
-                    Apply Now
-                  </a>
-                </Button>
-                <Button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-8 py-3">
-                  <a href="tel:+14804257546" className="text-white">
-                    Call (480) 425-7546
-                  </a>
-                </Button>
-              </div>
-            </div>
+              </form>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-red-900/10 to-black">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-4xl font-black text-center mb-16 text-white drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-on-scroll">
-            FREQUENTLY ASKED QUESTIONS
+      {/* Hiring Section */}
+      <section id="careers" className="relative py-20 overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          className="absolute inset-0 w-screen h-full object-cover scale-110 opacity-15"
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/70" />
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
+            JOIN OUR TEAM
           </h2>
-
-          <div className="space-y-6">
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-100">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">What is the dress code?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    We maintain an upscale dress code. Men: collared shirts, dress pants, and dress shoes required. No
-                    athletic wear, shorts, sandals, or hats. Women: upscale casual to formal attire. Management reserves
-                    the right to refuse entry for inappropriate attire.
-                  </p>
-                </div>
-              </details>
+          <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+            Be part of Scottsdale's premier adult entertainment experience. We're looking for professional, dedicated
+            individuals to join our elite team.
+          </p>
+          <div className="text-center mb-12 animate-on-scroll animate-delay-400">
+            <div className="inline-block bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-lg font-bold text-lg shadow-lg">
+              Must be 19+ to work • Open 7 days a week
             </div>
+          </div>
 
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-200">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">Do I need reservations?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    Reservations are not required but highly recommended, especially for VIP seating, bachelor parties,
-                    and weekend visits. Call (480) 425-7546 to secure your preferred seating and avoid wait times.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-300">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">What payment methods do you accept?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    We accept cash, all major credit cards (Visa, MasterCard, American Express, Discover), and debit
-                    cards. ATM is available on-site for your convenience.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-400">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">Are cameras and phones allowed?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    No photography, video recording, or phone use is permitted inside the club. This policy protects the
-                    privacy of our performers and guests. Phones must be stored away during your visit.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-500">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">What VIP services are available?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    Our VIP packages include private seating areas, bottle service, dedicated waitstaff, and exclusive
-                    access to our most talented performers. Bachelor party packages feature custom DJ entertainment and
-                    group activities.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-600">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">Is there parking available?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    Yes, we offer complimentary parking for all guests. Our secure parking area is well-lit and
-                    monitored for your safety and convenience.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-700">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">What are your policies on conduct?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    We maintain a zero-tolerance policy for inappropriate behavior, harassment, or disrespect toward
-                    performers or staff. All interactions must be consensual and professional. Violation of our policies
-                    results in immediate removal without refund.
-                  </p>
-                </div>
-              </details>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 rounded-lg overflow-hidden animate-on-scroll animate-delay-800">
-              <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-red-900/20 transition-colors">
-                  <h3 className="text-xl font-bold text-white">Do you offer group packages?</h3>
-                  <ChevronDown className="w-5 h-5 text-white group-open:rotate-180 transition-transform" />
-                </summary>
-                <div className="px-6 pb-6">
-                  <p className="text-white/90 leading-relaxed">
-                    Yes! We specialize in bachelor parties, corporate events, and group celebrations. Our packages
-                    include reserved seating, bottle service, and customized entertainment. Contact us at (480) 425-7546
-                    to discuss your group's needs.
-                  </p>
-                </div>
-              </details>
-            </div>
+          {/* Hiring Positions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {[
+              {
+                title: "Bartenders",
+                icon: (
+                  <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7.5 7L10.5 4h3l3 3v2l-7 7-7-7V7h5zm4.5-2a1 1 0 100 2 1 1 0 000-2z" />
+                  </svg>
+                ),
+                description:
+                  "Create exceptional cocktails and provide outstanding customer service in our upscale environment.",
+                delay: 0,
+              },
+              {
+                title: "Hostess",
+                icon: (
+                  <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7.5V9C15 9.8 15.2 10.6 15.7 11.3L17.5 14H19L21 9ZM9 13.5V22H11V16H13V22H15V13.5L12 8L9 13.5Z" />
+                  </svg>
+                ),
+                description: "Welcome guests and ensure they have an exceptional experience from arrival to departure.",
+                delay: 1,
+              },
+              {
+                title: "Cocktail Servers",
+                icon: (
+                  <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18 14H6V12H18M19 10H5C4.45 10 4 10.45 4 11V15C4 15.55 4.45 16 5 16H19C19.55 16 20 15.55 20 15V11C20 10.45 19.55 10 19 10M12 2C13.1 2 14 2.9 14 4S13.1 6 12 6 10 5.1 10 4 10.9 2 12 2M8 7H16V9H8V7Z" />
+                  </svg>
+                ),
+                description: "Provide premium beverage service to our VIP clientele with professionalism and charm.",
+                delay: 2,
+              },
+              {
+                title: "Security",
+                icon: (
+                  <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z" />
+                  </svg>
+                ),
+                description: "Maintain a safe and secure environment while providing excellent customer service.",
+                delay: 3,
+              },
+            ].map((position, index) => (
+              <div
+                key={index}
+                className="group bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 hover-lift card-glow animate-on-scroll"
+                style={{ "--stagger": position.delay }}
+              >
+                {position.icon}
+                <h3 className="text-xl font-bold text-white mb-4 group-hover:text-red-400 transition-colors duration-300">
+                  {position.title}
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed mb-6">{position.description}</p>
+                <button
+                  onClick={() => setShowHiringForm(true)}
+                  className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Apply Now
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 sm:py-20 bg-gradient-to-b from-black via-red-900/10 to-black">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-black mb-12 text-white drop-shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-on-scroll">
-            CONTACT & LOCATION
-          </h2>
+      <section id="contact" className="relative py-20 overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          className="absolute inset-0 w-screen h-full object-cover scale-110 opacity-15"
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/70" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-8 rounded-lg animate-on-scroll animate-delay-100">
-              <h3 className="text-2xl font-bold text-white mb-4">Visit Us</h3>
-              <div className="text-white/90 space-y-2">
-                <p className="text-lg font-semibold">Skin Cabaret</p>
-                <p>1137 N Scottsdale Rd.</p>
-                <p>Scottsdale, AZ 85251</p>
-                <p className="mt-4 text-red-400">Open 7 Days a Week</p>
-                <p className="text-white/80">Mon-Sun: 8:00 PM - 5:00 AM</p>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">CONTACT US</h2>
+          <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+            Ready to experience Scottsdale's premier adult entertainment? Get in touch with us today.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll backdrop-blur-sm">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300">
+                <svg
+                  className="w-8 h-8 text-white drop-shadow-lg"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
               </div>
+              <h3 className="text-xl font-bold text-white mb-2">Phone</h3>
+              <p className="text-white/80">(480) 425-7546</p>
             </div>
 
-            <div className="bg-gradient-to-br from-red-900/30 to-black border border-red-500/40 p-8 rounded-lg animate-on-scroll animate-delay-200">
-              <h3 className="text-2xl font-bold text-white mb-4">Get In Touch</h3>
-              <div className="text-white/90 space-y-3">
-                <div className="flex items-center justify-center gap-3">
-                  <Phone className="w-5 h-5 text-red-400" />
-                  <a href="tel:4804257546" className="text-lg hover:text-red-400 transition-colors">
-                    (480) 425-7546
-                  </a>
-                </div>
-                <div className="flex items-center justify-center gap-3">
-                  <Mail className="w-5 h-5 text-red-400" />
-                  <a href="mailto:info@skincabaret.com" className="hover:text-red-400 transition-colors">
-                    info@skincabaret.com
-                  </a>
-                </div>
-                <p className="text-white/80 mt-4">Call ahead for VIP reservations and bachelor party packages</p>
+            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll animate-delay-200 backdrop-blur-sm">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300">
+                <svg
+                  className="w-8 h-8 text-white drop-shadow-lg"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </div>
+              <h3 className="text-xl font-bold text-white mb-2">Hours</h3>
+              <p className="text-white/80">
+                7 Days a Week
+                <br />8 PM - 5 AM
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll animate-delay-400 backdrop-blur-sm">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300">
+                <svg
+                  className="w-8 h-8 text-white drop-shadow-lg"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Location</h3>
+              <p className="text-white/80">Scottsdale, Arizona</p>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="bg-gradient-to-br from-red-900/20 to-black border border-red-500/30 rounded-lg p-8 animate-on-scroll animate-delay-300">
-            <h3 className="text-2xl font-bold text-white mb-6">Follow & Share</h3>
+      {/* Social Media Section */}
+      <section className="relative py-20 overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&start=30"
+          className="absolute inset-0 w-screen h-full object-cover scale-110 opacity-12"
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/75" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
-                <div className="flex justify-center gap-4">
-                  <a
-                    href="https://instagram.com/skincabaret"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(236,72,153,0.5)]"
-                  >
-                    <Instagram className="w-6 h-6" />
-                  </a>
-                  <a
-                    href="https://facebook.com/skincabaret"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-                  >
-                    <Facebook className="w-6 h-6" />
-                  </a>
-                  <a
-                    href="https://twitter.com/skincabaret"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gradient-to-r from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(75,85,99,0.5)]"
-                  >
-                    <Twitter className="w-6 h-6" />
-                  </a>
-                </div>
-                <p className="text-white/70 text-sm mt-4">
-                  Stay updated with exclusive events, performer spotlights, and VIP offers
-                </p>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">FOLLOW US</h2>
+          <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+            Stay connected with Skin Cabaret for exclusive content, events, and behind-the-scenes moments
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
+            <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 hover-lift card-glow animate-on-scroll hover:scale-105 transition-all duration-500">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
               </div>
+              <h3 className="text-xl font-bold text-white mb-4">Facebook</h3>
+              <p className="text-white/70 mb-6">Follow us for exclusive content and updates</p>
+              <button
+                onClick={() =>
+                  shareOnSocial(
+                    "facebook",
+                    "Check out Skin Cabaret - Scottsdale's Premier Adult Entertainment",
+                    window.location.href,
+                  )
+                }
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                Follow Us
+              </button>
+            </div>
 
-              <div>
-                <h4 className="text-lg font-semibold text-white mb-4">Share Your Experience</h4>
-                <div className="flex justify-center gap-3">
-                  <button
-                    onClick={() =>
-                      shareOnSocial(
-                        "facebook",
-                        "Amazing night at Skin Cabaret - Scottsdale's premier adult entertainment!",
-                        "https://skincabaret.com",
-                      )
-                    }
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-2"
-                  >
-                    <Facebook className="w-4 h-4" />
-                    Share
-                  </button>
-                  <button
-                    onClick={() =>
-                      shareOnSocial(
-                        "twitter",
-                        "Incredible VIP experience at @SkinCabaret! #ScottsdaleNightlife #VIPExperience",
-                        "https://skincabaret.com",
-                      )
-                    }
-                    className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-2"
-                  >
-                    <Twitter className="w-4 h-4" />
-                    Tweet
-                  </button>
-                  <button
-                    onClick={() =>
-                      shareOnSocial(
-                        "instagram",
-                        "Check out Skin Cabaret - Scottsdale's most sophisticated entertainment venue!",
-                        "https://skincabaret.com",
-                      )
-                    }
-                    className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-2"
-                  >
-                    <Instagram className="w-4 h-4" />
-                    Copy Link
-                  </button>
-                </div>
-                <p className="text-white/70 text-sm mt-4">Share your VIP experience and tag us for exclusive perks</p>
+            <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 hover-lift card-glow animate-on-scroll animate-delay-200 hover:scale-105 transition-all duration-500">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                </svg>
               </div>
+              <h3 className="text-xl font-bold text-white mb-4">Twitter</h3>
+              <p className="text-white/70 mb-6">Get the latest news and behind-the-scenes content</p>
+              <button
+                onClick={() =>
+                  shareOnSocial(
+                    "twitter",
+                    "Check out Skin Cabaret - Scottsdale's Premier Adult Entertainment",
+                    window.location.href,
+                  )
+                }
+                className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                Follow Us
+              </button>
+            </div>
+
+            <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 hover-lift card-glow animate-on-scroll animate-delay-400 hover:scale-105 transition-all duration-500">
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Instagram</h3>
+              <p className="text-white/70 mb-6">VIP experiences and special events</p>
+              <button
+                onClick={() =>
+                  shareOnSocial(
+                    "instagram",
+                    "Check out Skin Cabaret - Scottsdale's Premier Adult Entertainment",
+                    window.location.href,
+                  )
+                }
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+              >
+                Follow Us
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-red-600/30 py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center mb-4">
-                <Image
-                  src="/images/skin-logo-red-silhouette.png"
-                  alt="Skin Cabaret Logo"
-                  width={40}
-                  height={40}
-                  className="mr-3"
-                />
-                <div>
-                  <div className="text-white font-bold text-lg">SKIN CABARET</div>
-                  <div className="text-white/60 text-sm">Scottsdale's Premier Adult Entertainment</div>
-                </div>
-              </div>
-              <p className="text-white/70 text-sm mb-4 leading-relaxed">
-                For over 15 years, Skin Cabaret has been Scottsdale's premier destination for sophisticated adult
-                entertainment. We are committed to providing a safe, professional, and luxurious environment for our
-                guests and performers.
+      <footer className="bg-black border-t border-red-500/30 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+              <Image
+                src="/images/skin-logo-red-silhouette.png"
+                alt="Skin Cabaret"
+                width={60}
+                height={60}
+                className="mx-auto md:mx-0 mb-4 animate-float"
+              />
+              <p className="text-white/60 text-sm">
+                Scottsdale's premier adult entertainment venue offering sophisticated experiences and VIP service.
               </p>
-              <div className="text-white/60 text-sm">
-                <p className="mb-1">21+ Only • Valid ID Required</p>
-                <p>Dress Code Enforced</p>
-              </div>
-
-              <div className="mt-6">
-                <h5 className="text-white font-semibold mb-3">Follow Us</h5>
-                <div className="flex gap-3">
-                  <a
-                    href="https://instagram.com/skincabaret"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white/60 hover:text-pink-400 transition-colors"
-                  >
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  <a
-                    href="https://facebook.com/skincabaret"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white/60 hover:text-blue-400 transition-colors"
-                  >
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a
-                    href="https://twitter.com/skincabaret"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white/60 hover:text-gray-400 transition-colors"
-                  >
-                    <Twitter className="w-5 h-5" />
-                  </a>
-                </div>
-              </div>
             </div>
 
             <div>
-              <h5 className="text-white font-semibold mb-3">Contact</h5>
-              <div className="text-white/70 text-sm space-y-2">
-                <p>1137 N Scottsdale Rd.</p>
-                <p>Scottsdale, AZ 85257</p>
-                <p>Phone: (480) 425-7546</p>
-                <p>Email: info@skincabaret.com</p>
-              </div>
+              <h4 className="text-white font-bold mb-4">Contact Info</h4>
+              <p className="text-white/80 text-sm mb-2">Phone: (480) 425-7546</p>
+              <p className="text-white/80 text-sm mb-2">Hours: 7 Days a Week</p>
+              <p className="text-white/80 text-sm">8 PM - 5 AM</p>
             </div>
 
             <div>
-              <h5 className="text-white font-semibold mb-3">Hours & Info</h5>
-              {/* Updated hours in footer */}
-              <div className="text-white/70 text-sm space-y-2">
-                <p>Open 7 Days a Week: 8:00 PM - 5:00 AM</p>
-                <p>Closed Sunday & Monday</p>
-                <p className="pt-2 border-t border-white/10">
-                  <a href="/privacy" className="hover:text-white transition-colors">
-                    Privacy Policy
-                  </a>
-                </p>
-                <p>
-                  <a href="/terms" className="hover:text-white transition-colors">
-                    Terms of Service
-                  </a>
-                </p>
-                <p>
-                  <a href="/careers" className="hover:text-white transition-colors">
-                    Careers
-                  </a>
-                </p>
-              </div>
+              <h4 className="text-white font-bold mb-4">Requirements</h4>
+              <p className="text-white/80 text-sm mb-2">21+ to enter</p>
+              <p className="text-white/80 text-sm mb-2">Valid ID required</p>
+              <p className="text-white/80 text-sm">Professional attire preferred</p>
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-6">
-            <div className="flex flex-col md:flex-row justify-between items-center text-white/60 text-sm">
-              <div className="mb-2 md:mb-0">© 2025-2026 Skin Cabaret. All rights reserved.</div>
-              <div className="text-white/40">
-                Website design by <span className="text-white/60">Glyphlock LLC</span>
-              </div>
-            </div>
+          <div className="border-t border-red-500/30 mt-8 pt-8 text-center">
+            <p className="text-white/60 text-sm">
+              © 2025-2026 Skin Cabaret. All rights reserved. Must be 21+ to enter.
+            </p>
           </div>
         </div>
       </footer>
 
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-        <button
-          onClick={() => setChatbotOpen(true)}
-          className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
-          title="Need Help? Chat with us!"
-        >
-          <svg
-            className="w-6 h-6 group-hover:scale-110 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-            />
-          </svg>
-        </button>
-      </div>
-
-      {/* Back to Top Button */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-6 left-6 bg-red-600/80 hover:bg-red-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-40"
-        title="Back to Top"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-      </button>
-
-      {ageVerificationOpen && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-          <div className="bg-black rounded-lg p-8 max-w-md text-center">
-            <Image
-              src="/images/skin-logo-red-silhouette.png"
-              alt="Skin Cabaret Logo"
-              width={100}
-              height={100}
-              className="mx-auto mb-4"
-            />
-            <h2 className="text-2xl font-bold text-white mb-4">21+ ONLY</h2>
-            <p className="text-white/80 mb-6">
-              You must be 21 years or older to enter this site. Please verify your age to proceed.
-            </p>
-            <div className="flex justify-center gap-4">
-              <Button onClick={handleAgeVerification} className="bg-red-600 hover:bg-red-700 text-white">
-                I am 21+
-              </Button>
-              <Button
-                onClick={() => (window.location.href = "https://google.com")}
-                className="bg-gray-800 hover:bg-gray-900 text-white"
-              >
-                Exit
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {reservationPopup.isOpen && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-          <div className="bg-black rounded-lg p-8 max-w-md">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">
-              {reservationPopup.type === "bachelor"
-                ? "BACHELOR PARTY INQUIRY"
-                : reservationPopup.type === "vip"
-                  ? "VIP RESERVATION"
-                  : reservationPopup.type === "table"
-                    ? "TABLE RESERVATION"
-                    : reservationPopup.type === "champagne"
-                      ? "CHAMPAGNE SATURDAYS"
-                      : "RESERVATION INQUIRY"}
-            </h2>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Name"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Email"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-white text-sm font-bold mb-2">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Phone"
-                />
-              </div>
-              <div>
-                <label htmlFor="date" className="block text-white text-sm font-bold mb-2">
-                  Preferred Date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                />
-              </div>
-              <div>
-                <label htmlFor="guests" className="block text-white text-sm font-bold mb-2">
-                  Number of Guests
-                </label>
-                <input
-                  type="number"
-                  id="guests"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Number of Guests"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-white text-sm font-bold mb-2">
-                  Additional Information
-                </label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Message"
-                ></textarea>
-              </div>
-              <div className="flex items-center justify-between">
-                <Button
-                  className="bg-red-600 hover:bg-red-700 text-white"
-                  type="button"
-                  onClick={() => setReservationPopup({ isOpen: false, type: "bachelor" })}
-                >
-                  Cancel
-                </Button>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white" type="submit">
-                  Submit
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {eventCalendarOpen && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-          <div className="bg-black rounded-lg p-8 max-w-4xl">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Event Calendar</h2>
-            {/* Calendar Component Here */}
-            <div className="text-white">Calendar Component Placeholder</div>
-            <div className="flex justify-end mt-4">
-              <Button onClick={() => setEventCalendarOpen(false)} className="bg-red-600 hover:bg-red-700 text-white">
-                Close
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {eventBookingOpen && selectedEvent && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center overflow-y-auto">
-          <div className="bg-black rounded-lg p-8 max-w-md w-full mx-4">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">{selectedEvent.title}</h2>
-            <div className="mb-4">
-              <Image
-                src={selectedEvent.image || "/placeholder.svg"}
-                alt={selectedEvent.title}
-                width={400}
-                height={300}
-                className="rounded-lg object-cover w-full h-64"
+      {/* Pickup Service Popup */}
+      {showPickupPopup && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 relative">
+            <div className="relative h-32 mb-6 rounded-lg overflow-hidden">
+              <iframe
+                className="absolute inset-0 w-full h-full object-cover"
+                src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&title=0&byline=0&portrait=0&color=ffffff&autopause=0&annotations=0&branding=0"
+                allow="autoplay; encrypted-media"
               />
             </div>
-            <div className="text-white/80 mb-4">
-              <div>
-                <strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString()}
-              </div>
-              <div>
-                <strong>Time:</strong> {selectedEvent.time}
-              </div>
-              <div>
-                <strong>Price:</strong> {selectedEvent.price}
-              </div>
-              <div>
-                <strong>Description:</strong> {selectedEvent.description}
-              </div>
-            </div>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
-                  Name
-                </label>
+
+            <form onSubmit={handlePickupSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
-                  id="name"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Name"
+                  placeholder="Name"
+                  value={pickupForm.name}
+                  onChange={(e) => setPickupForm({ ...pickupForm, name: e.target.value })}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
                 />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Email"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-white text-sm font-bold mb-2">
-                  Phone
-                </label>
                 <input
                   type="tel"
-                  id="phone"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Your Phone"
+                  placeholder="Phone"
+                  value={pickupForm.phone}
+                  onChange={(e) => setPickupForm({ ...pickupForm, phone: e.target.value })}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
                 />
               </div>
-              <div>
-                <label htmlFor="tickets" className="block text-white text-sm font-bold mb-2">
-                  Number of Tickets
-                </label>
+              <input
+                type="text"
+                placeholder="Pickup Address"
+                value={pickupForm.address}
+                onChange={(e) => setPickupForm({ ...pickupForm, address: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <div className="grid grid-cols-2 gap-4">
                 <input
-                  type="number"
-                  id="tickets"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-black/50 border-red-500/50 text-white"
-                  placeholder="Number of Tickets"
+                  type="date"
+                  value={pickupForm.date}
+                  onChange={(e) => setPickupForm({ ...pickupForm, date: e.target.value })}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
+                />
+                <input
+                  type="time"
+                  value={pickupForm.time}
+                  onChange={(e) => setPickupForm({ ...pickupForm, time: e.target.value })}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <Button
-                  className="bg-red-600 hover:bg-red-700 text-white"
-                  type="button"
-                  onClick={() => setEventBookingOpen(false)}
+              <input
+                type="number"
+                placeholder="Number of Passengers"
+                value={pickupForm.passengers}
+                onChange={(e) => setPickupForm({ ...pickupForm, passengers: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <textarea
+                placeholder="Special Requests"
+                value={pickupForm.requests}
+                onChange={(e) => setPickupForm({ ...pickupForm, requests: e.target.value })}
+                rows={3}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+              ></textarea>
+
+              <div className="text-center text-white/80 text-sm mb-4">
+                Or call us after 8pm: <span className="text-red-400 font-bold">(480) 425-7546</span>
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
                 >
-                  Cancel
-                </Button>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white" type="submit">
-                  Book Event
-                </Button>
+                  Schedule Pickup
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowPickupPopup(false)}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                >
+                  Maybe Later
+                </button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {galleryOpen && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-          <div className="relative max-w-4xl max-h-screen">
-            <Image
-              src={galleryImages[currentImageIndex] || "/placeholder.svg"}
-              alt={`Gallery Image ${currentImageIndex + 1}`}
-              width={1200}
-              height={800}
-              className="object-contain rounded-lg"
-            />
-            <div className="absolute top-4 left-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
-              {currentImageIndex + 1} / {galleryImages.length}
+      {/* Call Club Popup */}
+      {showCallPopup && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 text-center">
+            <div className="relative h-32 mb-6 rounded-lg overflow-hidden">
+              <Image
+                src="/images/customer-chicago.png"
+                alt="Girls Girls Girls Neon Sign"
+                fill
+                className="object-cover"
+              />
             </div>
-            <div className="absolute top-1/2 left-4 -translate-y-1/2">
-              <button
-                onClick={prevImage}
-                className="bg-black/60 text-white p-3 rounded-full hover:bg-black/80 transition-colors"
+            <h3 className="text-2xl font-bold text-white mb-4">Call Skin Cabaret</h3>
+            <p className="text-white/80 mb-6">
+              Ready to experience Scottsdale's premier adult entertainment? Call us now for reservations and
+              information.
+            </p>
+            <div className="text-3xl font-bold text-red-400 mb-6">(480) 425-7546</div>
+            <p className="text-white/60 text-sm mb-6">Open 7 days a week • 8 PM - 5 AM</p>
+            <div className="flex gap-4">
+              <a
+                href="tel:+14804257546"
+                className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
               >
-                &lt;
-              </button>
-            </div>
-            <div className="absolute top-1/2 right-4 -translate-y-1/2">
+                Call Now
+              </a>
               <button
-                onClick={nextImage}
-                className="bg-black/60 text-white p-3 rounded-full hover:bg-black/80 transition-colors"
+                onClick={() => setShowCallPopup(false)}
+                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
               >
-                &gt;
-              </button>
-            </div>
-            <div className="absolute bottom-4 right-4">
-              <Button onClick={() => setGalleryOpen(false)} className="bg-red-600 hover:bg-red-700 text-white">
                 Close
-              </Button>
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {showBackToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-red-600/80 hover:bg-red-600 text-white p-3 rounded-full shadow-lg transition-colors z-40"
-        >
-          ↑
-        </button>
+      {/* Hiring Form Popup */}
+      {showHiringForm && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Join Our Team</h3>
+            <form onSubmit={handleHiringSubmit} className="space-y-4">
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={hiringForm.name}
+                onChange={(e) => setHiringForm({ ...hiringForm, name: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={hiringForm.phone}
+                onChange={(e) => setHiringForm({ ...hiringForm, phone: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={hiringForm.email}
+                onChange={(e) => setHiringForm({ ...hiringForm, email: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Age"
+                value={hiringForm.age}
+                onChange={(e) => setHiringForm({ ...hiringForm, age: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <select
+                value={hiringForm.position}
+                onChange={(e) => setHiringForm({ ...hiringForm, position: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              >
+                <option value="">Select Position</option>
+                <option value="bartender">Bartender</option>
+                <option value="hostess">Hostess</option>
+                <option value="server">Cocktail Server</option>
+                <option value="security">Security</option>
+              </select>
+              <textarea
+                placeholder="Previous Experience"
+                value={hiringForm.experience}
+                onChange={(e) => setHiringForm({ ...hiringForm, experience: e.target.value })}
+                rows={4}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              ></textarea>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="ageConfirm"
+                  checked={hiringForm.ageConfirm}
+                  onChange={(e) => setHiringForm({ ...hiringForm, ageConfirm: e.target.checked })}
+                  className="w-4 h-4 text-red-600 bg-gray-800 border-gray-600 rounded focus:ring-red-500"
+                  required
+                />
+                <label htmlFor="ageConfirm" className="text-white/80 text-sm">
+                  I confirm I am 19+ years old and eligible to work
+                </label>
+              </div>
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                >
+                  Submit Application
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowHiringForm(false)}
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
 
+      {/* Chatbot */}
       {chatbotOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 h-96 bg-black border border-red-500/50 rounded-lg shadow-2xl flex flex-col">
-          {/* Header */}
-          <div className="bg-red-600 text-white p-4 rounded-t-lg flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-red-600 font-bold text-sm">SKIN</span>
-              </div>
-              <span className="font-bold">Skin Cabaret Assistant</span>
+        <div className="fixed bottom-20 right-4 w-80 h-96 bg-gradient-to-b from-gray-900 to-black rounded-lg border border-red-500/30 shadow-2xl z-40 flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b border-red-500/30">
+            <div className="flex items-center space-x-2">
+              <Image
+                src="/images/skin-logo-red-silhouette.png"
+                alt="Skin Cabaret"
+                width={24}
+                height={24}
+                className="animate-pulse"
+              />
+              <span className="text-white font-bold">Skin Assistant</span>
             </div>
-            <button onClick={() => setChatbotOpen(false)} className="text-white hover:text-red-200 transition-colors">
+            <button onClick={() => setChatbotOpen(false)} className="text-white/60 hover:text-white transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {chatMessages.map((msg, index) => (
               <div key={index} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-xs p-3 rounded-lg ${
-                    msg.type === "user" ? "bg-red-600 text-white" : "bg-gray-800 text-white border border-red-500/30"
+                  className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
+                    msg.type === "user" ? "bg-red-600 text-white" : "bg-gray-700 text-white border border-red-500/30"
                   }`}
                 >
-                  <p className="text-sm">{msg.message}</p>
+                  {msg.message}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Quick Responses */}
-          <div className="p-2 border-t border-red-500/30">
-            <div className="grid grid-cols-2 gap-1 mb-2">
+          <div className="p-4 border-t border-red-500/30">
+            <div className="flex flex-wrap gap-2 mb-3">
               {quickResponses.map((response, index) => (
                 <button
                   key={index}
                   onClick={() => handleQuickResponse(response)}
-                  className="text-xs bg-red-600/20 text-red-400 hover:bg-red-600/40 hover:text-white p-2 rounded transition-colors"
+                  className="text-xs bg-gray-700 hover:bg-red-600 text-white px-2 py-1 rounded transition-colors"
                 >
                   {response}
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Input */}
-          <form onSubmit={handleChatSubmit} className="p-4 border-t border-red-500/30">
-            <div className="flex gap-2">
+            <form onSubmit={handleChatSubmit} className="flex space-x-2">
               <input
                 type="text"
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+                placeholder="Ask about our services..."
+                className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-red-500 focus:outline-none"
               />
               <button
                 type="submit"
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors"
+                className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth="2"
                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                   />
                 </svg>
               </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {showRideForm && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-red-500/50 rounded-lg p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold text-white">Schedule Free Ride</h3>
-              <button onClick={() => setShowRideForm(false)} className="text-white hover:text-red-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={rideFormData.name}
-                onChange={(e) => setRideFormData({ ...rideFormData, name: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={rideFormData.phone}
-                onChange={(e) => setRideFormData({ ...rideFormData, phone: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={rideFormData.email}
-                onChange={(e) => setRideFormData({ ...rideFormData, email: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="text"
-                placeholder="Pickup Address"
-                value={rideFormData.pickupAddress}
-                onChange={(e) => setRideFormData({ ...rideFormData, pickupAddress: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="time"
-                placeholder="Pickup Time"
-                value={rideFormData.pickupTime}
-                onChange={(e) => setRideFormData({ ...rideFormData, pickupTime: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <select
-                value={rideFormData.groupSize}
-                onChange={(e) => setRideFormData({ ...rideFormData, groupSize: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              >
-                <option value="">Group Size</option>
-                <option value="1-4">1-4 People</option>
-                <option value="5-8">5-8 People</option>
-                <option value="9-12">9-12 People</option>
-                <option value="13+">13+ People</option>
-              </select>
-              <textarea
-                placeholder="Special Requests (Optional)"
-                value={rideFormData.specialRequests}
-                onChange={(e) => setRideFormData({ ...rideFormData, specialRequests: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500 h-20 resize-none"
-              />
-              <button
-                type="submit"
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded font-semibold transition-colors"
-              >
-                SUBMIT RIDE REQUEST
-              </button>
             </form>
           </div>
         </div>
       )}
 
-      {showHiringForm && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-red-500/50 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold text-white">Employment Application</h3>
-              <button onClick={() => setShowHiringForm(false)} className="text-white hover:text-red-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <form className="space-y-4">
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={hiringFormData.name}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, name: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                value={hiringFormData.phone}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, phone: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                value={hiringFormData.email}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, email: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <input
-                type="number"
-                placeholder="Age (Must be 21+)"
-                value={hiringFormData.age}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, age: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              />
-              <textarea
-                placeholder="Previous Experience"
-                value={hiringFormData.experience}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, experience: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500 h-20 resize-none"
-              />
-              <select
-                value={hiringFormData.availability}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, availability: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500"
-              >
-                <option value="">Availability</option>
-                <option value="weekends">Weekends Only</option>
-                <option value="weekdays">Weekdays Only</option>
-                <option value="full-time">Full Time</option>
-                <option value="part-time">Part Time</option>
-              </select>
-              <textarea
-                placeholder="References (Optional)"
-                value={hiringFormData.references}
-                onChange={(e) => setHiringFormData({ ...hiringFormData, references: e.target.value })}
-                className="w-full bg-gray-800 text-white border border-red-500/30 rounded px-3 py-2 focus:outline-none focus:border-red-500 h-20 resize-none"
-              />
-              <button
-                type="submit"
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded font-semibold transition-colors"
-              >
-                SUBMIT APPLICATION
-              </button>
-            </form>
-          </div>
-        </div>
+      {/* Chatbot Button */}
+      <button
+        onClick={() => setChatbotOpen(!chatbotOpen)}
+        className="fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-30 animate-pulse-glow"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
+        </svg>
+      </button>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-20 right-4 w-12 h-12 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-red-600 hover:to-red-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-30 animate-bounce"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
       )}
     </div>
   )
