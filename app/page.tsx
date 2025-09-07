@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function SkinCabaretSite() {
   const [scrolled, setScrolled] = useState(false)
@@ -713,38 +714,112 @@ export default function SkinCabaretSite() {
                 height={40}
                 className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-float"
               />
-              <div className="flex space-x-4 sm:space-x-6">
+              <div className="hidden md:flex space-x-6">
                 <button
                   onClick={() => scrollToSection("home")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
                   Home
                 </button>
                 <button
                   onClick={() => scrollToSection("events")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
-                  Sports
+                  Sports Events
                 </button>
                 <button
                   onClick={() => scrollToSection("hiring")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
                   Careers
                 </button>
                 <button
                   onClick={() => scrollToSection("contact")}
-                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110 text-sm sm:text-base"
+                  className="text-white hover:text-red-400 transition-all duration-300 hover:scale-110"
                 >
                   Contact
                 </button>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="text-white/80 text-xs sm:text-sm animate-pulse">
+            <div className="hidden md:flex items-center space-x-4">
+              <div className="text-white/80 text-sm animate-pulse">
                 {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </div>
+            </div>
+
+            <div className="md:hidden">
+              <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white focus:outline-none">
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <button
+                onClick={() => {
+                  scrollToSection("home")
+                  setMobileMenuOpen(false)
+                }}
+                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Home
+              </button>
+              <button
+                onClick={() => {
+                  scrollToSection("events")
+                  setMobileMenuOpen(false)
+                }}
+                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Events
+              </button>
+              <button
+                onClick={() => {
+                  scrollToSection("bachelor")
+                  setMobileMenuOpen(false)
+                }}
+                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Bachelor Parties
+              </button>
+              <button
+                onClick={() => {
+                  scrollToSection("vip")
+                  setMobileMenuOpen(false)
+                }}
+                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                VIP & Heritage
+              </button>
+              <button
+                onClick={() => {
+                  scrollToSection("hiring")
+                  setMobileMenuOpen(false)
+                }}
+                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Careers
+              </button>
+              <button
+                onClick={() => {
+                  scrollToSection("contact")
+                  setMobileMenuOpen(false)
+                }}
+                className="text-white hover:bg-red-500/20 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Contact
+              </button>
+              <Link
+                href="/demos"
+                className="text-yellow-400 hover:text-yellow-300 block px-3 py-2 rounded-md text-base font-medium font-semibold"
+              >
+                Demos
+              </Link>
             </div>
           </div>
         </div>
@@ -753,28 +828,29 @@ export default function SkinCabaretSite() {
       {/* Logo Section - Above Hero */}
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover scale-100 sm:scale-105 object-center transform rotate-180"
-          style={{ playbackRate: 0.7, opacity: 0.85, filter: "contrast(1.2) saturate(1.3) brightness(1.1)" }}
+          className="absolute inset-0 w-full h-full object-cover scale-125 transform -translate-x-[12.5%] -translate-y-[12.5%]"
+          style={{ playbackRate: 0.7, opacity: 0.6 }}
         >
-          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3764561831-preview-oAHs5G7wZYHOtVVWUihrv00M7Y8BfW.mp4" type="video/mp4" />
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-qQA5J32Xs8vmZNT2wm97AOezvBTPbB.webm" type="video/webm" />
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-jqRqb6rf8i9YFjT6RFomZi1aAjNVSA.webm" type="video/webm" />
+          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%203-RTTz79kdeCoRBdybhGCX7ut3ABz3ow.webm" type="video/webm" />
         </video>
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
 
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <div className="animate-float">
             <Image
               src="/images/skin-logo-red-silhouette.png"
               alt="Skin Cabaret Logo"
-              width={300}
-              height={300}
-              className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 object-contain animate-logo-glow drop-shadow-[0_0_40px_rgba(239,68,68,0.8)] hover:scale-110 transition-all duration-500"
+              width={400}
+              height={400}
+              className="object-contain animate-logo-glow drop-shadow-[0_0_40px_rgba(239,68,68,0.8)] hover:scale-110 transition-all duration-500"
               quality={95}
             />
           </div>
@@ -782,64 +858,41 @@ export default function SkinCabaretSite() {
 
         <div className="absolute bottom-20 left-0 right-0 z-20 text-center px-4 animate-on-scroll animate-delay-400">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white animate-pulse-glow mb-3">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white animate-pulse-glow mb-3">
               Scottsdale's Premier Adult Entertainment Experience
             </h2>
             <p className="text-sm sm:text-base text-white/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] animate-fade-in-up">
               Luxury • Sophistication • Unforgettable Nights
             </p>
-            <div className="mt-4 text-red-400 font-bold text-base sm:text-lg animate-pulse">
-              21+ ONLY • VALID ID REQUIRED
-            </div>
+            <div className="mt-4 text-red-400 font-bold text-lg animate-pulse">21+ ONLY • VALID ID REQUIRED</div>
           </div>
         </div>
 
+        {/* Updated schedule ride button to call club popup and changed age requirement to 19+ */}
         <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4 animate-on-scroll animate-delay-600">
           <button
             onClick={() => setShowCallPopup(true)}
-            className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 shadow-[0_0_30px_rgba(239,68,68,0.6)] hover:shadow-[0_0_40px_rgba(239,68,68,0.9)] hover:scale-110 hover:-translate-y-3 animate-pulse border-2 border-red-400 relative overflow-hidden"
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 shadow-[0_0_25px_rgba(239,68,68,0.5)] hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] hover:scale-105 hover:-translate-y-2 animate-pulse-border"
           >
-            <span className="relative z-10">📞 CALL NOW: (480) 425-7546</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-red-700/20 animate-pulse"></div>
+            CALL THE CLUB
           </button>
         </div>
       </section>
 
-      <div className="fixed inset-0 z-0">
-        <div className="relative w-full h-full">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ opacity: 0.3, filter: "brightness(1.2) contrast(1.3)" }}
-          >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1091807873-preview-zW588cFcagntpn3IALejt1MJGYYAE9.mp4" type="video/mp4" />
-          </video>
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
-            style={{ opacity: 0.2, filter: "brightness(1.4) contrast(1.2) hue-rotate(10deg)" }}
-          >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3760724501-preview-fFcADqh1zPbMt7hKi5fK4VbhKGv5AZ.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div className="absolute inset-0 bg-black/50"></div>
-      </div>
-
       {/* Sports Events Section */}
-      <section id="sports" className="relative py-16 sm:py-20 overflow-hidden z-10 bg-black/20">
+      <section id="sports" className="relative py-20 overflow-hidden">
+        <iframe
+          className="absolute inset-0 w-full h-full object-cover scale-125 transform -translate-x-[12.5%] -translate-y-[12.5%]"
+          src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          style={{ opacity: 0.2 }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/60"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
             SPORTS EVENTS
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-white/80 mb-8 sm:mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
+          <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
             Watch your favorite teams while enjoying premium entertainment and VIP service
           </p>
 
@@ -849,31 +902,34 @@ export default function SkinCabaretSite() {
                 title: "Sunday Night Football",
                 image: "/images/nbc-sunday-night-football.jpeg",
                 description:
-                  "Premium viewing experience with exclusive entertainment during every Sunday Night Football game. VIP table service and live performances create the ultimate game day atmosphere.",
+                  "Premium viewing experience with exclusive entertainment during every Sunday Night Football game.",
+                delay: 0,
               },
               {
                 title: "Championship Boxing",
                 image: "/images/hbo-boxing-ppv.jpeg",
                 description:
-                  "Watch major boxing events on our big screens with VIP table service and live entertainment. Experience the intensity of championship fights in luxury.",
+                  "Watch major boxing events on our big screens with VIP table service and live entertainment.",
+                delay: 1,
               },
               {
                 title: "NBA Playoffs",
                 image: "/images/nba-playoffs.png",
                 description:
-                  "Experience playoff intensity with our sophisticated entertainment and premium atmosphere. Championship celebrations and team spirit come alive.",
+                  "Experience playoff intensity with our sophisticated entertainment and premium atmosphere.",
+                delay: 2,
               },
               {
                 title: "Golf Tournaments",
                 image: "/images/waste-management-phoenix-open.jpeg",
-                description:
-                  "Celebrate major golf events including the Waste Management Phoenix Open with style. Tournament viewing with premium hospitality and entertainment.",
+                description: "Celebrate major golf events including the Waste Management Phoenix Open with style.",
+                delay: 3,
               },
             ].map((event, index) => (
               <div
                 key={index}
-                className="group relative bg-gradient-to-br from-gray-900/90 to-black/90 rounded-xl overflow-hidden border border-red-500/30 hover-lift card-glow animate-on-scroll backdrop-blur-sm"
-                style={{ "--stagger": index }}
+                className="group relative bg-gradient-to-b from-gray-900 to-black rounded-lg overflow-hidden border border-red-500/30 hover-lift card-glow animate-on-scroll"
+                style={{ "--stagger": event.delay }}
               >
                 <div className="relative h-48 overflow-hidden">
                   <Image
@@ -882,24 +938,13 @@ export default function SkinCabaretSite() {
                     fill
                     className="object-cover transition-all duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute bottom-2 right-2 bg-black/70 rounded px-2 py-1 border border-red-500/50">
-                    <span className="text-red-400 font-bold text-xs">SKIN</span>
-                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 </div>
-
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors duration-300">
                     {event.title}
                   </h3>
-                  <p className="text-white/80 text-sm leading-relaxed mb-4">{event.description}</p>
-
-                  <button
-                    onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/25"
-                  >
-                    Reserve Table
-                  </button>
+                  <p className="text-white/70 text-sm leading-relaxed">{event.description}</p>
                 </div>
               </div>
             ))}
@@ -908,7 +953,15 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Customer Experiences Section */}
-      <section className="relative py-16 sm:py-20 overflow-hidden z-10 bg-black/20">
+      <section className="relative py-20 overflow-hidden">
+        <iframe
+          className="absolute inset-0 w-full h-full object-cover scale-125 transform -translate-x-[12.5%] -translate-y-[12.5%]"
+          src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          style={{ opacity: 0.15 }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/70" />
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll text-center">
@@ -1035,7 +1088,17 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Hiring Section */}
-      <section id="careers" className="relative py-16 sm:py-20 overflow-hidden z-10 bg-black/20">
+      <section id="careers" className="relative py-20 overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/a63-JQocRsc?autoplay=1&mute=1&loop=1&playlist=a63-JQocRsc&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          className="absolute inset-0 w-full h-full object-cover scale-125 opacity-15"
+          style={{
+            transform: "translate(-12.5%, -12.5%)",
+          }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/70" />
+
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">
             JOIN OUR TEAM
@@ -1118,7 +1181,17 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative py-16 sm:py-20 overflow-hidden z-10 bg-black/20">
+      <section id="contact" className="relative py-20 overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1"
+          className="absolute inset-0 w-full h-full object-cover scale-125 opacity-15"
+          style={{
+            transform: "translate(-12.5%, -12.5%)",
+          }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/70" />
+
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">CONTACT US</h2>
           <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
@@ -1126,33 +1199,24 @@ export default function SkinCabaretSite() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll animate-delay-100 backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 to-transparent animate-pulse"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300 animate-pulse">
-                  <svg
-                    className="w-8 h-8 text-white drop-shadow-lg"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21L6.16 11.37a11.045 11.045 0 005.516 5.516l1.983-4.064a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">📞 Call Now</h3>
-                <p className="text-red-400 font-bold text-lg mb-3">(480) 425-7546</p>
-                <a
-                  href="tel:+14804257546"
-                  className="inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+            <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll backdrop-blur-sm">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300">
+                <svg
+                  className="w-8 h-8 text-white drop-shadow-lg"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Call Now
-                </a>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
               </div>
+              <h3 className="text-xl font-bold text-white mb-2">Phone</h3>
+              <p className="text-white/80">(480) 425-7546</p>
             </div>
 
             <div className="bg-gradient-to-b from-gray-900/90 to-black/90 rounded-lg p-8 border border-red-500/30 hover-lift animate-on-scroll animate-delay-200 backdrop-blur-sm">
@@ -1208,7 +1272,17 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Social Media Section */}
-      <section className="relative py-16 sm:py-20 overflow-hidden z-10 bg-black/20">
+      <section className="relative py-20 overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/pMTC0djh5BA?autoplay=1&mute=1&loop=1&playlist=pMTC0djh5BA&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&start=30"
+          className="absolute inset-0 w-full h-full object-cover scale-125 opacity-12"
+          style={{
+            transform: "translate(-12.5%, -12.5%)",
+          }}
+          allow="autoplay; encrypted-media"
+        />
+        <div className="absolute inset-0 bg-black/75" />
+
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">FOLLOW US</h2>
           <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
@@ -1241,11 +1315,11 @@ export default function SkinCabaretSite() {
             <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 hover-lift card-glow animate-on-scroll animate-delay-200 hover:scale-105 transition-all duration-500">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                 <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Twitter</h3>
-              <p className="text-white/70 mb-6">Follow us for updates and exclusive content</p>
+              <p className="text-white/70 mb-6">Get the latest news and behind-the-scenes content</p>
               <button
                 onClick={() =>
                   shareOnSocial(
@@ -1261,13 +1335,13 @@ export default function SkinCabaretSite() {
             </div>
 
             <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 hover-lift card-glow animate-on-scroll animate-delay-400 hover:scale-105 transition-all duration-500">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                 <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.845 3.883a6.263 6.263 0 00-4.716 1.723 6.305 6.305 0 00-1.73 4.731 6.234 6.234 0 001.719 4.693 6.277 6.277 0 004.708 1.714 6.271 6.271 0 004.722-1.735 6.225 6.225 0 001.709-4.693 6.268 6.268 0 00-1.726-4.715 6.304 6.304 0 00-4.71-1.705zm-2.774 8.39c-.218.713-.66 1.355-1.25 1.824-.59.47-1.282.72-2.027.72-.745 0-1.438-.25-2.028-.72-.59-.469-1.032-1.111-1.25-1.824-.218-.714-.172-1.47.137-2.13.309-.66.872-1.15 1.54-1.37.668-.22 1.395-.17 2.108.13.713.309 1.276.8 1.585 1.46.309.66.354 1.41.136 2.13zm8.033-1.354c0 .94-.765 1.705-1.705 1.705h-1.137c-.94 0-1.705-.765-1.705-1.705v-4.263c0-.94.765-1.705 1.705-1.705h1.137c.94 0 1.705.765 1.705 1.705v4.263zm-6.395 3.838c.834 0 1.513-.68 1.513-1.513 0-.834-.679-1.513-1.513-1.513-.834 0-1.513.679-1.513 1.513 0 .833.679 1.513 1.513 1.513zM22.27 1.73c-2.463 0-4.715.964-6.413 2.662-1.698 1.698-2.662 3.95-2.662 6.413 0 2.463.964 4.715 2.662 6.413 1.698 1.698 3.95 2.662 6.413 2.662 2.463 0 4.715-.964 6.413-2.662 1.698-1.698 2.662-3.95 2.662-6.413 0-2.463-.964-4.715-2.662-6.413-1.698-1.698-3.95-2.662-6.413-2.662zm0 17.05c-2.89 0-5.513-1.13-7.578-3.195-2.065-2.065-3.195-4.688-3.195-7.578 0-2.89 1.13-5.513 3.195-7.578 2.065-2.065 4.688-3.195 7.578-3.195 2.89 0 5.513 1.13 7.578 3.195 2.065 2.065 3.195 4.688 3.195 7.578 0 2.89-1.13 5.513-3.195 7.578-2.065 2.065-4.688 3.195-7.578 3.195z" />
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Instagram</h3>
-              <p className="text-white/70 mb-6">Follow us for exclusive content and updates</p>
+              <p className="text-white/70 mb-6">VIP experiences and special events</p>
               <button
                 onClick={() =>
                   shareOnSocial(
@@ -1276,7 +1350,7 @@ export default function SkinCabaretSite() {
                     window.location.href,
                   )
                 }
-                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
                 Follow Us
               </button>
@@ -1286,249 +1360,259 @@ export default function SkinCabaretSite() {
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 bg-black/80 border-t border-red-500/30 z-10">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-white/60 text-sm">© {new Date().getFullYear()} Skin Cabaret. All rights reserved.</p>
+      <footer className="bg-black border-t border-red-500/30 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+              <Image
+                src="/images/skin-logo-red-silhouette.png"
+                alt="Skin Cabaret"
+                width={60}
+                height={60}
+                className="mx-auto md:mx-0 mb-4 animate-float"
+              />
+              <p className="text-white/60 text-sm">
+                Scottsdale's premier adult entertainment venue offering sophisticated experiences and VIP service.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-4">Contact Info</h4>
+              <p className="text-white/80 text-sm mb-2">Phone: (480) 425-7546</p>
+              <p className="text-white/80 text-sm mb-2">Hours: 7 Days a Week</p>
+              <p className="text-white/80 text-sm">8 PM - 5 AM</p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-4">Requirements</h4>
+              <p className="text-white/80 text-sm mb-2">21+ to enter</p>
+              <p className="text-white/80 text-sm mb-2">Valid ID required</p>
+              <p className="text-white/80 text-sm">Professional attire preferred</p>
+            </div>
+          </div>
+
+          <div className="border-t border-red-500/30 mt-8 pt-8 text-center">
+            <p className="text-white/60 text-sm">
+              © 2025-2026 Skin Cabaret. All rights reserved. Must be 21+ to enter.
+            </p>
+          </div>
         </div>
       </footer>
 
-      {/* Age Verification Popup */}
-      {showAgeVerification && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-white mb-4">Age Verification</h2>
-            <p className="text-white/80 mb-6">
-              You must be 21 years or older to enter this site. Please verify your age.
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => setAgeVerificationOpen(false)}
-                className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
-              >
-                I am 21+
-              </button>
-              <button
-                onClick={() => (window.location.href = "https://www.google.com")}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
-              >
-                I am Under 21
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Call Popup */}
-      {showCallPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-white mb-4">Call Us Now</h2>
-            <p className="text-white/80 mb-6">Speak directly with our team for reservations, VIP packages, and more.</p>
-            <div className="flex justify-center gap-4">
-              <a
-                href="tel:+14804257546"
-                className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Call (480) 425-7546
-              </a>
-              <button
-                onClick={() => setShowCallPopup(false)}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Pickup Popup */}
+      {/* Pickup Service Popup */}
       {showPickupPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-white mb-4">Complimentary Pickup</h2>
-            <p className="text-white/80 mb-6">
-              Enjoy a complimentary pickup from your location. Please fill out the form below.
-            </p>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 relative">
+            <div className="relative h-32 mb-6 rounded-lg overflow-hidden">
+              <iframe
+                className="absolute inset-0 w-full h-full object-cover"
+                src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&fs=0&cc_load_policy=0&disablekb=1&playsinline=1&title=0&byline=0&portrait=0&color=ffffff&autopause=0"
+                allow="autoplay; encrypted-media"
+              />
+            </div>
+
             <form onSubmit={handlePickupSubmit} className="space-y-4">
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Name</label>
+              <div className="grid grid-cols-2 gap-4">
                 <input
                   type="text"
+                  placeholder="Name"
                   value={pickupForm.name}
                   onChange={(e) => setPickupForm({ ...pickupForm, name: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Your Name"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
                 />
-              </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Phone</label>
                 <input
                   type="tel"
+                  placeholder="Phone"
                   value={pickupForm.phone}
                   onChange={(e) => setPickupForm({ ...pickupForm, phone: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Your Phone Number"
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
                 />
               </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Address</label>
+              <input
+                type="text"
+                placeholder="Pickup Address"
+                value={pickupForm.address}
+                onChange={(e) => setPickupForm({ ...pickupForm, address: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <div className="grid grid-cols-2 gap-4">
                 <input
-                  type="text"
-                  value={pickupForm.address}
-                  onChange={(e) => setPickupForm({ ...pickupForm, address: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Pickup Address"
+                  type="date"
+                  value={pickupForm.date}
+                  onChange={(e) => setPickupForm({ ...pickupForm, date: e.target.value })}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
+                />
+                <input
+                  type="time"
+                  value={pickupForm.time}
+                  onChange={(e) => setPickupForm({ ...pickupForm, time: e.target.value })}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  required
                 />
               </div>
+              <input
+                type="number"
+                placeholder="Number of Passengers"
+                value={pickupForm.passengers}
+                onChange={(e) => setPickupForm({ ...pickupForm, passengers: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <textarea
+                placeholder="Special Requests"
+                value={pickupForm.requests}
+                onChange={(e) => setPickupForm({ ...pickupForm, requests: e.target.value })}
+                rows={3}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+              ></textarea>
+
+              <div className="text-center text-white/80 text-sm mb-4">
+                Or call us after 8pm: <span className="text-red-400 font-bold">(480) 425-7546</span>
+              </div>
+
               <div className="flex gap-4">
-                <div>
-                  <label className="block text-white text-sm font-bold mb-2">Date</label>
-                  <input
-                    type="date"
-                    value={pickupForm.date}
-                    onChange={(e) => setPickupForm({ ...pickupForm, date: e.target.value })}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  />
-                </div>
-                <div>
-                  <label className="block text-white text-sm font-bold mb-2">Time</label>
-                  <input
-                    type="time"
-                    value={pickupForm.time}
-                    onChange={(e) => setPickupForm({ ...pickupForm, time: e.target.value })}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Passengers</label>
-                <input
-                  type="number"
-                  value={pickupForm.passengers}
-                  onChange={(e) => setPickupForm({ ...pickupForm, passengers: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Number of Passengers"
-                />
-              </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Special Requests</label>
-                <textarea
-                  value={pickupForm.requests}
-                  onChange={(e) => setPickupForm({ ...pickupForm, requests: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Any special requests?"
-                />
-              </div>
-              <div className="flex justify-center gap-4">
                 <button
                   type="submit"
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
                 >
-                  Request Pickup
+                  Schedule Pickup
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowPickupPopup(false)}
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
                 >
-                  Cancel
+                  Maybe Later
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Call Club Popup */}
+      {showCallPopup && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 text-center">
+            <div className="relative h-32 mb-6 rounded-lg overflow-hidden">
+              <Image
+                src="/images/customer-chicago.png"
+                alt="Girls Girls Girls Neon Sign"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-4">Call Skin Cabaret</h3>
+            <p className="text-white/80 mb-6">
+              Ready to experience Scottsdale's premier adult entertainment? Call us now for reservations and
+              information.
+            </p>
+            <div className="text-3xl font-bold text-red-400 mb-6">(480) 425-7546</div>
+            <p className="text-white/60 text-sm mb-6">Open 7 days a week • 8 PM - 5 AM</p>
+            <div className="flex gap-4">
+              <a
+                href="tel:+14804257546"
+                className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
+              >
+                Call Now
+              </a>
+              <button
+                onClick={() => setShowCallPopup(false)}
+                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Hiring Form Popup */}
       {showHiringForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md">
-          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 border border-red-500/30 max-w-md w-full">
-            <h2 className="text-2xl font-bold text-white mb-4">Apply Now</h2>
-            <p className="text-white/80 mb-6">Join our team! Please fill out the form below to apply.</p>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg p-8 max-w-md w-full border border-red-500/30 max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Join Our Team</h3>
             <form onSubmit={handleHiringSubmit} className="space-y-4">
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Name</label>
-                <input
-                  type="text"
-                  value={hiringForm.name}
-                  onChange={(e) => setHiringForm({ ...hiringForm, name: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Your Name"
-                />
-              </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Phone</label>
-                <input
-                  type="tel"
-                  value={hiringForm.phone}
-                  onChange={(e) => setHiringForm({ ...hiringForm, phone: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Your Phone Number"
-                />
-              </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Email</label>
-                <input
-                  type="email"
-                  value={hiringForm.email}
-                  onChange={(e) => setHiringForm({ ...hiringForm, email: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Your Email Address"
-                />
-              </div>
-              <div className="flex gap-4">
-                <div>
-                  <label className="block text-white text-sm font-bold mb-2">Age</label>
-                  <input
-                    type="number"
-                    value={hiringForm.age}
-                    onChange={(e) => setHiringForm({ ...hiringForm, age: e.target.value })}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                    placeholder="Your Age"
-                  />
-                </div>
-                <div>
-                  <label className="block text-white text-sm font-bold mb-2">Position</label>
-                  <input
-                    type="text"
-                    value={hiringForm.position}
-                    onChange={(e) => setHiringForm({ ...hiringForm, position: e.target.value })}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                    placeholder="Desired Position"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-white text-sm font-bold mb-2">Experience</label>
-                <textarea
-                  value={hiringForm.experience}
-                  onChange={(e) => setHiringForm({ ...hiringForm, experience: e.target.value })}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  placeholder="Relevant Experience"
-                />
-              </div>
-              <div className="flex items-center mb-4">
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={hiringForm.name}
+                onChange={(e) => setHiringForm({ ...hiringForm, name: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={hiringForm.phone}
+                onChange={(e) => setHiringForm({ ...hiringForm, phone: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={hiringForm.email}
+                onChange={(e) => setHiringForm({ ...hiringForm, email: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Age"
+                value={hiringForm.age}
+                onChange={(e) => setHiringForm({ ...hiringForm, age: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              />
+              <select
+                value={hiringForm.position}
+                onChange={(e) => setHiringForm({ ...hiringForm, position: e.target.value })}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              >
+                <option value="">Select Position</option>
+                <option value="bartender">Bartender</option>
+                <option value="hostess">Hostess</option>
+                <option value="server">Cocktail Server</option>
+                <option value="security">Security</option>
+              </select>
+              <textarea
+                placeholder="Previous Experience"
+                value={hiringForm.experience}
+                onChange={(e) => setHiringForm({ ...hiringForm, experience: e.target.value })}
+                rows={4}
+                className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+                required
+              ></textarea>
+              <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"
                   id="ageConfirm"
                   checked={hiringForm.ageConfirm}
                   onChange={(e) => setHiringForm({ ...hiringForm, ageConfirm: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-red-600 bg-gray-800 border-gray-600 rounded focus:ring-red-500"
+                  required
                 />
-                <label htmlFor="ageConfirm" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  I confirm that I am 19 years of age or older.
+                <label htmlFor="ageConfirm" className="text-white/80 text-sm">
+                  I confirm I am 19+ years old and eligible to work
                 </label>
               </div>
-              <div className="flex justify-center gap-4">
+              <div className="flex gap-4">
                 <button
                   type="submit"
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 rounded-lg transition-all duration-300"
                 >
                   Submit Application
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowHiringForm(false)}
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition-all duration-300"
                 >
                   Cancel
                 </button>
@@ -1538,13 +1622,103 @@ export default function SkinCabaretSite() {
         </div>
       )}
 
+      {/* Chatbot */}
+      {chatbotOpen && (
+        <div className="fixed bottom-20 right-4 w-80 h-96 bg-gradient-to-b from-gray-900 to-black rounded-lg border border-red-500/30 shadow-2xl z-40 flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b border-red-500/30">
+            <div className="flex items-center space-x-2">
+              <Image
+                src="/images/skin-logo-red-silhouette.png"
+                alt="Skin Cabaret"
+                width={24}
+                height={24}
+                className="animate-pulse"
+              />
+              <span className="text-white font-bold">Skin Assistant</span>
+            </div>
+            <button onClick={() => setChatbotOpen(false)} className="text-white/60 hover:text-white transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {chatMessages.map((msg, index) => (
+              <div key={index} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
+                <div
+                  className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
+                    msg.type === "user" ? "bg-red-600 text-white" : "bg-gray-700 text-white border border-red-500/30"
+                  }`}
+                >
+                  {msg.message}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="p-4 border-t border-red-500/30">
+            <div className="flex flex-wrap gap-2 mb-3">
+              {quickResponses.map((response, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleQuickResponse(response)}
+                  className="text-xs bg-gray-700 hover:bg-red-600 text-white px-2 py-1 rounded transition-colors"
+                >
+                  {response}
+                </button>
+              ))}
+            </div>
+            <form onSubmit={handleChatSubmit} className="flex space-x-2">
+              <input
+                type="text"
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                placeholder="Ask about our services..."
+                className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm placeholder-gray-400 focus:border-red-500 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                  />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Chatbot Button */}
+      <button
+        onClick={() => setChatbotOpen(!chatbotOpen)}
+        className="fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-30 animate-pulse-glow"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
+        </svg>
+      </button>
+
       {/* Back to Top Button */}
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-110 z-40"
+          className="fixed bottom-20 right-4 w-12 h-12 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-red-600 hover:to-red-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-30 animate-bounce"
         >
-          Back to Top
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
         </button>
       )}
     </div>
