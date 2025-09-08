@@ -1256,13 +1256,12 @@ export default function SkinCabaretSite() {
         </div>
       </footer>
 
-      {/* Popups and Interactive Elements */}
       {showPickupPopup && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-b from-gray-900 to-black rounded-lg max-w-sm w-full border border-red-500/30 relative max-h-[95vh] overflow-y-auto">
             <button
               onClick={() => setShowPickupPopup(false)}
-              className="absolute -top-2 -right-2 z-10 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white font-bold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500/50 shadow-lg"
+              className="absolute top-2 right-2 z-10 w-12 h-12 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center text-white text-xl font-bold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-red-500/50 shadow-2xl hover:scale-110 cursor-pointer"
               aria-label="Close pickup popup"
             >
               ✕
