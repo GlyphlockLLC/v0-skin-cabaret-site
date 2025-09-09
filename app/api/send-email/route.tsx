@@ -51,8 +51,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Honeypot check
-    if (body.website) {
+    if (body[process.env.HONEYPOT_FIELD || "website"]) {
       return NextResponse.json({ success: true }) // Silent success for bots
+    }
+
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error("[v0] Missing email credentials in environment variables")
+      return NextResponse.json({ error: "Email service not configured" }, { status: 500 })
     }
 
     // Sanitize inputs
@@ -67,8 +72,10 @@ export async function POST(request: NextRequest) {
       message: message ? sanitizeInput(message) : "",
     }
 
-    // Create transporter
-    const transporter = nodemailer.createTransporter({
+    console.log("[v0] Attempting to send email with data:", { type: sanitizedData.type, name: sanitizedData.name })
+
+    // Create transporter using server-side environment variables
+    const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
@@ -76,31 +83,49 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    await transporter.verify()
+    console.log("[v0] Email transporter verified successfully")
+
     // Email content
-    const subject = `${sanitizedData.type} - ${sanitizedData.name}`
+    const subject = `Skin Cabaret - ${sanitizedData.type} - ${sanitizedData.name}`
     const html = `
-      <h2>${sanitizedData.type}</h2>
-      <p><strong>Name:</strong> ${sanitizedData.name}</p>
-      <p><strong>Phone:</strong> ${sanitizedData.phone}</p>
-      ${sanitizedData.email ? `<p><strong>Email:</strong> ${sanitizedData.email}</p>` : ""}
-      ${sanitizedData.pickupLocation ? `<p><strong>Pickup Location:</strong> ${sanitizedData.pickupLocation}</p>` : ""}
-      ${sanitizedData.dropoffLocation ? `<p><strong>Dropoff Location:</strong> ${sanitizedData.dropoffLocation}</p>` : ""}
-      ${sanitizedData.desiredTime ? `<p><strong>Desired Time:</strong> ${sanitizedData.desiredTime}</p>` : ""}
-      ${sanitizedData.message ? `<p><strong>Message:</strong> ${sanitizedData.message}</p>` : ""}
-      <p><strong>Timestamp:</strong> ${new Date().toLocaleString()}</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #dc2626; border-bottom: 2px solid #dc2626; padding-bottom: 10px;">
+          ${sanitizedData.type}
+        </h2>
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Name:</strong> ${sanitizedData.name}</p>
+          <p><strong>Phone:</strong> ${sanitizedData.phone}</p>
+          ${sanitizedData.email ? `<p><strong>Email:</strong> ${sanitizedData.email}</p>` : ""}
+          ${sanitizedData.pickupLocation ? `<p><strong>Pickup Location:</strong> ${sanitizedData.pickupLocation}</p>` : ""}
+          ${sanitizedData.dropoffLocation ? `<p><strong>Dropoff Location:</strong> ${sanitizedData.dropoffLocation}</p>` : ""}
+          ${sanitizedData.desiredTime ? `<p><strong>Desired Time:</strong> ${sanitizedData.desiredTime}</p>` : ""}
+          ${sanitizedData.message ? `<p><strong>Message:</strong> ${sanitizedData.message}</p>` : ""}
+        </div>
+        <p style="color: #666; font-size: 12px;">
+          <strong>Timestamp:</strong> ${new Date().toLocaleString()}
+        </p>
+      </div>
     `
 
-    await transporter.sendMail({
+    const result = await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: "cash2dayaz@gmail.com",
-      replyTo: sanitizedData.email || undefined,
+      replyTo: sanitizedData.email || process.env.EMAIL_USER,
       subject,
       html,
     })
 
-    return NextResponse.json({ success: true })
+    console.log("[v0] Email sent successfully:", result.messageId)
+    return NextResponse.json({ success: true, messageId: result.messageId })
   } catch (error) {
-    console.error("Email error:", error)
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 })
+    console.error("[v0] Email error:", error)
+    return NextResponse.json(
+      {
+        error: "Failed to send email",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }

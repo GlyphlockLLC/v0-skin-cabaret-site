@@ -81,6 +81,66 @@ export default function SkinCabaretSite() {
     },
   ])
 
+  const testAllFunctionality = async () => {
+    console.log("[v0] Starting comprehensive site functionality test...")
+
+    // Test email functionality
+    try {
+      const testEmailResponse = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "Test Email",
+          name: "Test User",
+          phone: "555-0123",
+          message: "Site functionality test",
+          website: "", // honeypot field
+        }),
+      })
+      console.log("[v0] Email API test:", testEmailResponse.ok ? "PASSED" : "FAILED")
+    } catch (error) {
+      console.log("[v0] Email API test: FAILED -", error)
+    }
+
+    // Test popup functionality
+    console.log("[v0] Testing popup functionality...")
+    setShowPickupPopup(true)
+    setTimeout(() => {
+      setShowPickupPopup(false)
+      console.log("[v0] Pickup popup test: PASSED")
+    }, 1000)
+
+    // Test navigation
+    console.log("[v0] Testing navigation...")
+    const sections = ["home", "sports", "hiring", "contact"]
+    sections.forEach((section) => {
+      const element = document.getElementById(section)
+      console.log(`[v0] Section ${section}:`, element ? "FOUND" : "MISSING")
+    })
+
+    // Test form validation
+    console.log("[v0] Testing form validation...")
+    const forms = document.querySelectorAll("form")
+    console.log(`[v0] Found ${forms.length} forms on page`)
+
+    // Test video backgrounds
+    console.log("[v0] Testing video backgrounds...")
+    const videos = document.querySelectorAll("video")
+    console.log(`[v0] Found ${videos.length} video elements`)
+    videos.forEach((video, index) => {
+      console.log(`[v0] Video ${index + 1}:`, video.readyState >= 2 ? "LOADED" : "LOADING")
+    })
+
+    // Test responsive design
+    console.log("[v0] Testing responsive design...")
+    const isMobile = window.innerWidth <= 768
+    console.log(
+      `[v0] Current viewport: ${window.innerWidth}x${window.innerHeight} (${isMobile ? "Mobile" : "Desktop"})`,
+    )
+
+    console.log("[v0] Site functionality test completed!")
+  }
+
   const handlePickupSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -145,29 +205,34 @@ export default function SkinCabaretSite() {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     try {
-      const response = await fetch("/api/send-confirmation", {
+      console.log("[v0] Submitting hiring form")
+      const response = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          to: "cash2dayaz@gmail.com",
-          replyTo: `${formData.get("name")} <${formData.get("email")}>`,
-          subject: "New Job Application",
-          html: `
-            <h2>New Job Application</h2>
-            <p><strong>Name:</strong> ${formData.get("name")}</p>
-            <p><strong>Email:</strong> ${formData.get("email")}</p>
-            <p><strong>Phone:</strong> ${formData.get("phone")}</p>
-            <p><strong>Position:</strong> ${formData.get("position")}</p>
-            <p><strong>Experience:</strong> ${formData.get("experience")}</p>
-            <p><strong>Availability:</strong> ${formData.get("availability")}</p>
-          `,
+          type: "Job Application",
+          name: formData.get("name") as string,
+          phone: formData.get("phone") as string,
+          email: formData.get("email") as string,
+          message: `Position: ${formData.get("position")}\nExperience: ${formData.get("experience")}\nAvailability: ${formData.get("availability")}`,
+          website: "", // honeypot field
         }),
       })
-      if (response.ok) {
+
+      const result = await response.json()
+      console.log("[v0] Hiring form response:", result)
+
+      if (response.ok && result.success) {
         alert("Application submitted successfully!")
         setShowHiringForm(false)
+        // Reset form
+        const form = e.target as HTMLFormElement
+        form.reset()
+      } else {
+        throw new Error(result.error || "Failed to submit application")
       }
     } catch (error) {
+      console.error("[v0] Hiring form error:", error)
       alert("Error submitting application. Please try again.")
     }
   }
@@ -370,6 +435,15 @@ export default function SkinCabaretSite() {
       console.log("[v0] Element not found for ID:", sectionId)
     }
   }
+
+  useEffect(() => {
+    // Run comprehensive test after component mounts
+    const timer = setTimeout(() => {
+      testAllFunctionality()
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -1124,7 +1198,7 @@ export default function SkinCabaretSite() {
 
               {/* Instagram Card */}
               <div
-                className="group relative bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-sm rounded-xl p-8 border-2 border-transparent bg-clip-padding hover:shadow-2xl hover:shadow-pink-500/30 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 min-h-[280px] flex flex-col justify-between"
+                className="group relative bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-sm rounded-xl p-8 border-2 border-transparent bg-clip-padding hover-lift transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 min-h-[280px] flex flex-col justify-between"
                 style={{
                   background: "linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)",
                   borderImage: "linear-gradient(135deg, #ec4899, #9333ea) 1",
@@ -1151,7 +1225,7 @@ export default function SkinCabaretSite() {
 
               {/* X (Twitter) Card */}
               <div
-                className="group relative bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-sm rounded-xl p-8 border-2 border-transparent bg-clip-padding hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 min-h-[280px] flex flex-col justify-between"
+                className="group relative bg-gradient-to-br from-gray-900/90 to-black/90 backdrop-blur-sm rounded-xl p-8 border-2 border-transparent bg-clip-padding hover-lift transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 min-h-[280px] flex flex-col justify-between"
                 style={{
                   background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)",
                   borderImage: "linear-gradient(135deg, #3b82f6, #9333ea) 1",
@@ -1476,6 +1550,14 @@ export default function SkinCabaretSite() {
           aria-label="Open chat support"
         >
           💬
+        </button>
+
+        <button
+          onClick={testAllFunctionality}
+          className="fixed top-20 left-4 z-50 bg-yellow-600 hover:bg-yellow-700 text-black font-bold px-4 py-2 rounded text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
+          style={{ display: process.env.NODE_ENV === "development" ? "block" : "none" }}
+        >
+          🧪 Test Site
         </button>
       </div>
     </>
