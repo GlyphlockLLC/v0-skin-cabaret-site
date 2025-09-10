@@ -1128,6 +1128,58 @@ Review: ${newReview.review}`,
                   </Button>
                 </div>
               </div>
+
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="relative h-64">
+                  <Image
+                    src="/bachelor-party-celebration-nightlife.jpg"
+                    alt="Bachelor Party Celebration"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-red-400 mb-4">BACHELOR PARTY</h3>
+                  <p className="text-white/90 mb-6">
+                    Create unforgettable memories with our exclusive bachelor party packages. VIP treatment, premium
+                    entertainment, and personalized service for the ultimate celebration.
+                  </p>
+                  <Button
+                    onClick={() => setShowCallPopup(true)}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 font-bold rounded-lg"
+                  >
+                    RESERVE BACHELOR PACKAGE
+                  </Button>
+                </div>
+              </div>
+
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="relative h-64">
+                  <Image
+                    src="/spring-training-baseball-arizona.jpg"
+                    alt="Spring Training Baseball"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-red-400 mb-4">SPRING TRAINING</h3>
+                  <p className="text-white/90 mb-6">
+                    Arizona's favorite season! Watch MLB teams prepare for the season with game viewing parties, drink
+                    specials, and the best spring training atmosphere in Scottsdale.
+                  </p>
+                  <Button
+                    onClick={() => setShowCallPopup(true)}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 font-bold rounded-lg"
+                  >
+                    RESERVE SPRING TRAINING VIP
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1211,7 +1263,7 @@ Review: ${newReview.review}`,
               <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
-                    src="/college-football-basketball-championship-games.jpg"
+                    src="/college-march-madness-basketball-tournament.jpg"
                     alt="College Sports"
                     fill
                     className="object-cover"
@@ -1669,8 +1721,8 @@ Review: ${newReview.review}`,
                   </p>
                   <p className="flex items-center gap-2">
                     <span>📞</span>
-                    <a href="tel:+14804257546" className="hover:text-red-400 transition-colors">
-                      (480) 425-7546
+                    <a href="tel:+14809491119" className="hover:text-red-400 transition-colors">
+                      (480) 949-1119
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
