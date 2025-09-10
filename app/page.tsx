@@ -717,6 +717,20 @@ Review: ${newReview.review}`,
           100% { background-position: 200% center; }
         }
         
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+          animation: scroll 60s linear infinite;
+        }
+        
         .animate-float { animation: float 3s ease-in-out infinite; }
         .animate-logo-glow { animation: logo-glow 2s ease-in-out infinite; }
         .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
