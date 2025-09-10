@@ -1844,6 +1844,79 @@ Review: ${newReview.review}`,
             </div>
           </div>
         )}
+
+        {/* Chatbot */}
+        <div className="fixed bottom-4 right-4 z-40">
+          {chatbotOpen && (
+            <div className="mb-4 w-80 bg-black/95 border border-red-500/30 rounded-lg shadow-2xl">
+              <div className="bg-red-600 text-white p-3 rounded-t-lg flex justify-between items-center">
+                <h3 className="font-bold">Skin Cabaret Assistant</h3>
+                <button
+                  onClick={() => setChatbotOpen(false)}
+                  className="text-white hover:text-red-200 text-xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="h-64 overflow-y-auto p-3 space-y-2">
+                {chatMessages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 rounded-lg ${
+                      msg.type === "bot"
+                        ? "bg-red-600/20 text-red-100 border border-red-500/30"
+                        : "bg-white/10 text-white ml-8"
+                    }`}
+                  >
+                    {msg.message}
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-3 border-t border-red-500/30">
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {quickResponses.map((response) => (
+                    <button
+                      key={response}
+                      onClick={() => handleQuickResponse(response)}
+                      className="text-xs bg-red-600/30 hover:bg-red-600/50 text-red-200 px-2 py-1 rounded border border-red-500/30"
+                    >
+                      {response}
+                    </button>
+                  ))}
+                </div>
+
+                <form onSubmit={handleChatSubmit} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={currentMessage}
+                    onChange={(e) => setCurrentMessage(e.target.value)}
+                    placeholder="Ask about VIP, bachelor parties, hours..."
+                    className="flex-1 bg-white/10 border border-red-500/30 rounded px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:border-red-400"
+                  />
+                  <button type="submit" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold">
+                    Send
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => setChatbotOpen(!chatbotOpen)}
+            className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </>
   )
