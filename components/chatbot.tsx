@@ -66,7 +66,7 @@ export default function Chatbot() {
     scrollToBottom()
   }, [messages])
 
-  useEffect(() => {
+  useEffect(() => { // eslint-disable-line react-hooks/exhaustive-deps
     if (isOpen && messages.length === 0) {
       addBotMessage(
         "Welcome to Skin Cabaret! 🌟 I'm here to help you with bookings, rides, and special events. How can I assist you tonight?",

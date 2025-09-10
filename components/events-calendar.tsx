@@ -225,7 +225,7 @@ export default function EventsCalendar() {
 
         {/* Featured Event Spotlight */}
         <div className="mt-16">
-          <h3 className="text-3xl font-black text-center mb-8 text-secondary">THIS WEEK'S SPOTLIGHT</h3>
+          <h3 className="text-3xl font-black text-center mb-8 text-secondary">THIS WEEK&apos;S SPOTLIGHT</h3>
 
           <Card className="bg-gradient-to-r from-secondary/10 via-primary/10 to-secondary/10 border-secondary/30 backdrop-blur-sm">
             <CardContent className="p-8">

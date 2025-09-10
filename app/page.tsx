@@ -295,13 +295,13 @@ export default function SkinCabaretSite() {
         botResponse =
           "Pricing varies by package and group size. Please call (480) 425-7546 for current rates and availability."
       } else if (currentMessage.toLowerCase().includes("hours") || currentMessage.toLowerCase().includes("open")) {
-        botResponse = "We're open 7 days a week from 8 PM to 5 AM."
+        botResponse = "We&apos;re open 7 days a week from 8 PM to 5 AM."
       } else if (
         currentMessage.toLowerCase().includes("location") ||
         currentMessage.toLowerCase().includes("address")
       ) {
         botResponse =
-          "We're located in Scottsdale, Arizona. Call (480) 425-7546 for exact directions and parking information."
+          "We&apos;re located in Scottsdale, Arizona. Call (480) 425-7546 for exact directions and parking information."
       }
 
       setChatMessages((prev) => [...prev, { type: "bot", message: botResponse }])
@@ -859,7 +859,7 @@ export default function SkinCabaretSite() {
         <div className="absolute bottom-20 left-0 right-0 z-20 text-center px-4 animate-on-scroll animate-delay-400">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white animate-pulse-glow mb-3">
-              Scottsdale's Premier Adult Entertainment Experience
+              Scottsdale&apos;s Premier Adult Entertainment Experience
             </h2>
             <p className="text-sm sm:text-base text-white/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)] animate-fade-in-up">
               Luxury • Sophistication • Unforgettable Nights
@@ -1106,7 +1106,7 @@ export default function SkinCabaretSite() {
             JOIN OUR TEAM
           </h2>
           <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
-            Be part of Scottsdale's premier adult entertainment experience. We're looking for professional, dedicated
+            Be part of Scottsdale&apos;s premier adult entertainment experience. We&apos;re looking for professional, dedicated
             individuals to join our elite team.
           </p>
           <div className="text-center mb-12 animate-on-scroll animate-delay-400">
@@ -1195,7 +1195,7 @@ export default function SkinCabaretSite() {
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-shimmer mb-4 animate-on-scroll">CONTACT US</h2>
           <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-3xl mx-auto animate-on-scroll animate-delay-200">
-            Ready to experience Scottsdale's premier adult entertainment? Get in touch with us today.
+            Ready to experience Scottsdale&apos;s premier adult entertainment? Get in touch with us today.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -1309,7 +1309,7 @@ export default function SkinCabaretSite() {
                 onClick={() =>
                   shareOnSocial(
                     "facebook",
-                    "Check out Skin Cabaret - Scottsdale's Premier Adult Entertainment",
+                    "Check out Skin Cabaret - Scottsdale&apos;s Premier Adult Entertainment",
                     window.location.href,
                   )
                 }
@@ -1331,7 +1331,7 @@ export default function SkinCabaretSite() {
                 onClick={() =>
                   shareOnSocial(
                     "twitter",
-                    "Check out Skin Cabaret - Scottsdale's Premier Adult Entertainment",
+                    "Check out Skin Cabaret - Scottsdale&apos;s Premier Adult Entertainment",
                     window.location.href,
                   )
                 }
@@ -1353,7 +1353,7 @@ export default function SkinCabaretSite() {
                 onClick={() =>
                   shareOnSocial(
                     "instagram",
-                    "Check out Skin Cabaret - Scottsdale's Premier Adult Entertainment",
+                    "Check out Skin Cabaret - Scottsdale&apos;s Premier Adult Entertainment",
                     window.location.href,
                   )
                 }
@@ -1379,7 +1379,7 @@ export default function SkinCabaretSite() {
                 className="mx-auto md:mx-0 mb-4 animate-float"
               />
               <p className="text-white/60 text-sm">
-                Scottsdale's premier adult entertainment venue offering sophisticated experiences and VIP service.
+                Scottsdale&apos;s premier adult entertainment venue offering sophisticated experiences and VIP service.
               </p>
             </div>
 
@@ -1538,7 +1538,7 @@ export default function SkinCabaretSite() {
 
             <h3 className="text-2xl font-bold text-white mb-4">📞 Call Skin Cabaret</h3>
             <p className="text-white/80 mb-6">
-              Ready to experience Scottsdale's premier adult entertainment? Call us now for reservations and
+              Ready to experience Scottsdale&apos;s premier adult entertainment? Call us now for reservations and
               information.
             </p>
             <div className="text-4xl font-bold text-red-400 mb-6 animate-pulse">(480) 425-7546</div>

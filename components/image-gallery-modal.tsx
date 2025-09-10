@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect } from "react"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
@@ -63,11 +64,12 @@ export default function ImageGalleryModal({
       )}
 
       {/* Image */}
-      <div className="max-w-4xl max-h-full flex items-center justify-center">
-        <img
+      <div className="relative w-full h-full max-w-4xl max-h-full flex items-center justify-center">
+        <Image
           src={images[currentIndex] || "/placeholder.svg"}
           alt={`Gallery image ${currentIndex + 1}`}
-          className="max-w-full max-h-full object-contain"
+          fill
+          className="object-contain"
         />
       </div>
 
