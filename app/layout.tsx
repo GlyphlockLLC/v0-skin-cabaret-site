@@ -1,16 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Montserrat } from "next/font/google"
 import { GeistMono } from "geist/font/mono"
 import { Suspense } from "react"
 import "./globals.css"
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-montserrat",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-})
 
 export const metadata: Metadata = {
   title: "Skin Cabaret - Scottsdale's Premier Adult Entertainment | VIP Experiences & Bachelor Parties",
@@ -209,8 +201,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://images.unsplash.com" />
 
         <meta name="geo.region" content="US-AZ" />
@@ -221,7 +211,7 @@ export default function RootLayout({
         <meta name="audience" content="adult" />
         <meta name="content-rating" content="mature" />
       </head>
-      <body className={`font-sans ${montserrat.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${GeistMono.variable} antialiased`} style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
         <Suspense fallback={null}>{children}</Suspense>
       </body>
     </html>
