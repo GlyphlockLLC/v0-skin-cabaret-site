@@ -77,9 +77,9 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // google: "your-google-verification-code-here", // Add this when you get it from Search Console
-    // yandex: "your-yandex-verification-code",
-    // yahoo: "your-yahoo-verification-code",
+    google: "google6f03b6c13b55545c",
+    yandex: "your-yandex-verification-code",
+    yahoo: "your-yahoo-verification-code",
   },
   category: "entertainment",
   generator: "v0.app",

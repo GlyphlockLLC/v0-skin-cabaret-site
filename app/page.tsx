@@ -299,7 +299,7 @@ export default function SkinCabaretSite() {
       setNotification({
         type: "error",
         message:
-          "We appreciate all feedback! For ratings below 4 stars, please contact us directly at (480) 949-1119 so we can address your concerns personally.",
+          "We appreciate all feedback! For ratings below 4 stars, please contact us directly at (480) 425-7546 so we can address your concerns personally.",
       })
       return
     }
@@ -348,7 +348,7 @@ Review: ${newReview.review}`,
     } catch (error) {
       setNotification({
         type: "error",
-        message: "Error submitting review. Please try again or call us at (480) 949-1119.",
+        message: "Error submitting review. Please try again or call us at (480) 425-7546.",
       })
     } finally {
       setIsSubmitting(false)
@@ -985,7 +985,6 @@ Review: ${newReview.review}`,
                   </div>
                 </div>
                 <div className="text-left">
-                  <h2 className="text-4xl md:text-6xl font-black mb-8 text-white animate-glow">GIRLS GIRLS GIRLS</h2>
                   <h3 className="text-3xl font-bold text-red-400 mb-6">World-Renowned Excellence</h3>
                   <p className="text-white/90 text-xl mb-8 leading-relaxed">
                     Skin Cabaret has always been home to the hottest girls in the world. As a world-renowned club, we're
@@ -1128,6 +1127,58 @@ Review: ${newReview.review}`,
                   </Button>
                 </div>
               </div>
+
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="relative h-64">
+                  <Image
+                    src="/bachelor-party-celebration-nightlife.jpg"
+                    alt="Bachelor Party Celebration"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-red-400 mb-4">BACHELOR PARTY</h3>
+                  <p className="text-white/90 mb-6">
+                    Create unforgettable memories with our exclusive bachelor party packages. VIP treatment, premium
+                    entertainment, and personalized service for the ultimate celebration.
+                  </p>
+                  <Button
+                    onClick={() => setShowCallPopup(true)}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 font-bold rounded-lg"
+                  >
+                    RESERVE BACHELOR PACKAGE
+                  </Button>
+                </div>
+              </div>
+
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="relative h-64">
+                  <Image
+                    src="/spring-training-baseball-arizona.jpg"
+                    alt="Spring Training Baseball"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-red-400 mb-4">SPRING TRAINING</h3>
+                  <p className="text-white/90 mb-6">
+                    Arizona's favorite season! Watch MLB teams prepare for the season with game viewing parties, drink
+                    specials, and the best spring training atmosphere in Scottsdale.
+                  </p>
+                  <Button
+                    onClick={() => setShowCallPopup(true)}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 font-bold rounded-lg"
+                  >
+                    RESERVE SPRING TRAINING VIP
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1211,7 +1262,7 @@ Review: ${newReview.review}`,
               <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
-                    src="/college-football-basketball-championship-games.jpg"
+                    src="/college-march-madness-basketball-tournament.jpg"
                     alt="College Sports"
                     fill
                     className="object-cover"
@@ -1358,9 +1409,7 @@ Review: ${newReview.review}`,
               <div className="bg-black/80 rounded-lg p-8 text-center border-2 border-pink-500/50 hover:border-pink-500 transition-all duration-300 opacity-60 hover:opacity-100">
                 <div className="w-16 h-16 mx-auto mb-4 bg-pink-600 rounded-full flex items-center justify-center">
                   <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-pink-400 mb-2">Instagram</h3>
@@ -1588,64 +1637,69 @@ Review: ${newReview.review}`,
         <section id="contact" className="relative py-20 overflow-hidden z-10">
           <div className="absolute inset-0 bg-black/60"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">CONTACT US</h2>
+            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">ENTERTAINERS GUIDE</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <div>
-                <h3 className="text-2xl font-bold text-red-400 mb-4">Visit Us</h3>
-                <p className="text-white/90 mb-2">Skin Cabaret</p>
-                <p className="text-white/90 mb-2">1137 N Scottsdale Road</p>
-                <p className="text-white/90 mb-2">Scottsdale, AZ 85257</p>
-                <h3 className="text-2xl font-bold text-red-400 mt-6 mb-4">Call Us</h3>
-                <p className="text-white/90 mb-2">(480) 949-1119</p>
-                <h3 className="text-2xl font-bold text-red-400 mt-6 mb-4">Hours</h3>
-                <p className="text-white/90 mb-2">Open 7 days a week</p>
-                <p className="text-white/90 mb-2">8 PM - 5 AM</p>
-              </div>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-black/40 backdrop-blur-sm rounded-lg p-8 border border-red-500/30">
+                <h3 className="text-3xl font-bold text-red-400 mb-6 text-center">Work at Skin Cabaret</h3>
 
-              <div>
-                <h3 className="text-2xl font-bold text-red-400 mb-4">Send Us a Message</h3>
-                <form onSubmit={(e) => e.preventDefault()} data-form-type="contact">
-                  <div className="mb-4">
-                    <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
-                      required
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-xl font-bold text-red-400 mb-4">Requirements</h4>
+                    <ul className="text-white/90 space-y-3">
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Must be 19+ years of age
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Valid government-issued ID required
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Required license from Scottsdale Town Hall
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Professional attitude and appearance
+                      </li>
+                    </ul>
                   </div>
-                  <div className="mb-4">
-                    <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
-                      required
-                    />
+
+                  <div>
+                    <h4 className="text-xl font-bold text-red-400 mb-4">Benefits</h4>
+                    <ul className="text-white/90 space-y-3">
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Competitive earning potential
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Flexible scheduling options
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Safe and secure environment
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Professional management team
+                      </li>
+                    </ul>
                   </div>
-                  <div className="mb-4">
-                    <label htmlFor="message" className="block text-white text-sm font-bold mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
-                      required
-                    ></textarea>
-                  </div>
-                  <Button
-                    type="submit"
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                </div>
+
+                <div className="mt-8 text-center">
+                  <p className="text-white/90 mb-6">
+                    Join Arizona's premier adult entertainment venue and become part of our professional team.
+                  </p>
+                  <button
+                    onClick={() => setShowPickupPopup(true)}
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
                   >
-                    Send Message
-                  </Button>
-                </form>
+                    Apply Now - Call (480) 425-7546
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -1736,10 +1790,10 @@ Review: ${newReview.review}`,
               <p className="text-white/90 mb-6">Call us to make a reservation or for any inquiries.</p>
               <Button
                 as="a"
-                href="tel:(480) 949-1119"
+                href="tel:(480) 425-7546"
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                (480) 949-1119
+                (480) 425-7546
               </Button>
               <Button
                 onClick={() => setShowCallPopup(false)}
@@ -1795,6 +1849,89 @@ Review: ${newReview.review}`,
             </div>
           </div>
         )}
+
+        {/* Chatbot */}
+        <div className="fixed bottom-4 right-4 z-40">
+          {chatbotOpen && (
+            <div className="mb-4 w-80 bg-black/95 border border-red-500/30 rounded-lg shadow-2xl">
+              <div className="bg-red-600 text-white p-3 rounded-t-lg flex justify-between items-center">
+                <h3 className="font-bold">Skin Cabaret Assistant</h3>
+                <button
+                  onClick={() => setChatbotOpen(false)}
+                  className="text-white hover:text-red-200 text-xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="h-64 overflow-y-auto p-3 space-y-2">
+                {chatMessages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 rounded-lg ${
+                      msg.type === "bot"
+                        ? "bg-red-600/20 text-red-100 border border-red-500/30"
+                        : "bg-white/10 text-white ml-8"
+                    }`}
+                  >
+                    {msg.message}
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-3 border-t border-red-500/30">
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {quickResponses.map((response) => (
+                    <button
+                      key={response}
+                      onClick={() => handleQuickResponse(response)}
+                      className="text-xs bg-red-600/30 hover:bg-red-600/50 text-red-200 px-2 py-1 rounded border border-red-500/30"
+                    >
+                      {response}
+                    </button>
+                  ))}
+                </div>
+
+                <form onSubmit={handleChatSubmit} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={currentMessage}
+                    onChange={(e) => setCurrentMessage(e.target.value)}
+                    placeholder="Ask about VIP, bachelor parties, hours..."
+                    className="flex-1 bg-white/10 border border-red-500/30 rounded px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:border-red-400"
+                  />
+                  <button type="submit" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold">
+                    Send
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => setChatbotOpen(!chatbotOpen)}
+            className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-4 left-4 bg-red-600 hover:bg-red-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+          aria-label="Back to top"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
       </div>
     </>
   )

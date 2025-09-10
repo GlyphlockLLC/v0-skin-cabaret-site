@@ -1,47 +1,47 @@
 {
-  "redirects": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "https://skincabaret.com/$1",
-      "permanent": true,
-      "has": [
-        {
-          "type": "host",
-          "value": "v0-skin-cabaret-site-git-main-glyphlock-6954s-projects.vercel.app"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "destination": "https://skincabaret.com/$1",
-      "permanent": true,
-      "has": [
-        {
-          "type": "host",
-          "value": "v0-skin-cabaret-site-gdsgs4d50-glyphlock-6954s-projects.vercel.app"
-        }
-      ]
+      "src": "package.json",
+      "use": "@vercel/next"
     }
   ],
+  "routes": [
+    {
+      "src": "/sitemap.xml",
+      "headers": {
+        "Content-Type": "application/xml",
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "headers": {
+        "Content-Type": "text/plain",
+        "Cache-Control": "public, max-age=86400"
+      }
+    }
+  ],
+  "functions": {
+    "app/api/send-email/route.ts": {
+      "maxDuration": 10
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
         {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
         },
         {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
+          "key": "X-Frame-Options",
+          "value": "DENY"
         },
         {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
         }
       ]
     }
