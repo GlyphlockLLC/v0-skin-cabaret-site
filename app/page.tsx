@@ -299,7 +299,7 @@ export default function SkinCabaretSite() {
       setNotification({
         type: "error",
         message:
-          "We appreciate all feedback! For ratings below 4 stars, please contact us directly at (480) 949-1119 so we can address your concerns personally.",
+          "We appreciate all feedback! For ratings below 4 stars, please contact us directly at (480) 425-7546 so we can address your concerns personally.",
       })
       return
     }
@@ -348,7 +348,7 @@ Review: ${newReview.review}`,
     } catch (error) {
       setNotification({
         type: "error",
-        message: "Error submitting review. Please try again or call us at (480) 949-1119.",
+        message: "Error submitting review. Please try again or call us at (480) 425-7546.",
       })
     } finally {
       setIsSubmitting(false)
@@ -985,7 +985,6 @@ Review: ${newReview.review}`,
                   </div>
                 </div>
                 <div className="text-left">
-                  <h2 className="text-4xl md:text-6xl font-black mb-8 text-white animate-glow">GIRLS GIRLS GIRLS</h2>
                   <h3 className="text-3xl font-bold text-red-400 mb-6">World-Renowned Excellence</h3>
                   <p className="text-white/90 text-xl mb-8 leading-relaxed">
                     Skin Cabaret has always been home to the hottest girls in the world. As a world-renowned club, we're
