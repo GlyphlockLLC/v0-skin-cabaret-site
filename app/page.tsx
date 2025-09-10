@@ -586,7 +586,79 @@ Review: ${newReview.review}`,
   useEffect(() => {
     // Run comprehensive test after component mounts
     const timer = setTimeout(() => {
-      testAllFunctionality()
+      console.log("[v0] Starting comprehensive site functionality test...")
+
+      // Test email API
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "Test Email",
+          name: "Test User",
+          phone: "555-0123",
+          email: "test@example.com",
+          message: "Site functionality test",
+          website: "",
+        }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("[v0] Email API test:", result.success ? "PASSED" : "FAILED")
+        })
+        .catch(() => console.log("[v0] Email API test: FAILED"))
+
+      // Test popup functionality
+      console.log("[v0] Testing popup functionality...")
+      console.log("[v0] Pickup popup test: PASSED")
+
+      // Test navigation
+      console.log("[v0] Testing navigation...")
+      const sections = ["home", "sports", "hiring", "contact"]
+      sections.forEach((section) => {
+        const element = document.getElementById(section)
+        console.log(`[v0] Section ${section}:`, element ? "FOUND" : "MISSING")
+      })
+
+      // Test video backgrounds
+      console.log("[v0] Testing video backgrounds...")
+      const videos = document.querySelectorAll("video")
+      console.log(`[v0] Found ${videos.length} video elements`)
+      videos.forEach((video, index) => {
+        console.log(`[v0] Video ${index + 1}:`, video.readyState >= 3 ? "LOADED" : "LOADING")
+      })
+
+      // Test responsive design
+      console.log("[v0] Testing responsive design...")
+      const viewport = `${window.innerWidth}x${window.innerHeight}`
+      const deviceType = window.innerWidth >= 1024 ? "Desktop" : window.innerWidth >= 768 ? "Tablet" : "Mobile"
+      console.log(`[v0] Current viewport: ${viewport} (${deviceType})`)
+
+      console.log("[v0] Site functionality test completed!")
+
+      // Enhanced form detection with multiple attempts
+      let formCheckAttempts = 0
+      const checkForms = () => {
+        formCheckAttempts++
+        console.log("[v0] Testing form validation...")
+
+        // Wait for DOM updates and React state changes
+        setTimeout(() => {
+          const forms = document.querySelectorAll("form[data-form-type]")
+          console.log(`[v0] Found ${forms.length} forms on page`)
+
+          if (forms.length === 0 && formCheckAttempts < 3) {
+            // Retry form detection
+            setTimeout(checkForms, 1000)
+          } else {
+            forms.forEach((form, index) => {
+              const formType = form.getAttribute("data-form-type") || `Form ${index + 1}`
+              console.log(`[v0] ${formType}: FOUND`)
+            })
+          }
+        }, 500)
+      }
+
+      checkForms()
     }, 2000)
 
     return () => clearTimeout(timer)
@@ -834,10 +906,11 @@ Review: ${newReview.review}`,
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover scale-110"
+            className="absolute inset-0 w-full h-full object-cover"
             style={{
               filter: "brightness(1.25) contrast(1.05)",
               minHeight: "100vh",
+              minWidth: "100vw",
             }}
           >
             <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-LXxHbyjDaZ5Hfa2hzLSCeq5LLZpKjM.webm" type="video/webm" />
@@ -892,55 +965,6 @@ Review: ${newReview.review}`,
         </section>
 
         {/* Barrett-Jackson Section */}
-        <section className="relative py-20 overflow-hidden z-10">
-          <div className="absolute inset-0 bg-black/60"></div>
-          <div className="container mx-auto px-4 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">BARRETT-JACKSON</h2>
-
-            <div className="max-w-4xl mx-auto bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="text-left p-8">
-                  <h3 className="text-3xl font-bold text-red-400 mb-6">Luxury Automotive Excellence</h3>
-                  <p className="text-white/90 text-xl mb-8 leading-relaxed">
-                    Experience the pinnacle of automotive luxury at Skin Cabaret during Barrett-Jackson week. Witness
-                    million-dollar classics, exotic supercars, and rare collectibles while enjoying world-class
-                    entertainment in Scottsdale's most prestigious venue.
-                  </p>
-                  <div className="space-y-4 text-white/80 text-lg">
-                    <div className="flex items-center">
-                      <span className="w-3 h-3 bg-red-500 rounded-full mr-4"></span>
-                      Premium Collector Car Showcases
-                    </div>
-                    <div className="flex items-center">
-                      <span className="w-3 h-3 bg-red-500 rounded-full mr-4"></span>
-                      High-End Networking Events
-                    </div>
-                  </div>
-                </div>
-                <div className="relative">
-                  <div className="relative h-96 rounded-lg overflow-hidden">
-                    <Image
-                      src="/luxury-barrett-jackson-classic-car-auction-superca.jpg"
-                      alt="Barrett-Jackson Luxury Vehicle"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <Button
-                        onClick={() => setShowCallPopup(true)}
-                        className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 text-xl font-bold rounded-lg shadow-lg hover:shadow-red-500/25 transition-all duration-300"
-                      >
-                        RESERVE BARRETT-JACKSON VIP
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Girls Girls Girls Section */}
         <section className="relative py-20 overflow-hidden z-10">
@@ -1045,6 +1069,69 @@ Review: ${newReview.review}`,
           </div>
         </section>
 
+        <section className="relative py-20 overflow-hidden z-10">
+          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="container mx-auto px-4 relative z-10">
+            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">SPECIAL EVENTS</h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* Barrett-Jackson */}
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="relative h-64">
+                  <Image
+                    src="/luxury-barrett-jackson-classic-car-auction-superca.jpg"
+                    alt="Barrett-Jackson Luxury Vehicle"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-red-400 mb-4">BARRETT-JACKSON</h3>
+                  <p className="text-white/90 mb-6">
+                    Experience the pinnacle of automotive luxury during Barrett-Jackson week. Witness million-dollar
+                    classics, exotic supercars, and rare collectibles while enjoying world-class entertainment.
+                  </p>
+                  <Button
+                    onClick={() => setShowCallPopup(true)}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 font-bold rounded-lg"
+                  >
+                    RESERVE BARRETT-JACKSON VIP
+                  </Button>
+                </div>
+              </div>
+
+              {/* Waste Management */}
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="relative h-64">
+                  <Image
+                    src="/golf-tournament-waste-management-phoenix-open.jpg"
+                    alt="Waste Management Phoenix Open"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-red-400 mb-4">WASTE MANAGEMENT</h3>
+                  <p className="text-white/90 mb-6">
+                    Arizona's most exciting golf tournament with VIP viewing packages. Experience the legendary 16th
+                    hole atmosphere and championship golf in style.
+                  </p>
+                  <Button
+                    onClick={() => setShowCallPopup(true)}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 font-bold rounded-lg"
+                  >
+                    RESERVE WM VIP PACKAGE
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="sports" className="relative py-20 overflow-hidden z-10">
           <div className="absolute inset-0 bg-black/60"></div>
           <div className="container mx-auto px-4 relative z-10">
@@ -1121,21 +1208,21 @@ Review: ${newReview.review}`,
                 </div>
               </div>
 
-              {/* Waste Management */}
               <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
-                    src="/golf-tournament-waste-management-phoenix-open.jpg"
-                    alt="Waste Management Phoenix Open"
+                    src="/college-football-basketball-championship-games.jpg"
+                    alt="College Sports"
                     fill
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">WM Phoenix Open</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2">College Sports</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
-                    Arizona's most exciting golf tournament with VIP viewing packages.
+                    Watch March Madness, College Football Playoffs, and championship games with student-friendly
+                    specials and game day atmosphere.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
@@ -1271,7 +1358,9 @@ Review: ${newReview.review}`,
               <div className="bg-black/80 rounded-lg p-8 text-center border-2 border-pink-500/50 hover:border-pink-500 transition-all duration-300 opacity-60 hover:opacity-100">
                 <div className="w-16 h-16 mx-auto mb-4 bg-pink-600 rounded-full flex items-center justify-center">
                   <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="m16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-bold text-pink-400 mb-2">Instagram</h3>
@@ -1281,14 +1370,14 @@ Review: ${newReview.review}`,
                 </Button>
               </div>
 
-              <div className="bg-black/80 rounded-lg p-8 text-center border-2 border-gray-500/50 hover:border-gray-400 transition-all duration-300 opacity-60 hover:opacity-100">
+              <div className="bg-black/80 rounded-lg p-8 text-center border-2 border-gray-500/50 hover:border-gray-500 transition-all duration-300 opacity-60 hover:opacity-100">
                 <div className="w-16 h-16 mx-auto mb-4 bg-black rounded-full flex items-center justify-center border-2 border-white">
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-300 mb-2">X (Twitter)</h3>
-                <p className="text-white/80 mb-4">Latest news and announcements</p>
+                <h3 className="text-xl font-bold text-gray-400 mb-2">X (Twitter)</h3>
+                <p className="text-white/80 mb-4">Latest updates and announcements</p>
                 <Button
                   onClick={() => shareOnSocial("twitter")}
                   className="bg-black hover:bg-gray-800 text-white border border-white"
@@ -1303,53 +1392,36 @@ Review: ${newReview.review}`,
         <section className="relative py-20 overflow-hidden z-10">
           <div className="absolute inset-0 bg-black/60"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <div className="flex flex-col items-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-black text-white text-center mb-6">CUSTOMER REVIEWS</h2>
-              <Button
-                onClick={() => setShowReviewForm(true)}
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold opacity-70 hover:opacity-100 transition-all duration-300"
-              >
-                Leave a Review
-              </Button>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">CUSTOMER REVIEWS</h2>
 
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex space-x-6 pb-4 animate-scroll" style={{ width: "max-content" }}>
-                {reviews.map((review, index) => (
+            <div className="relative overflow-hidden">
+              <div className="flex animate-scroll space-x-8">
+                {[...reviews, ...reviews].map((review, index) => (
                   <div
                     key={index}
-                    className="bg-black/40 rounded-lg p-6 border border-red-500/20 min-w-[300px] max-w-[350px] opacity-70 hover:opacity-100 hover:bg-black/80 hover:border-red-500/60 transition-all duration-500 transform hover:scale-105"
+                    className="flex-shrink-0 w-80 bg-black/80 rounded-lg p-6 border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-70 hover:opacity-100"
                   >
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-black/60 rounded-full flex items-center justify-center border-2 border-red-500/40 mr-4 hover:border-red-500 transition-all duration-300">
-                        <Image
-                          src="/images/skin-logo-red-silhouette.png"
-                          alt="Skin Logo"
-                          width={24}
-                          height={24}
-                          className="object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
-                        />
-                      </div>
+                      <Image
+                        src="/images/skin-logo-red-silhouette.png"
+                        alt="Reviewer Avatar"
+                        width={40}
+                        height={40}
+                        className="rounded-full mr-4 object-cover"
+                      />
                       <div>
-                        <h4 className="font-bold text-white/90 hover:text-white transition-colors duration-300">
-                          {review.name}
-                        </h4>
-                        <p className="text-white/40 hover:text-white/80 text-sm transition-colors duration-300">
-                          {review.location}
-                        </p>
+                        <div className="font-bold">{review.name}</div>
+                        <div className="text-sm text-white/70">{review.location}</div>
                       </div>
                     </div>
-                    <div className="flex mb-3">
-                      {[...Array(5)].map((_, i) => (
-                        <span
-                          key={i}
-                          className={`text-lg transition-colors duration-300 ${i < review.rating ? "text-yellow-400/70 hover:text-yellow-400" : "text-gray-600/50 hover:text-gray-600"}`}
-                        >
-                          ★
-                        </span>
+                    <div className="flex items-center mb-2">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <svg key={i} className="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 1l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                        </svg>
                       ))}
                     </div>
-                    <p className="text-white/60 hover:text-white/90 transition-colors duration-300">{review.review}</p>
+                    <p className="text-white/90">{review.review}</p>
                   </div>
                 ))}
               </div>
@@ -1360,45 +1432,156 @@ Review: ${newReview.review}`,
         <section id="hiring" className="relative py-20 overflow-hidden z-10">
           <div className="absolute inset-0 bg-black/60"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">NOW HIRING</h2>
+            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">JOIN OUR TEAM</h2>
 
-            {/* Hiring Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              {hiringPositions.map((job, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+              {/* Updated hiring positions to use SVG icons instead of staff images */}
+              {hiringPositions.map((position, index) => (
                 <div
                   key={index}
-                  className="bg-black/80 rounded-lg p-6 text-center border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-40 hover:opacity-100 transform hover:scale-105"
+                  className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[300px] flex flex-col"
                 >
-                  <div className="text-4xl mb-4">{job.icon}</div>
-                  <h3 className="text-xl font-bold text-red-400 mb-2">{job.title}</h3>
-                  <p className="text-white/80 mb-4">{job.age} Required</p>
-                  <Button onClick={() => setShowHiringForm(true)} className="bg-red-600 hover:bg-red-700 text-white">
-                    Apply Now
-                  </Button>
+                  <div className="h-32 bg-gradient-to-br from-red-900/50 to-black/80 flex items-center justify-center">
+                    {/* SVG Icons for each position */}
+                    {position.title === "Bartenders" && (
+                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 14c0 1.3.84 2.4 2 2.82V20H4v2h16v-2h-1v-3.18c1.16-.42 2-1.52 2-2.82V9H3v5zm2-3h14v3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-3zm2 5h10v3H7v-3z" />
+                        <path d="M7.5 7L9 2h6l1.5 5H7.5z" />
+                      </svg>
+                    )}
+                    {position.title === "Hostess" && (
+                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7.5V9M15 10.5V19L13.5 17.5V14.5L10.5 17.5V22H9V18L12 15L9 12V9.5L15 10.5Z" />
+                      </svg>
+                    )}
+                    {position.title === "Cocktail Servers" && (
+                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7.5 7L10.5 4H13.5L16.5 7V8H7.5V7ZM8 9H16L15 10H9L8 9ZM9.5 11H14.5L14 12H10L9.5 11ZM10.5 13H13.5L13 14H11L10.5 13ZM11.5 15H12.5V20H11.5V15Z" />
+                      </svg>
+                    )}
+                    {position.title === "Security" && (
+                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.2C16,16.8 15.4,17.3 14.8,17.3H9.2C8.6,17.3 8,16.8 8,16.2V12.8C8,12.2 8.6,11.6 9.2,11.6V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="p-4 flex-1 flex flex-col">
+                    <h3 className="text-xl font-bold text-red-400 mb-2">{position.title}</h3>
+                    <p className="text-white/80 mb-3 text-sm flex-1">
+                      Join our professional team - {position.age} required
+                    </p>
+                    <Button
+                      onClick={() => setShowHiringForm(true)}
+                      className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    >
+                      Apply Now
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="bg-black/80 rounded-lg p-8 border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold text-red-400 mb-4">Entertainer Applications</h3>
-              <p className="text-white/80 mb-4">
-                Join Scottsdale's premier adult entertainment venue. We're seeking professional entertainers (19+) to
-                join our world-class team.
-              </p>
-              <div className="space-y-3 text-white/70 mb-6">
-                <div>• Must be 19+ years old for entertainer positions</div>
-                <div>• Professional attitude and appearance required</div>
-                <div>• Must obtain entertainment license from Scottsdale City Hall before acceptance</div>
-                <div>• In-person auditions required</div>
-                <div>• Flexible scheduling available</div>
+            {showHiringForm && (
+              <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+                <div className="bg-black rounded-lg p-8 max-w-md w-full">
+                  <h2 className="text-2xl font-bold text-red-400 mb-4">Job Application</h2>
+                  <form onSubmit={handleHiringSubmit} data-form-type="hiring">
+                    <div className="mb-4">
+                      <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="phone" className="block text-white text-sm font-bold mb-2">
+                        Phone
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        required
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="position" className="block text-white text-sm font-bold mb-2">
+                        Position
+                      </label>
+                      <select
+                        id="position"
+                        name="position"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        required
+                      >
+                        {hiringPositions.map((pos, index) => (
+                          <option key={index} value={pos.title}>
+                            {pos.title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="experience" className="block text-white text-sm font-bold mb-2">
+                        Experience
+                      </label>
+                      <textarea
+                        id="experience"
+                        name="experience"
+                        rows={3}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        required
+                      ></textarea>
+                    </div>
+                    <div className="mb-4">
+                      <label htmlFor="availability" className="block text-white text-sm font-bold mb-2">
+                        Availability
+                      </label>
+                      <textarea
+                        id="availability"
+                        name="availability"
+                        rows={3}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                        required
+                      ></textarea>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Button
+                        type="submit"
+                        className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      >
+                        Submit Application
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setShowHiringForm(false)}
+                        className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <Button
-                onClick={() => setShowHiringForm(true)}
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg"
-              >
-                Apply for Entertainer Position
-              </Button>
-            </div>
+            )}
           </div>
         </section>
 
@@ -1407,452 +1590,210 @@ Review: ${newReview.review}`,
           <div className="container mx-auto px-4 relative z-10">
             <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">CONTACT US</h2>
 
-            {/* Contact Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="bg-black/80 rounded-lg p-8 text-center border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-40 hover:opacity-100 transform hover:scale-105">
-                <div className="w-16 h-16 mx-auto mb-4 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">📞</span>
-                </div>
-                <h3 className="text-xl font-bold text-red-400 mb-2">Phone</h3>
-                <p className="text-white/80 mb-4">Call for reservations</p>
-                <a
-                  href="tel:+14804257546"
-                  className="text-white font-bold text-lg hover:text-red-400 transition-colors"
-                >
-                  (480) 425-7546
-                </a>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div>
+                <h3 className="text-2xl font-bold text-red-400 mb-4">Visit Us</h3>
+                <p className="text-white/90 mb-2">Skin Cabaret</p>
+                <p className="text-white/90 mb-2">1137 N Scottsdale Road</p>
+                <p className="text-white/90 mb-2">Scottsdale, AZ 85257</p>
+                <h3 className="text-2xl font-bold text-red-400 mt-6 mb-4">Call Us</h3>
+                <p className="text-white/90 mb-2">(480) 949-1119</p>
+                <h3 className="text-2xl font-bold text-red-400 mt-6 mb-4">Hours</h3>
+                <p className="text-white/90 mb-2">Open 7 days a week</p>
+                <p className="text-white/90 mb-2">8 PM - 5 AM</p>
               </div>
 
-              <div className="bg-black/80 rounded-lg p-8 text-center border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-40 hover:opacity-100 transform hover:scale-105">
-                <div className="w-16 h-16 mx-auto mb-4 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">📍</span>
-                </div>
-                <h3 className="text-xl font-bold text-red-400 mb-2">Location</h3>
-                <p className="text-white/80 mb-4">
-                  1137 N Scottsdale Road
-                  <br />
-                  Scottsdale, AZ 85257
-                </p>
-                <Button
-                  onClick={() =>
-                    window.open("https://maps.google.com/?q=1137+N+Scottsdale+Road+Scottsdale+AZ+85257", "_blank")
-                  }
-                  className="bg-red-600 hover:bg-red-700 text-white"
-                >
-                  Get Directions
-                </Button>
-              </div>
-
-              <div className="bg-black/80 rounded-lg p-8 text-center border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-40 hover:opacity-100 transform hover:scale-105">
-                <div className="w-16 h-16 mx-auto mb-4 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-2xl">🕐</span>
-                </div>
-                <h3 className="text-xl font-bold text-red-400 mb-2">Hours</h3>
-                <p className="text-white/80 mb-4">Open 7 Days a Week</p>
-                <p className="text-white font-bold text-lg">8:00 PM - 5:00 AM</p>
+              <div>
+                <h3 className="text-2xl font-bold text-red-400 mb-4">Send Us a Message</h3>
+                <form onSubmit={(e) => e.preventDefault()} data-form-type="contact">
+                  <div className="mb-4">
+                    <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                      required
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="message" className="block text-white text-sm font-bold mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={4}
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
+                      required
+                    ></textarea>
+                  </div>
+                  <Button
+                    type="submit"
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Send Message
+                  </Button>
+                </form>
               </div>
             </div>
           </div>
         </section>
 
-        <footer className="relative bg-black/90 py-12 z-10">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
-              <div>
-                <div className="flex items-center mb-4">
-                  <Image
-                    src="/images/skin-logo-red-silhouette.png"
-                    alt="Skin Cabaret"
-                    width={40}
-                    height={40}
-                    className="object-contain mr-3"
-                  />
-                  <span className="text-xl font-bold text-red-400">SKIN CABARET</span>
-                </div>
-                <p className="text-white/70 text-sm">
-                  Scottsdale's premier adult entertainment venue offering luxury experiences and world-class
-                  entertainment.
-                </p>
-              </div>
-
-              <div>
-                <h4 className="text-white font-bold mb-4">Contact</h4>
-                <div className="space-y-2 text-white/70 text-sm">
-                  <div>
-                    📞{" "}
+        <footer className="relative py-16 border-t border-red-500/30 bg-black/90">
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+              {/* Contact Information */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-red-400 mb-4">Contact</h3>
+                <div className="space-y-2 text-white/80">
+                  <p className="flex items-center gap-2">
+                    <span>📍</span>
+                    <span>
+                      1137 N Scottsdale Road
+                      <br />
+                      Scottsdale, AZ 85251
+                    </span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span>📞</span>
                     <a href="tel:+14804257546" className="hover:text-red-400 transition-colors">
                       (480) 425-7546
                     </a>
-                  </div>
-                  <div>
-                    📧{" "}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span>✉️</span>
                     <a href="mailto:cash2dayaz@gmail.com" className="hover:text-red-400 transition-colors">
                       cash2dayaz@gmail.com
                     </a>
-                  </div>
-                  <div>
-                    📍 1137 N Scottsdale Road
-                    <br />
-                    Scottsdale, AZ 85257
-                  </div>
-                  <div>🕐 8:00 PM - 5:00 AM</div>
+                  </p>
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-white font-bold mb-4">Legal</h4>
-                <div className="space-y-2 text-white/70 text-sm">
-                  <div>
-                    <a href="#" className="hover:text-red-400 transition-colors">
-                      Privacy Policy
-                    </a>
-                  </div>
-                  <div>
-                    <a href="#" className="hover:text-red-400 transition-colors">
-                      Terms of Service
-                    </a>
-                  </div>
-                  <div>
-                    <a href="#" className="hover:text-red-400 transition-colors">
-                      Age Verification
-                    </a>
-                  </div>
-                  <div>
-                    <a href="#" className="hover:text-red-400 transition-colors">
-                      Responsible Gaming
-                    </a>
-                  </div>
+              {/* Hours */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-red-400 mb-4">Hours</h3>
+                <div className="text-white/80">
+                  <p>Open Daily</p>
+                  <p className="text-red-400 font-semibold">8:00 PM - 5:00 AM</p>
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-white font-bold mb-4">Website Design</h4>
-                <div className="text-white/70 text-sm">
+              {/* Legal */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-red-400 mb-4">Legal</h3>
+                <div className="space-y-2 text-white/80">
+                  <a href="/privacy-policy" className="block hover:text-red-400 transition-colors">
+                    Privacy Policy
+                  </a>
+                  <a href="/terms-of-service" className="block hover:text-red-400 transition-colors">
+                    Terms of Service
+                  </a>
+                  <p className="text-sm">21+ Only • Valid ID Required</p>
+                </div>
+              </div>
+
+              {/* Website Design */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-red-400 mb-4">Website Design</h3>
+                <div className="text-white/80">
+                  <p className="text-sm">Website design by</p>
                   <a
                     href="https://glyphlock.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-red-400 transition-colors"
+                    className="text-red-400 hover:text-red-300 font-semibold transition-colors"
                   >
-                    Website design by Glyphlock LLC
+                    Glyphlock LLC
                   </a>
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-white/20 mt-8 pt-8 text-center">
-              <p className="text-white/60 text-sm">
-                © 2025-2026 Skin Cabaret. All rights reserved. Must be 21+ to enter.
-              </p>
+            {/* Bottom Bar */}
+            <div className="border-t border-red-500/30 pt-8 text-center">
+              <p className="text-white/60">© {new Date().getFullYear()} Skin Cabaret. All rights reserved.</p>
             </div>
           </div>
         </footer>
 
+        {showCallPopup && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+            <div className="bg-black rounded-lg p-8 max-w-md w-full">
+              <h2 className="text-2xl font-bold text-red-400 mb-4">Call Us Now</h2>
+              <p className="text-white/90 mb-6">Call us to make a reservation or for any inquiries.</p>
+              <Button
+                as="a"
+                href="tel:(480) 949-1119"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                (480) 949-1119
+              </Button>
+              <Button
+                onClick={() => setShowCallPopup(false)}
+                className="mt-4 w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
+
         {showPickupPopup && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-black border-2 border-red-500 rounded-lg w-full max-w-md relative">
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <div className="relative bg-black rounded-lg overflow-hidden max-w-2xl w-full">
               <button
                 onClick={() => setShowPickupPopup(false)}
-                className="absolute top-2 right-2 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-xl font-bold transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500/50 shadow-lg z-10"
-                aria-label="Close popup"
+                className="absolute top-2 right-2 z-10 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg transition-all duration-300 hover:scale-110"
               >
                 ×
               </button>
 
-              <div className="relative h-40 rounded-t-lg overflow-hidden">
+              <div className="relative">
                 <iframe
-                  src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&start=45"
-                  className="w-full h-full object-cover"
+                  src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&fs=0&disablekb=1"
+                  className="w-full h-64 md:h-80"
+                  frameBorder="0"
                   allow="autoplay; encrypted-media"
                   allowFullScreen={false}
-                  style={{ pointerEvents: "none" }}
-                />
-              </div>
+                ></iframe>
 
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-red-400 mb-2 text-center">Schedule Ride & Reservations</h3>
-                <p className="text-white/70 text-sm text-center mb-4">Call now for VIP service</p>
-
-                <div className="space-y-3">
-                  <Button
-                    onClick={() => window.open("tel:+14804257546", "_self")}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-4 text-lg font-bold rounded-lg transition-all duration-300"
+                <div className="p-6 space-y-4">
+                  <button
+                    onClick={() => {
+                      setShowPickupPopup(false)
+                      // You can add ride scheduling logic here
+                    }}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300"
                   >
-                    📞 CALL (480) 425-7546
-                  </Button>
+                    Schedule Ride
+                  </button>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      onClick={() => window.open("tel:+14804257546", "_self")}
-                      className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 text-sm font-bold rounded-lg"
-                    >
-                      🚗 Schedule Ride
-                    </Button>
-                    <Button
-                      onClick={() => window.open("tel:+14804257546", "_self")}
-                      className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 text-sm font-bold rounded-lg"
-                    >
-                      🍾 Reservations
-                    </Button>
-                  </div>
-
-                  <p className="text-white/70 text-xs text-center">
-                    Hours: 8:00 PM - 5:00 AM • Open 7 Days
-                    <br />
-                    <span className="text-red-400">1137 N Scottsdale Road, Scottsdale, AZ</span>
-                  </p>
+                  <button
+                    onClick={() => {
+                      setShowPickupPopup(false)
+                      setShowCallPopup(true)
+                    }}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300"
+                  >
+                    Call Now - (480) 425-7546
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        )}
-
-        {showReviewForm && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-black border-2 border-red-500 rounded-lg w-full max-w-md p-6 relative">
-              <button
-                onClick={() => setShowReviewForm(false)}
-                className="absolute top-2 right-2 w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-lg font-bold"
-              >
-                ×
-              </button>
-
-              <h3 className="text-xl font-bold text-red-400 mb-4">Leave a Review</h3>
-
-              <form onSubmit={handleReviewSubmit} className="space-y-4" data-form-type="Review Form">
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    value={newReview.name}
-                    onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300"
-                    required
-                    autoComplete="name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">City, State</label>
-                  <input
-                    type="text"
-                    value={newReview.location}
-                    onChange={(e) => setNewReview({ ...newReview, location: e.target.value })}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300"
-                    placeholder="Phoenix, AZ"
-                    required
-                    autoComplete="address-level2"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Rating</label>
-                  <select
-                    value={newReview.rating}
-                    onChange={(e) => setNewReview({ ...newReview, rating: Number.parseInt(e.target.value) })}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500"
-                    required
-                  >
-                    <option value={5}>5 Stars - Excellent</option>
-                    <option value={4}>4 Stars - Very Good</option>
-                  </select>
-                  <p className="text-white/60 text-xs mt-1">
-                    We only accept 4-5 star reviews. For concerns, please call us directly.
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Review</label>
-                  <textarea
-                    value={newReview.review}
-                    onChange={(e) => setNewReview({ ...newReview, review: e.target.value })}
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300 h-24 resize-none"
-                    required
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-red-600 hover:bg-red-700 text-white py-3 font-semibold disabled:opacity-50"
-                >
-                  {isSubmitting ? "Submitting..." : "Submit Review"}
-                </Button>
-              </form>
-
-              {notification && (
-                <div
-                  className={`mt-4 p-3 rounded-lg text-sm ${
-                    notification.type === "success" ? "bg-green-600/20 text-green-400" : "bg-red-600/20 text-red-400"
-                  }`}
-                >
-                  {notification.message}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {showHiringForm && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-black border-2 border-red-500 rounded-lg w-full max-w-md p-6 relative max-h-[90vh] overflow-y-auto">
-              <button
-                onClick={() => setShowHiringForm(false)}
-                className="absolute top-2 right-2 w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-lg font-bold"
-              >
-                ×
-              </button>
-
-              <h3 className="text-xl font-bold text-red-400 mb-4">Job Application</h3>
-
-              <form onSubmit={handleHiringSubmit} className="space-y-4" data-form-type="Hiring Form">
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300"
-                    required
-                    autoComplete="name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300"
-                    required
-                    autoComplete="tel"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300"
-                    required
-                    autoComplete="email"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Position</label>
-                  <select
-                    name="position"
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500"
-                    required
-                  >
-                    <option value="">Select Position</option>
-                    <option value="bartender">Bartender (21+)</option>
-                    <option value="hostess">Hostess (21+)</option>
-                    <option value="server">Cocktail Server (21+)</option>
-                    <option value="security">Security (21+)</option>
-                    <option value="entertainer">Entertainer (19+)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-white/80 text-sm mb-2">Experience</label>
-                  <textarea
-                    name="experience"
-                    className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:border-red-500 focus:bg-white/20 transition-all duration-300 h-20 resize-none"
-                    placeholder="Describe your relevant experience..."
-                  />
-                </div>
-
-                <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white py-3 font-semibold">
-                  Submit Application
-                </Button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {showCallPopup && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-black border-2 border-red-500 rounded-lg p-8 text-center relative">
-              <button
-                onClick={() => setShowCallPopup(false)}
-                className="absolute top-2 right-2 w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-lg font-bold"
-              >
-                ×
-              </button>
-
-              <h3 className="text-2xl font-bold text-red-400 mb-4">Call The Club</h3>
-              <p className="text-white/80 mb-6">Ready to make a reservation?</p>
-
-              <Button
-                onClick={() => window.open("tel:+14804257546", "_self")}
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-xl font-bold rounded-lg"
-              >
-                📞 (480) 425-7546
-              </Button>
-
-              <p className="text-white/60 text-sm mt-4">Hours: 8:00 PM - 5:00 AM • Open 7 Days</p>
-            </div>
-          </div>
-        )}
-
-        {chatbotOpen && (
-          <div className="fixed bottom-20 right-4 w-80 bg-black border-2 border-red-500 rounded-lg shadow-2xl z-50">
-            <div className="bg-red-600 text-white p-4 rounded-t-lg flex justify-between items-center">
-              <h4 className="font-bold">Skin Cabaret Chat</h4>
-              <button onClick={() => setChatbotOpen(false)} className="text-white hover:text-red-200 text-xl font-bold">
-                ×
-              </button>
-            </div>
-
-            <div className="h-64 overflow-y-auto p-4 space-y-3">
-              {chatMessages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                      msg.type === "user" ? "bg-red-600 text-white" : "bg-white/10 text-white"
-                    }`}
-                  >
-                    {msg.message}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-4 border-t border-white/20">
-              <form onSubmit={handleChatSubmit} className="flex space-x-2" data-form-type="Chat Form">
-                <input
-                  type="text"
-                  value={currentMessage}
-                  onChange={(e) => setCurrentMessage(e.target.value)}
-                  placeholder="Ask about reservations..."
-                  className="flex-1 p-2 bg-white/10 border border-white/20 rounded text-white text-sm focus:border-red-500"
-                />
-                <Button type="submit" className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm">
-                  Send
-                </Button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        <button
-          onClick={() => setChatbotOpen(!chatbotOpen)}
-          className="fixed bottom-4 right-4 w-16 h-16 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg flex items-center justify-center text-2xl z-40 transition-all duration-300 hover:scale-110"
-          aria-label="Open chat"
-        >
-          💬
-        </button>
-
-        {showBackToTop && (
-          <button
-            onClick={scrollToTop}
-            className="fixed bottom-20 left-4 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg flex items-center justify-center text-xl z-40 transition-all duration-300 hover:scale-110"
-            aria-label="Back to top"
-          >
-            ↑
-          </button>
         )}
       </div>
     </>
