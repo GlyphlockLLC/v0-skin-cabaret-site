@@ -1718,8 +1718,8 @@ Review: ${newReview.review}`,
                   </p>
                   <p className="flex items-center gap-2">
                     <span>📞</span>
-                    <a href="tel:+14809491119" className="hover:text-red-400 transition-colors">
-                      (480) 949-1119
+                    <a href="tel:+14804257546" className="hover:text-red-400 transition-colors">
+                      (480) 425-7546
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
@@ -1785,10 +1785,10 @@ Review: ${newReview.review}`,
               <p className="text-white/90 mb-6">Call us to make a reservation or for any inquiries.</p>
               <Button
                 as="a"
-                href="tel:(480) 949-1119"
+                href="tel:(480) 425-7546"
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                (480) 949-1119
+                (480) 425-7546
               </Button>
               <Button
                 onClick={() => setShowCallPopup(false)}
