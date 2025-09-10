@@ -1637,64 +1637,69 @@ Review: ${newReview.review}`,
         <section id="contact" className="relative py-20 overflow-hidden z-10">
           <div className="absolute inset-0 bg-black/60"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">CONTACT US</h2>
+            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center text-white">ENTERTAINERS GUIDE</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <div>
-                <h3 className="text-2xl font-bold text-red-400 mb-4">Visit Us</h3>
-                <p className="text-white/90 mb-2">Skin Cabaret</p>
-                <p className="text-white/90 mb-2">1137 N Scottsdale Road</p>
-                <p className="text-white/90 mb-2">Scottsdale, AZ 85257</p>
-                <h3 className="text-2xl font-bold text-red-400 mt-6 mb-4">Call Us</h3>
-                <p className="text-white/90 mb-2">(480) 949-1119</p>
-                <h3 className="text-2xl font-bold text-red-400 mt-6 mb-4">Hours</h3>
-                <p className="text-white/90 mb-2">Open 7 days a week</p>
-                <p className="text-white/90 mb-2">8 PM - 5 AM</p>
-              </div>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-black/40 backdrop-blur-sm rounded-lg p-8 border border-red-500/30">
+                <h3 className="text-3xl font-bold text-red-400 mb-6 text-center">Work at Skin Cabaret</h3>
 
-              <div>
-                <h3 className="text-2xl font-bold text-red-400 mb-4">Send Us a Message</h3>
-                <form onSubmit={(e) => e.preventDefault()} data-form-type="contact">
-                  <div className="mb-4">
-                    <label htmlFor="name" className="block text-white text-sm font-bold mb-2">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
-                      required
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-xl font-bold text-red-400 mb-4">Requirements</h4>
+                    <ul className="text-white/90 space-y-3">
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Must be 19+ years of age
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Valid government-issued ID required
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Required license from Scottsdale Town Hall
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Professional attitude and appearance
+                      </li>
+                    </ul>
                   </div>
-                  <div className="mb-4">
-                    <label htmlFor="email" className="block text-white text-sm font-bold mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
-                      required
-                    />
+
+                  <div>
+                    <h4 className="text-xl font-bold text-red-400 mb-4">Benefits</h4>
+                    <ul className="text-white/90 space-y-3">
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Competitive earning potential
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Flexible scheduling options
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Safe and secure environment
+                      </li>
+                      <li className="flex items-center">
+                        <span className="text-red-400 mr-2">•</span>
+                        Professional management team
+                      </li>
+                    </ul>
                   </div>
-                  <div className="mb-4">
-                    <label htmlFor="message" className="block text-white text-sm font-bold mb-2">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-800 text-white"
-                      required
-                    ></textarea>
-                  </div>
-                  <Button
-                    type="submit"
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                </div>
+
+                <div className="mt-8 text-center">
+                  <p className="text-white/90 mb-6">
+                    Join Arizona's premier adult entertainment venue and become part of our professional team.
+                  </p>
+                  <button
+                    onClick={() => setShowPickupPopup(true)}
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
                   >
-                    Send Message
-                  </Button>
-                </form>
+                    Apply Now - Call (480) 425-7546
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -1917,6 +1922,16 @@ Review: ${newReview.review}`,
             </svg>
           </button>
         </div>
+
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-4 right-4 bg-red-600 hover:bg-red-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+          aria-label="Back to top"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
       </div>
     </>
   )
