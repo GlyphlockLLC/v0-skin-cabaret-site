@@ -897,12 +897,13 @@ Review: ${newReview.review}`,
               ))}
             </nav>
 
-            <button
-              onClick={() => setShowCallPopup(true)}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300"
+            <a
+              href="tel:+14804257546"
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block text-center no-underline"
+              aria-label="Call the club for reservations"
             >
-              CALL NOW
-            </button>
+              📞 CALL (480) 425-7546
+            </a>
           </div>
         </header>
 
@@ -966,13 +967,13 @@ Review: ${newReview.review}`,
           </div>
 
           <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4 safe-area-inset">
-            <button
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-              onClick={() => window.open("tel:+14804257546", "_self")}
+            <a
+              href="tel:+14804257546"
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block text-center no-underline"
               aria-label="Call the club for reservations"
             >
               📞 CALL (480) 425-7546
-            </button>
+            </a>
           </div>
         </section>
 
