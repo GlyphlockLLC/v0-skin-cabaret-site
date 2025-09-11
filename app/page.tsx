@@ -845,7 +845,10 @@ Review: ${newReview.review}`,
               filter: "brightness(1.1) contrast(1.3)",
             }}
           >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%20%284%29-1RtX4V4IQh45VsD38xmi5zh6VkQEmD.mp4" type="video/mp4" />
+            <source
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%20%284%29-1RtX4V4IQh45VsD38xmi5zh6VkQEmD.mp4"
+              type="video/mp4"
+            />
           </video>
           <video
             autoPlay
@@ -858,7 +861,10 @@ Review: ${newReview.review}`,
               filter: "brightness(1.0) contrast(1.2)",
             }}
           >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%20%282%29-KyeJHi0XeR1fSa5wnLq9iykX0s8sy4.mp4" type="video/mp4" />
+            <source
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%20%282%29-KyeJHi0XeR1fSa5wnLq9iykX0s8sy4.mp4"
+              type="video/mp4"
+            />
           </video>
         </div>
 
@@ -913,9 +919,18 @@ Review: ${newReview.review}`,
               minWidth: "100vw",
             }}
           >
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-LXxHbyjDaZ5Hfa2hzLSCeq5LLZpKjM.webm" type="video/webm" />
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-jqRqb6rf8i9YFjT6RFomZi1aAjNVSA.webm" type="video/webm" />
-            <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%203-RTTz79kdeCoRBdybhGCX7ut3ABz3ow.webm" type="video/webm" />
+            <source
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%204-LXxHbyjDaZ5Hfa2hzLSCeq5LLZpKjM.webm"
+              type="video/webm"
+            />
+            <source
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed-jqRqb6rf8i9YFjT6RFomZi1aAjNVSA.webm"
+              type="video/webm"
+            />
+            <source
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wmremove-transformed%203-RTTz79kdeCoRBdybhGCX7ut3ABz3ow.webm"
+              type="video/webm"
+            />
           </video>
           <div className="absolute inset-0 bg-black/20"></div>
 
@@ -952,14 +967,11 @@ Review: ${newReview.review}`,
 
           <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4 safe-area-inset">
             <button
-              onClick={() => setShowCallPopup(true)}
-              className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 shadow-[0_0_25px_rgba(220,38,38,0.5)] hover:shadow-[0_0_35px_rgba(220,38,38,0.8)] hover:scale-105 hover:-translate-y-2 focus:outline-none focus:ring-2 focus:ring-red-500/50 min-h-[44px] min-w-[44px]"
-              style={{
-                boxShadow: "0 0 20px rgba(220, 38, 38, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
-              }}
+              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              onClick={() => window.open("tel:+14804257546", "_self")}
               aria-label="Call the club for reservations"
             >
-              📞 CALL (480) 949-1119
+              📞 CALL (480) 425-7546
             </button>
           </div>
         </section>
@@ -1790,7 +1802,7 @@ Review: ${newReview.review}`,
               <p className="text-white/90 mb-6">Call us to make a reservation or for any inquiries.</p>
               <Button
                 as="a"
-                href="tel:(480) 425-7546"
+                href="tel:+14804257546"
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 (480) 425-7546
