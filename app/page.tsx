@@ -1837,26 +1837,14 @@ Review: ${newReview.review}`,
                   allowFullScreen={false}
                 ></iframe>
 
-                <div className="p-6 space-y-4">
-                  <button
-                    onClick={() => {
-                      setShowPickupPopup(false)
-                      // You can add ride scheduling logic here
-                    }}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300"
+                <div className="p-6">
+                  <a
+                    href="tel:+14804257546"
+                    onClick={() => setShowPickupPopup(false)}
+                    className="w-full block bg-black/70 hover:bg-red-400 active:bg-red-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300 text-center border border-gray-600"
                   >
-                    Schedule Ride
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      setShowPickupPopup(false)
-                      setShowCallPopup(true)
-                    }}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300"
-                  >
-                    Call Now - (480) 425-7546
-                  </button>
+                    Call to Schedule a Ride
+                  </a>
                 </div>
               </div>
             </div>
