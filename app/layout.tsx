@@ -1,13 +1,16 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { Montserrat } from "next/font/google"
 import { GeistMono } from "geist/font/mono"
 import { Suspense } from "react"
 import "./globals.css"
 
-// Use a fallback font configuration that doesn't require network access during build
-const montserratFallback = {
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
   variable: "--font-montserrat",
-}
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+})
 
 export const metadata: Metadata = {
   title: "Skin Cabaret - Scottsdale's Premier Adult Entertainment | VIP Experiences & Bachelor Parties",
@@ -208,7 +211,6 @@ export default function RootLayout({
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <link rel="preconnect" href="https://images.unsplash.com" />
 
         <meta name="geo.region" content="US-AZ" />
@@ -219,7 +221,7 @@ export default function RootLayout({
         <meta name="audience" content="adult" />
         <meta name="content-rating" content="mature" />
       </head>
-      <body className={`font-sans ${montserratFallback.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${montserrat.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
       </body>
     </html>
