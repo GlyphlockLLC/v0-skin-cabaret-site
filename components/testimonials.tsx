@@ -245,7 +245,7 @@ export default function Testimonials() {
                   <div className="flex mb-4">{renderStars(testimonial.rating)}</div>
 
                   <blockquote className="text-sm leading-relaxed mb-4 text-white/90 line-clamp-4">
-                    "{testimonial.review}"
+                    &quot;{testimonial.review}&quot;
                   </blockquote>
 
                   <span className="inline-block px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-bold uppercase tracking-wide">

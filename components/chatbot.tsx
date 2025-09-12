@@ -64,7 +64,7 @@ export default function Chatbot() {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, messages.length])
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -73,7 +73,7 @@ export default function Chatbot() {
         ["Book a Party", "Schedule Ride", "VIP Experience", "Waste Management Event", "General Info"],
       )
     }
-  }, [isOpen])
+  }, [isOpen, messages.length])
 
   const addBotMessage = (text: string, options?: string[], type?: "text" | "booking" | "ride" | "party") => {
     setIsTyping(true)
@@ -379,7 +379,7 @@ export default function Chatbot() {
         className="fixed bottom-20 left-6 sm:bottom-24 sm:left-8 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-2xl hover:shadow-secondary/50 animate-float z-50 hover:scale-110 transition-transform duration-300"
         style={{ animationDelay: "0.5s" }}
       >
-        {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />}
+        {isOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <MessageCircle className="w-5 h-5 sm:w-6 sm-h-6" />}
       </Button>
 
       {/* Chatbot Window */}

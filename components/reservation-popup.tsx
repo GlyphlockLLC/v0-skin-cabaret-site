@@ -344,7 +344,7 @@ Special Requests: ${formData.specialRequests}`
             onChange={(e) => setFormData({ ...formData, loyaltyMember: e.target.checked })}
             className="w-5 h-5 text-gold bg-gray-900 border-red-600 rounded focus:ring-gold"
           />
-          <span className="text-white">I'm a Skin Cabaret VIP Member</span>
+          <span className="text-white">I&apos;m a Skin Cabaret VIP Member</span>
         </label>
       </div>
     </div>

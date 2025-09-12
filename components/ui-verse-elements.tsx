@@ -270,7 +270,7 @@ export function InteractiveTestimonialCard({
         </div>
 
         <blockquote className="text-sm leading-relaxed mb-4 text-white/90 line-clamp-3">
-          "{testimonial.review}"
+          &quot;{testimonial.review}&quot;
         </blockquote>
 
         <div className="flex justify-between items-center">

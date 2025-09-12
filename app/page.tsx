@@ -957,7 +957,7 @@ Review: ${newReview.review}`,
           <div className="absolute bottom-20 left-0 right-0 z-20 text-center px-4 safe-area-inset">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white animate-pulse-glow mb-3">
-                Scottsdale's Premier Adult Entertainment Experience
+                Scottsdale&apos;s Premier Adult Entertainment Experience
               </h2>
               <p className="text-sm sm:text-base text-white/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]">
                 Luxury • Sophistication • Unforgettable Nights
@@ -1000,7 +1000,7 @@ Review: ${newReview.review}`,
                 <div className="text-left">
                   <h3 className="text-3xl font-bold text-red-400 mb-6">World-Renowned Excellence</h3>
                   <p className="text-white/90 text-xl mb-8 leading-relaxed">
-                    Skin Cabaret has always been home to the hottest girls in the world. As a world-renowned club, we're
+                    Skin Cabaret has always been home to the hottest girls in the world. As a world-renowned club, we&apos;re
                     getting back to our roots with the most beautiful and talented entertainers from around the globe.
                     Experience the legendary atmosphere that has made Skin Cabaret an international destination for
                     premium adult entertainment.
@@ -1129,7 +1129,7 @@ Review: ${newReview.review}`,
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-red-400 mb-4">WASTE MANAGEMENT</h3>
                   <p className="text-white/90 mb-6">
-                    Arizona's most exciting golf tournament with VIP viewing packages. Experience the legendary 16th
+                    Arizona&apos;s most exciting golf tournament with VIP viewing packages. Experience the legendary 16th
                     hole atmosphere and championship golf in style.
                   </p>
                   <Button
@@ -1181,7 +1181,7 @@ Review: ${newReview.review}`,
                 <div className="p-6">
                   <h3 className="text-2xl font-bold text-red-400 mb-4">SPRING TRAINING</h3>
                   <p className="text-white/90 mb-6">
-                    Arizona's favorite season! Watch MLB teams prepare for the season with game viewing parties, drink
+                    Arizona&apos;s favorite season! Watch MLB teams prepare for the season with game viewing parties, drink
                     specials, and the best spring training atmosphere in Scottsdale.
                   </p>
                   <Button
@@ -1361,7 +1361,7 @@ Review: ${newReview.review}`,
                 <div className="p-4 flex-1 flex flex-col">
                   <h3 className="text-lg font-bold text-red-400 mb-2">Stanley Cup</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
-                    Hockey's ultimate championship with playoff intensity and celebrations.
+                    Hockey&apos;s ultimate championship with playoff intensity and celebrations.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
@@ -1386,7 +1386,7 @@ Review: ${newReview.review}`,
                 <div className="p-4 flex-1 flex flex-col">
                   <h3 className="text-lg font-bold text-red-400 mb-2">World Series</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
-                    Baseball's championship series with classic American entertainment.
+                    Baseball&apos;s championship series with classic American entertainment.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
@@ -1704,7 +1704,7 @@ Review: ${newReview.review}`,
 
                 <div className="mt-8 text-center">
                   <p className="text-white/90 mb-6">
-                    Join Arizona's premier adult entertainment venue and become part of our professional team.
+                    Join Arizona&apos;s premier adult entertainment venue and become part of our professional team.
                   </p>
                   <button
                     onClick={() => setShowPickupPopup(true)}

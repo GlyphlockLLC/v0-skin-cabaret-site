@@ -24,6 +24,10 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
+            key: 'Cache-Control',
+            value: 's-maxage=0, stale-while-revalidate',
+          },
+          {
             key: 'X-Frame-Options',
             value: 'DENY',
           },
