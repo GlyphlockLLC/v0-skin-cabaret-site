@@ -710,7 +710,7 @@ Review: ${newReview.review}`,
   return (
     <>
       <Head>
-        <title>Skin Cabaret - Scottsdale's Premier Adult Entertainment</title>
+        <title>Skin Cabaret - Scottsdale&apos;s Premier Adult Entertainment</title>
         <meta
           name="description"
           content="Scottsdale's premier adult entertainment venue featuring luxury VIP experiences, sports viewing, and professional entertainment."
