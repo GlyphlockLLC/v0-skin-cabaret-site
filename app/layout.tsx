@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Montserrat } from "next/font/google"
-import { GeistMono } from "geist/font/mono"
+import { Montserrat, JetBrains_Mono } from "next/font/google"
 import { Suspense } from "react"
 import "./globals.css"
 
@@ -10,6 +9,13 @@ const montserrat = Montserrat({
   display: "swap",
   variable: "--font-montserrat",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
 })
 
 export const metadata: Metadata = {
@@ -221,7 +227,7 @@ export default function RootLayout({
         <meta name="audience" content="adult" />
         <meta name="content-rating" content="mature" />
       </head>
-      <body className={`font-sans ${montserrat.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${montserrat.variable} ${jetbrainsMono.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
       </body>
     </html>
