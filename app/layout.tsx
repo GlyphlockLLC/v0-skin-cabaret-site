@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Montserrat, JetBrains_Mono } from "next/font/google"
 import { Suspense } from "react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 
 const montserrat = Montserrat({
@@ -229,6 +230,7 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${montserrat.variable} ${jetbrainsMono.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
+        <SpeedInsights />
       </body>
     </html>
   )

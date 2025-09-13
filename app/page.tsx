@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import MobileMenu from "@/components/mobile-menu"
 
 import type React from "react"
 import { useState, useEffect } from "react"
@@ -497,6 +498,7 @@ Review: ${newReview.review}`,
   ]
 
   const scrollToSection = (sectionId: string) => {
+    setActiveTab(sectionId)
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
@@ -682,8 +684,25 @@ Review: ${newReview.review}`,
 
   useEffect(() => {
     const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
       setShowBackToTop(window.scrollY > 300)
+
+      // Update active tab based on scroll position
+      const sections = ["home", "sports", "hiring", "contact"]
+      const scrollPosition = window.scrollY + 100
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveTab(section)
+            break
+          }
+        }
+      }
     }
+
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -754,6 +773,71 @@ Review: ${newReview.review}`,
           }
         }
         
+        /* Added landscape-specific responsive rules to prevent logo overlap */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .container {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+          }
+          
+          header .container {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+          }
+          
+          header span {
+            font-size: 0.875rem;
+            max-width: 100px;
+          }
+          
+          header img {
+            width: 2rem;
+            height: 2rem;
+          }
+          
+          header a {
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+          }
+        }
+        
+        /* Added zoom-friendly breakpoints for better scaling */
+        @media (max-width: 480px) {
+          header .container {
+            padding-left: 0.25rem;
+            padding-right: 0.25rem;
+            gap: 0.25rem;
+          }
+          
+          header span {
+            font-size: 0.75rem;
+            max-width: 80px;
+            letter-spacing: 1px;
+          }
+          
+          header img {
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+          
+          header a {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.625rem;
+          }
+        }
+        
+        /* Prevent text overflow and ensure proper scaling */
+        @media (min-width: 1024px) and (max-width: 1280px) {
+          header nav {
+            gap: 1rem;
+          }
+          
+          header nav button {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+          }
+        }
+        
         @supports (padding: max(0px)) {
           .safe-area-inset {
             padding-left: env(safe-area-inset-left);
@@ -807,6 +891,29 @@ Review: ${newReview.review}`,
         .animate-logo-glow { animation: logo-glow 2s ease-in-out infinite; }
         .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
         
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+          animation: scroll 60s linear infinite;
+        }
+        
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-logo-glow { animation: logo-glow 2s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        
         .text-shimmer {
           background: linear-gradient(90deg, #dc2626, #ffffff, #c0c0c0, #dc2626);
           background-size: 200% auto;
@@ -830,6 +937,34 @@ Review: ${newReview.review}`,
         .card-glow:hover {
           box-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
         }
+
+        @keyframes intense-pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+        
+        @keyframes button-pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
+        
+        @keyframes luxury-glow {
+          0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+          50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+          100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+        }
+        
+        @keyframes sparkle {
+          0%, 100% { transform: scale(1) rotate(0deg); }
+          50% { transform: scale(1.1) rotate(180deg); }
+        }
+        
+        .animate-intense-pulse { animation: intense-pulse 0.5s ease-in-out; }
+        .animate-button-pulse { animation: button-pulse 0.3s ease-in-out; }
+        .animate-luxury-glow { animation: luxury-glow 2s ease-in-out infinite; }
+        .animate-sparkle { animation: sparkle 1s ease-in-out infinite; }
       `}</style>
 
         {/* Fixed Background Videos - Blended */}
@@ -869,27 +1004,33 @@ Review: ${newReview.review}`,
         </div>
 
         <header
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/90 backdrop-blur-sm" : "bg-transparent"}`}
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+            scrolled ? "bg-black/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+          }`}
         >
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-4 flex items-center justify-between gap-2">
+            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0 flex-shrink">
               <Image
                 src="/images/skin-logo-red-silhouette.png"
                 alt="Skin Cabaret"
                 width={60}
                 height={60}
-                className="object-contain"
+                className="object-contain w-8 h-8 sm:w-12 sm:h-12 md:w-[60px] md:h-[60px] flex-shrink-0"
               />
-              <span className="text-xl font-bold text-red-400">SKIN CABARET</span>
+              <span className="text-sm sm:text-lg md:text-xl font-bold text-red-400 whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px] sm:max-w-[200px] md:max-w-none">
+                SKIN CABARET
+              </span>
             </div>
 
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden lg:flex space-x-2 xl:space-x-4 flex-shrink-0">
               {["home", "sports", "hiring", "contact"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => scrollToSection(tab)}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 ${
-                    activeTab === tab ? "bg-red-600 text-white" : "text-white/80 hover:text-red-400 hover:bg-white/10"
+                  className={`px-3 xl:px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm xl:text-base whitespace-nowrap ${
+                    activeTab === tab
+                      ? "bg-red-600 text-white shadow-lg"
+                      : "text-white/80 hover:text-white hover:bg-red-600/20 hover:scale-105 transform"
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -897,12 +1038,23 @@ Review: ${newReview.review}`,
               ))}
             </nav>
 
+            <div className="lg:hidden">
+              <MobileMenu scrolled={scrolled} />
+            </div>
+
             <a
               href="tel:+14804257546"
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block text-center no-underline"
+              className="group relative bg-gradient-to-r from-red-900/90 to-red-800/90 hover:from-red-800 hover:to-red-700 text-white px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-2.5 md:py-3 rounded-md text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 shadow-md hover:shadow-lg border border-red-700/50 hover:border-red-600 flex-shrink-0 overflow-hidden"
               aria-label="Call the club for reservations"
             >
-              📞 CALL (480) 425-7546
+              <div className="relative z-10 flex items-center gap-1.5">
+                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+                <span className="hidden sm:inline">CALL</span>
+                <span className="sm:hidden">CALL</span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
             </a>
           </div>
         </header>
@@ -954,25 +1106,22 @@ Review: ${newReview.review}`,
             </div>
           </div>
 
-          <div className="absolute bottom-20 left-0 right-0 z-20 text-center px-4 safe-area-inset">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white animate-pulse-glow mb-3">
-                Scottsdale's Premier Adult Entertainment Experience
-              </h2>
-              <p className="text-sm sm:text-base text-white/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]">
-                Luxury • Sophistication • Unforgettable Nights
-              </p>
-              <div className="mt-4 text-red-400 font-bold text-lg animate-pulse">21+ ONLY • VALID ID REQUIRED</div>
-            </div>
-          </div>
-
-          <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center px-4 safe-area-inset">
+          <div className="absolute bottom-8 left-0 right-0 z-20 flex flex-col items-center gap-4 px-4 safe-area-inset">
             <a
               href="tel:+14804257546"
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-bold transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 inline-block text-center no-underline"
+              className="group relative bg-gradient-to-r from-red-900/95 to-red-800/95 hover:from-red-800 hover:to-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl border border-red-700/50 hover:border-red-600 overflow-hidden backdrop-blur-sm"
               aria-label="Call the club for reservations"
             >
-              📞 CALL (480) 425-7546
+              <div className="relative z-10 flex items-center gap-3">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+                <div className="text-left">
+                  <div className="text-lg font-bold">CALL NOW</div>
+                  <div className="text-sm opacity-90">(480) 425-7546</div>
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
             </a>
           </div>
         </section>
@@ -1203,19 +1352,19 @@ Review: ${newReview.review}`,
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {/* NFL Sunday */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image src="/images/nbc-sunday-night-football.jpeg" alt="NFL Sunday" fill className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">NFL Sunday</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">NFL Sunday</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     Watch every game on multiple big screens with drink specials and premium entertainment.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1223,7 +1372,7 @@ Review: ${newReview.review}`,
               </div>
 
               {/* NBA Finals */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/nba-playoffs-basketball-championship-game.jpg"
@@ -1234,13 +1383,13 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">NBA Finals</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">NBA Finals</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     Experience championship basketball with premium viewing and VIP packages.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1248,7 +1397,7 @@ Review: ${newReview.review}`,
               </div>
 
               {/* HBO Boxing */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/hbo-boxing-championship-fight-night.jpg"
@@ -1259,20 +1408,20 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">HBO Boxing</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">HBO Boxing</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     Watch championship boxing matches with VIP fight night packages.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
                 </div>
               </div>
 
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/college-march-madness-basketball-tournament.jpg"
@@ -1283,14 +1432,14 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">College Sports</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">College Sports</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     Watch March Madness, College Football Playoffs, and championship games with student-friendly
                     specials and game day atmosphere.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1298,7 +1447,7 @@ Review: ${newReview.review}`,
               </div>
 
               {/* Super Bowl */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/super-bowl-championship-game-with-trophy-and-confe.jpg"
@@ -1309,13 +1458,13 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">Super Bowl</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">Super Bowl</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     The biggest game of the year with championship viewing parties.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1323,7 +1472,7 @@ Review: ${newReview.review}`,
               </div>
 
               {/* Kentucky Derby */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/kentucky-derby-horse-racing-with-jockeys-and-churc.jpg"
@@ -1334,13 +1483,13 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">Kentucky Derby</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">Kentucky Derby</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     The most exciting two minutes in sports with mint juleps and betting.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1348,7 +1497,7 @@ Review: ${newReview.review}`,
               </div>
 
               {/* Stanley Cup */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/stanley-cup-hockey-championship-with-trophy-and-ic.jpg"
@@ -1359,13 +1508,13 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">Stanley Cup</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">Stanley Cup</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     Hockey's ultimate championship with playoff intensity and celebrations.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1373,7 +1522,7 @@ Review: ${newReview.review}`,
               </div>
 
               {/* World Series */}
-              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[400px] flex flex-col">
+              <div className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[400px] flex flex-col">
                 <div className="relative h-48 flex-shrink-0">
                   <Image
                     src="/world-series-baseball-championship-with-stadium-an.jpg"
@@ -1384,13 +1533,13 @@ Review: ${newReview.review}`,
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 </div>
                 <div className="p-4 flex-1 flex flex-col">
-                  <h3 className="text-lg font-bold text-red-400 mb-2">World Series</h3>
+                  <h3 className="text-lg font-bold text-red-400 mb-2 hover:animate-luxury-glow">World Series</h3>
                   <p className="text-white/80 mb-3 text-sm flex-1">
                     Baseball's championship series with classic American entertainment.
                   </p>
                   <Button
                     onClick={() => setShowCallPopup(true)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                   >
                     Reserve Table
                   </Button>
@@ -1501,40 +1650,56 @@ Review: ${newReview.review}`,
               {hiringPositions.map((position, index) => (
                 <div
                   key={index}
-                  className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 h-[300px] flex flex-col"
+                  className="bg-black/80 rounded-lg overflow-hidden border border-red-500/30 hover:border-red-500 transition-all duration-300 opacity-60 hover:opacity-100 hover:animate-intense-pulse hover:scale-105 transform h-[300px] flex flex-col"
                 >
-                  <div className="h-32 bg-gradient-to-br from-red-900/50 to-black/80 flex items-center justify-center">
+                  <div className="h-32 bg-gradient-to-br from-red-900/50 to-black/80 flex items-center justify-center hover:animate-luxury-glow">
                     {/* SVG Icons for each position */}
                     {position.title === "Bartenders" && (
-                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className="w-16 h-16 text-red-400 hover:animate-sparkle transition-all duration-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path d="M3 14c0 1.3.84 2.4 2 2.82V20H4v2h16v-2h-1v-3.18c1.16-.42 2-1.52 2-2.82V9H3v5zm2-3h14v3c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1v-3zm2 5h10v3H7v-3z" />
                         <path d="M7.5 7L9 2h6l1.5 5H7.5z" />
                       </svg>
                     )}
                     {position.title === "Hostess" && (
-                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className="w-16 h-16 text-red-400 hover:animate-sparkle transition-all duration-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7.5V9M15 10.5V19L13.5 17.5V14.5L10.5 17.5V22H9V18L12 15L9 12V9.5L15 10.5Z" />
                       </svg>
                     )}
                     {position.title === "Cocktail Servers" && (
-                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className="w-16 h-16 text-red-400 hover:animate-sparkle transition-all duration-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path d="M7.5 7L10.5 4H13.5L16.5 7V8H7.5V7ZM8 9H16L15 10H9L8 9ZM9.5 11H14.5L14 12H10L9.5 11ZM10.5 13H13.5L13 14H11L10.5 13ZM11.5 15H12.5V20H11.5V15Z" />
                       </svg>
                     )}
                     {position.title === "Security" && (
-                      <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className="w-16 h-16 text-red-400 hover:animate-sparkle transition-all duration-300"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.2C16,16.8 15.4,17.3 14.8,17.3H9.2C8.6,17.3 8,16.8 8,16.2V12.8C8,12.2 8.6,11.6 9.2,11.6V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,10V11.5H13.5V10C13.5,8.7 12.8,8.2 12,8.2Z" />
                       </svg>
                     )}
                   </div>
                   <div className="p-4 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold text-red-400 mb-2">{position.title}</h3>
+                    <h3 className="text-xl font-bold text-red-400 mb-2 hover:animate-luxury-glow">{position.title}</h3>
                     <p className="text-white/80 mb-3 text-sm flex-1">
                       Join our professional team - {position.age} required
                     </p>
                     <Button
                       onClick={() => setShowHiringForm(true)}
-                      className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto"
+                      className="w-full bg-red-600 hover:bg-red-700 text-white mt-auto hover:animate-button-pulse hover:scale-105 transform transition-all duration-300"
                     >
                       Apply Now
                     </Button>
@@ -1708,7 +1873,7 @@ Review: ${newReview.review}`,
                   </p>
                   <button
                     onClick={() => setShowPickupPopup(true)}
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 hover:animate-button-pulse hover:scale-105 transform"
                   >
                     Apply Now - Call (480) 425-7546
                   </button>
@@ -1736,13 +1901,22 @@ Review: ${newReview.review}`,
                   </p>
                   <p className="flex items-center gap-2">
                     <span>📞</span>
-                    <a href="tel:+14804257546" className="hover:text-red-400 transition-colors">
+                    <svg className="w-4 h-4 text-red-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                    <a
+                      href="tel:+14804257546"
+                      className="hover:text-red-400 transition-colors hover:animate-luxury-glow font-medium"
+                    >
                       (480) 425-7546
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
                     <span>✉️</span>
-                    <a href="mailto:cash2dayaz@gmail.com" className="hover:text-red-400 transition-colors">
+                    <a
+                      href="mailto:cash2dayaz@gmail.com"
+                      className="hover:text-red-400 transition-colors hover:animate-luxury-glow"
+                    >
                       cash2dayaz@gmail.com
                     </a>
                   </p>
@@ -1762,10 +1936,16 @@ Review: ${newReview.review}`,
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-red-400 mb-4">Legal</h3>
                 <div className="space-y-2 text-white/80">
-                  <a href="/privacy-policy" className="block hover:text-red-400 transition-colors">
+                  <a
+                    href="/privacy-policy"
+                    className="block hover:text-red-400 transition-colors hover:animate-luxury-glow"
+                  >
                     Privacy Policy
                   </a>
-                  <a href="/terms-of-service" className="block hover:text-red-400 transition-colors">
+                  <a
+                    href="/terms-of-service"
+                    className="block hover:text-red-400 transition-colors hover:animate-luxury-glow"
+                  >
                     Terms of Service
                   </a>
                   <p className="text-sm">21+ Only • Valid ID Required</p>
@@ -1797,20 +1977,35 @@ Review: ${newReview.review}`,
         </footer>
 
         {showCallPopup && (
-          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-            <div className="bg-black rounded-lg p-8 max-w-md w-full">
-              <h2 className="text-2xl font-bold text-red-400 mb-4">Call Us Now</h2>
-              <p className="text-white/90 mb-6">Call us to make a reservation or for any inquiries.</p>
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-gradient-to-br from-gray-900 to-black rounded-xl p-8 max-w-md w-full border border-red-500/30 shadow-2xl">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-white mb-2">Call Us Now</h2>
+              </div>
+
+              <p className="text-white/90 mb-6 text-center">Call us to make a reservation or for any inquiries.</p>
+
               <Button
                 as="a"
                 href="tel:+14804257546"
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl border border-red-500/50 mb-4"
               >
-                (480) 425-7546
+                <div className="flex items-center justify-center gap-3">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                  (480) 425-7546
+                </div>
               </Button>
+
               <Button
                 onClick={() => setShowCallPopup(false)}
-                className="mt-4 w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors border border-gray-600 hover:border-gray-500"
               >
                 Cancel
               </Button>
@@ -1830,7 +2025,8 @@ Review: ${newReview.review}`,
 
               <div className="relative">
                 <iframe
-                  src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&fs=0&disablekb=1"
+                  src="https://www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=\`\`\`
+www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&fs=0&disablekb=1"
                   className="w-full h-64 md:h-80"
                   frameBorder="0"
                   allow="autoplay; encrypted-media"
@@ -1841,9 +2037,18 @@ Review: ${newReview.review}`,
                   <a
                     href="tel:+14804257546"
                     onClick={() => setShowPickupPopup(false)}
-                    className="w-full block bg-black/70 hover:bg-red-400 active:bg-red-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300 text-center border border-gray-600"
+                    className="group w-full block bg-gradient-to-r from-red-900/90 to-red-800/90 hover:from-red-800 hover:to-red-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 text-center border border-red-700/50 hover:border-red-600 shadow-lg hover:shadow-xl overflow-hidden relative"
                   >
-                    Call to Schedule a Ride
+                    <div className="relative z-10 flex items-center justify-center gap-3">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                      <div>
+                        <div className="text-lg">Call to Schedule a Ride</div>
+                        <div className="text-sm opacity-90">(480) 425-7546</div>
+                      </div>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
                   </a>
                 </div>
               </div>
