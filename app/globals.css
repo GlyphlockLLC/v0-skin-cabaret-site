@@ -84,10 +84,10 @@
 }
 
 @theme inline {
-  /* Updated to use Montserrat for luxury typography */
-  --font-montserrat: "Montserrat";
-  --font-sans: var(--font-montserrat), "Montserrat", sans-serif;
-  --font-mono: var(--font-geist-mono);
+  /* Updated to use system fonts as fallbacks */
+  --font-montserrat: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-montserrat), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

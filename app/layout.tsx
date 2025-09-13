@@ -1,21 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Montserrat, JetBrains_Mono } from "next/font/google"
 import { Suspense } from "react"
 import "./globals.css"
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
+// Using system fonts as fallbacks for Google Fonts to avoid network dependency
+const montserrat = {
   variable: "--font-montserrat",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-})
+  className: "font-sans",
+}
 
-const jetbrains_mono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jetbrains-mono",
-})
+const jetbrains_mono = {
+  variable: "--font-jetbrains-mono", 
+  className: "font-mono",
+}
 
 export const metadata: Metadata = {
   title: "Skin Cabaret - Scottsdale's Premier Adult Entertainment | VIP Experiences & Bachelor Parties",
@@ -214,8 +211,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://images.unsplash.com" />
 
         <meta name="geo.region" content="US-AZ" />
