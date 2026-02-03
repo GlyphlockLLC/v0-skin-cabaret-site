@@ -647,7 +647,7 @@ Review: ${newReview.review}`,
         
         @keyframes pulse-glow {
           0%, 100% { text-shadow: 0 0 20px rgba(220, 38, 38, 0.8); }
-          50% { text-shadow: 0 0 40px rgba(220, 38, 38, 1)); }
+          50% { text-shadow: 0 0 40px rgba(220, 38, 38, 1); }
         }
         
         @keyframes shimmer {
@@ -1921,5 +1921,6 @@ www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&
           </svg>
         </button>
       </div>
+    </div>
   )
 }
