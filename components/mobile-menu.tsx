@@ -22,6 +22,7 @@ export default function MobileMenu({ scrolled }: MobileMenuProps) {
 
   const menuItems = [
     { label: "Home", href: "#home" },
+    { label: "Menu", href: "#menu" },
     { label: "Sports", href: "#sports" },
     { label: "Hiring", href: "#hiring" },
     { label: "Contact", href: "#contact" },

@@ -805,7 +805,7 @@ Review: ${newReview.review}`,
             </div>
 
             <nav className="hidden lg:flex space-x-2 xl:space-x-4 flex-shrink-0">
-              {["home", "sports", "hiring", "contact"].map((tab) => (
+              {["home", "menu", "sports", "hiring", "contact"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => scrollToSection(tab)}
@@ -1418,6 +1418,130 @@ Review: ${newReview.review}`,
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Mocktail Menu Section */}
+        <section id="menu" className="relative py-20 overflow-hidden z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/20 to-black"></div>
+          <div className="container mx-auto px-4 relative z-10">
+            <h2 className="text-4xl md:text-5xl font-black mb-4 text-center text-white">MOCKTAIL MENU</h2>
+            <p className="text-center text-white/70 mb-12 max-w-2xl mx-auto">
+              Premium non-alcoholic craft beverages for those who prefer to enjoy the atmosphere without the spirits
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {/* Signature Mocktails */}
+              <div className="bg-black/80 rounded-lg p-6 border border-red-500/30 hover:border-red-500 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-red-400 mb-6 text-center">Signature Mocktails</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Crimson Sunset</h4>
+                      <p className="text-sm text-white/60">Cranberry, orange, lime, ginger beer</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$8</span>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Velvet Rose</h4>
+                      <p className="text-sm text-white/60">Rose syrup, lemon, sparkling water, mint</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$9</span>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Midnight Mule</h4>
+                      <p className="text-sm text-white/60">Ginger beer, lime, activated charcoal, mint</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$8</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-semibold text-white">Phoenix Fire</h4>
+                      <p className="text-sm text-white/60">Mango, habanero syrup, lime, soda</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$9</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Classic Refreshers */}
+              <div className="bg-black/80 rounded-lg p-6 border border-red-500/30 hover:border-red-500 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-red-400 mb-6 text-center">Classic Refreshers</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Virgin Mojito</h4>
+                      <p className="text-sm text-white/60">Fresh mint, lime, sugar, soda water</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$7</span>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Strawberry Daiquiri</h4>
+                      <p className="text-sm text-white/60">Fresh strawberries, lime, sugar, ice</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$8</span>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Piña Colada</h4>
+                      <p className="text-sm text-white/60">Coconut cream, pineapple, ice</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$8</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-semibold text-white">Shirley Temple</h4>
+                      <p className="text-sm text-white/60">Ginger ale, grenadine, cherry</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$6</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Premium & Energy */}
+              <div className="bg-black/80 rounded-lg p-6 border border-red-500/30 hover:border-red-500 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-red-400 mb-6 text-center">Premium & Energy</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Red Bull Fusion</h4>
+                      <p className="text-sm text-white/60">Red Bull, passion fruit, lime</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$10</span>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Espresso Tonic</h4>
+                      <p className="text-sm text-white/60">Fresh espresso, tonic water, orange peel</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$9</span>
+                  </div>
+                  <div className="flex justify-between items-start border-b border-red-500/20 pb-3">
+                    <div>
+                      <h4 className="font-semibold text-white">Kombucha Flight</h4>
+                      <p className="text-sm text-white/60">Three premium kombucha varieties</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$12</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-semibold text-white">Sparkling Cider</h4>
+                      <p className="text-sm text-white/60">Premium apple cider, served chilled</p>
+                    </div>
+                    <span className="text-red-400 font-bold">$8</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-white/60 text-sm">
+                Full bar available with premium spirits, wine, and champagne service. Ask your server for details.
+              </p>
             </div>
           </div>
         </section>
