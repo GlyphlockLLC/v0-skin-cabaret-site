@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://skincabaret.com"),
+  metadataBase: new URL("https://www.skincabaret.com"),
   alternates: {
     canonical: "/",
   },
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: "Skin Cabaret - Scottsdale's Premier Adult Entertainment",
     description:
       "Experience world-class entertainment at Scottsdale's most exclusive venue. VIP packages, bachelor parties, and unforgettable nights.",
-    url: "https://skincabaret.com",
+    url: "https://www.skincabaret.com",
     siteName: "Skin Cabaret",
     images: [
       {
@@ -109,12 +109,12 @@ export default function RootLayout({
               name: "Skin Cabaret",
               description:
                 "Scottsdale's premier adult entertainment venue featuring VIP experiences, bachelor parties, and world-class performers.",
-              url: "https://skincabaret.com",
-              logo: "https://skincabaret.com/images/skin-logo-red-silhouette.png",
+              url: "https://www.skincabaret.com",
+              logo: "https://www.skincabaret.com/images/skin-logo-red-silhouette.png",
               image: [
-                "https://skincabaret.com/images/hero-bdsm-red-lighting.jpeg",
-                "https://skincabaret.com/images/vip-blonde-martini.jpeg",
-                "https://skincabaret.com/images/bachelor-party-celebration.jpeg",
+                "https://www.skincabaret.com/images/hero-bdsm-red-lighting.jpeg",
+                "https://www.skincabaret.com/images/vip-blonde-martini.jpeg",
+                "https://www.skincabaret.com/images/bachelor-party-celebration.jpeg",
               ],
               address: {
                 "@type": "PostalAddress",

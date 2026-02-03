@@ -6,7 +6,6 @@ import MobileMenu from "@/components/mobile-menu"
 import type React from "react"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import Head from "next/head"
 
 export default function SkinCabaretSite() {
   const [scrolled, setScrolled] = useState(false)
@@ -165,86 +164,12 @@ export default function SkinCabaretSite() {
   const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const testAllFunctionality = async () => {
-    console.log("[v0] Starting comprehensive site functionality test...")
-
-    // Test email API
-    try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "Test Email",
-          name: "Test User",
-          phone: "(480) 425-7546",
-          email: "test@example.com",
-          message: "API functionality test",
-          website: "", // honeypot field
-        }),
-      })
-      const result = await response.json()
-      if (result.success) {
-        console.log("[v0] Email API test: PASSED")
-      } else {
-        console.log("[v0] Email API test: FAILED -", result.error)
-      }
-    } catch (error) {
-      console.log("[v0] Email API test: FAILED -", error)
-    }
-
-    // Test popup functionality - removed auto-close
-    console.log("[v0] Testing popup functionality...")
-    if (showPickupPopup) {
-      console.log("[v0] Pickup popup test: PASSED")
-    }
-
-    // Test navigation
-    console.log("[v0] Testing navigation...")
-    const sections = ["home", "sports", "hiring", "contact"]
-    sections.forEach((section) => {
-      const element = document.getElementById(section)
-      console.log(`[v0] Section ${section}:`, element ? "FOUND" : "MISSING")
-    })
-
-    // Test form validation
-    setTimeout(() => {
-      console.log("[v0] Testing form validation...")
-      const forms = document.querySelectorAll("form")
-      console.log(`[v0] Found ${forms.length} forms on page`)
-
-      // Test each form individually
-      forms.forEach((form, index) => {
-        const formType = form.getAttribute("data-form-type") || `Form ${index + 1}`
-        console.log(`[v0] ${formType}: FOUND`)
-      })
-    }, 1000)
-
-    // Test video backgrounds
-    console.log("[v0] Testing video backgrounds...")
-    const videos = document.querySelectorAll("video")
-    console.log(`[v0] Found ${videos.length} video elements`)
-    videos.forEach((video, index) => {
-      console.log(`[v0] Video ${index + 1}:`, video.readyState >= 2 ? "LOADED" : "LOADING")
-    })
-
-    // Test responsive design
-    console.log("[v0] Testing responsive design...")
-    const isMobile = window.innerWidth <= 768
-    console.log(
-      `[v0] Current viewport: ${window.innerWidth}x${window.innerHeight} (${isMobile ? "Mobile" : "Desktop"})`,
-    )
-
-    console.log("[v0] Site functionality test completed!")
-  }
-
   const handlePickupSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     setNotification(null)
 
     try {
-      console.log("[v0] Submitting pickup form with data:", pickupForm)
-
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -261,7 +186,6 @@ export default function SkinCabaretSite() {
       })
 
       const result = await response.json()
-      console.log("[v0] Pickup form response:", result)
 
       if (response.ok && result.success) {
         setNotification({
@@ -282,7 +206,6 @@ export default function SkinCabaretSite() {
         throw new Error(result.error || result.details || "Failed to submit")
       }
     } catch (error) {
-      console.error("[v0] Pickup form error:", error)
       setNotification({
         type: "error",
         message:
@@ -360,7 +283,6 @@ Review: ${newReview.review}`,
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     try {
-      console.log("[v0] Submitting hiring form")
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -375,7 +297,6 @@ Review: ${newReview.review}`,
       })
 
       const result = await response.json()
-      console.log("[v0] Hiring form response:", result)
 
       if (response.ok && result.success) {
         alert("Application submitted successfully!")
@@ -387,7 +308,6 @@ Review: ${newReview.review}`,
         throw new Error(result.error || "Failed to submit application")
       }
     } catch (error) {
-      console.error("[v0] Hiring form error:", error)
       alert("Error submitting application. Please try again.")
     }
   }
@@ -566,106 +486,6 @@ Review: ${newReview.review}`,
     handleChatSubmit({ preventDefault: () => {} } as React.FormEvent)
   }
 
-  const scrollToSectionOld = (sectionId: string) => {
-    console.log("[v0] Attempting to scroll to section:", sectionId)
-    setActiveTab(sectionId)
-    const element = document.getElementById(sectionId)
-    if (element) {
-      console.log("[v0] Element found, scrolling to:", element)
-      // Try multiple scroll methods for better compatibility
-      try {
-        element.scrollIntoView({ behavior: "smooth", block: "start" })
-      } catch (error) {
-        console.log("[v0] Smooth scroll failed, using fallback:", error)
-        // Fallback for environments that don't support smooth scrolling
-        element.scrollIntoView()
-      }
-    } else {
-      console.log("[v0] Element not found for ID:", sectionId)
-    }
-  }
-
-  useEffect(() => {
-    // Run comprehensive test after component mounts
-    const timer = setTimeout(() => {
-      console.log("[v0] Starting comprehensive site functionality test...")
-
-      // Test email API
-      fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "Test Email",
-          name: "Test User",
-          phone: "555-0123",
-          email: "test@example.com",
-          message: "Site functionality test",
-          website: "",
-        }),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          console.log("[v0] Email API test:", result.success ? "PASSED" : "FAILED")
-        })
-        .catch(() => console.log("[v0] Email API test: FAILED"))
-
-      // Test popup functionality
-      console.log("[v0] Testing popup functionality...")
-      console.log("[v0] Pickup popup test: PASSED")
-
-      // Test navigation
-      console.log("[v0] Testing navigation...")
-      const sections = ["home", "sports", "hiring", "contact"]
-      sections.forEach((section) => {
-        const element = document.getElementById(section)
-        console.log(`[v0] Section ${section}:`, element ? "FOUND" : "MISSING")
-      })
-
-      // Test video backgrounds
-      console.log("[v0] Testing video backgrounds...")
-      const videos = document.querySelectorAll("video")
-      console.log(`[v0] Found ${videos.length} video elements`)
-      videos.forEach((video, index) => {
-        console.log(`[v0] Video ${index + 1}:`, video.readyState >= 3 ? "LOADED" : "LOADING")
-      })
-
-      // Test responsive design
-      console.log("[v0] Testing responsive design...")
-      const viewport = `${window.innerWidth}x${window.innerHeight}`
-      const deviceType = window.innerWidth >= 1024 ? "Desktop" : window.innerWidth >= 768 ? "Tablet" : "Mobile"
-      console.log(`[v0] Current viewport: ${viewport} (${deviceType})`)
-
-      console.log("[v0] Site functionality test completed!")
-
-      // Enhanced form detection with multiple attempts
-      let formCheckAttempts = 0
-      const checkForms = () => {
-        formCheckAttempts++
-        console.log("[v0] Testing form validation...")
-
-        // Wait for DOM updates and React state changes
-        setTimeout(() => {
-          const forms = document.querySelectorAll("form[data-form-type]")
-          console.log(`[v0] Found ${forms.length} forms on page`)
-
-          if (forms.length === 0 && formCheckAttempts < 3) {
-            // Retry form detection
-            setTimeout(checkForms, 1000)
-          } else {
-            forms.forEach((form, index) => {
-              const formType = form.getAttribute("data-form-type") || `Form ${index + 1}`
-              console.log(`[v0] ${formType}: FOUND`)
-            })
-          }
-        }, 500)
-      }
-
-      checkForms()
-    }, 2000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date())
@@ -727,45 +547,7 @@ Review: ${newReview.review}`,
   ]
 
   return (
-    <>
-      <Head>
-        <title>Skin Cabaret - Scottsdale's Premier Adult Entertainment</title>
-        <meta
-          name="description"
-          content="Scottsdale's premier adult entertainment venue featuring luxury VIP experiences, sports viewing, and professional entertainment."
-        />
-        <link rel="canonical" href="https://www.skincabaret.com/home" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": ["Organization", "LocalBusiness"],
-            name: "Skin Cabaret",
-            url: "https://www.skincabaret.com/home",
-            sameAs: [
-              "https://www.facebook.com/skincabaret",
-              "https://www.instagram.com/skincabaret",
-              "https://www.twitter.com/skincabaret",
-            ],
-            telephone: "+1-480-425-7546",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "1137 N Scottsdale Road",
-              addressLocality: "Scottsdale",
-              addressRegion: "AZ",
-              postalCode: "85257",
-              addressCountry: "US",
-            },
-            openingHours: "Mo-Su 20:00-05:00",
-          })}
-        </script>
-      </Head>
-
-      <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
         <style jsx global>{`
         @media (max-width: 640px) {
           html {
@@ -2139,6 +1921,5 @@ www.youtube.com/embed/10tGk0u93qQ?autoplay=1&mute=1&loop=1&playlist=10tGk0u93qQ&
           </svg>
         </button>
       </div>
-    </>
   )
 }

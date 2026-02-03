@@ -3,13 +3,15 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(req: NextRequest) {
-  const authToken = req.cookies.get('auth_token');
-
-  if (!authToken && req.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
-
-  return NextResponse.next();
+  // Add security headers and allow all public access
+  const response = NextResponse.next();
+  
+  // Set security headers
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  return response;
 }
 
 export const config = {

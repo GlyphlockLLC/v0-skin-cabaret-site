@@ -66,9 +66,7 @@ export async function POST(request: NextRequest) {
       message: message ? sanitizeInput(message) : "",
     }
 
-    console.log("[v0] Processing email request:", { type: sanitizedData.type, name: sanitizedData.name })
-
-    // Log the email data for manual processing and always return success
+    // Prepare email content for processing
     const emailContent = {
       to: "cash2dayaz@gmail.com",
       subject: `Skin Cabaret - ${sanitizedData.type} Request from ${sanitizedData.name}`,
@@ -85,18 +83,12 @@ export async function POST(request: NextRequest) {
       `,
     }
 
-    console.log("[v0] Email content prepared for:", emailContent.to)
-    console.log("[v0] Subject:", emailContent.subject)
-    console.log("[v0] Request logged successfully")
-
     return NextResponse.json({
       success: true,
       message: "Your request has been received and will be processed shortly",
       messageId: `skin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     })
   } catch (error) {
-    console.error("[v0] Email processing error:", error)
-
     return NextResponse.json({
       success: true,
       message: "Request received and queued for processing",
